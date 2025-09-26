@@ -1,4 +1,4 @@
 package es.upm.etsisi.poo;
 
-public class ticket {
+public class Ticket {
 }
