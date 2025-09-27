@@ -11,6 +11,10 @@ public class Product {
      */
     private final int ID;
     /**
+     * Indicates the type of product.
+     */
+    private Category category;
+    /**
      * Name of the product.
      */
     private String name;
@@ -26,10 +30,33 @@ public class Product {
      * @param name product name.
      * @param price product price.
      */
-    public Product(int ID, String name, int price) {
+    public Product(int ID, Category category, String name, int price) {
         this.ID = ID;
+        this.category = category;
         this.name = name;
         this.price = price;
+    }
+    /**
+     * Getter for the ID.
+     *
+     * @return ID of the product.
+     */
+    public int getID() {
+        return ID;
+    }
+    /**
+     * Getter for category
+     *
+     * @return Category of the product.
+     */
+    public Category getCategory() {
+        return this.category;
+    }
+    /**
+     * Setter for category
+     */
+    public void setCategory(Category category) {
+        this.category = category;
     }
     /**
      * Getter for the name.
@@ -59,12 +86,5 @@ public class Product {
     public void setPrice(int price) {
         this.price = price;
     }
-    /**
-     * Getter for the ID.
-     *
-     * @return ID of the product.
-     */
-    public int getID() {
-        return ID;
-    }
+
 }

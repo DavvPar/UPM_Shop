@@ -6,15 +6,21 @@ package es.upm.etsisi.poo;
  * the prices, the dates and bills.
  */
 public class Ticket {
-
+    /**
+     * The list of products on the ticket.
+     */
     private Product[] productList;
-
-    // HAY QUE IMPLEMENTAR FECHA!
+    /**
+     * Total price of all the products in the ticket.
+     */
+    private int totalPrice;
 
     /**
      * Constructor of the class
-     * No parameters.
+     * @param productList List of products on the ticket.
      */
-    public Ticket() {
+    public Ticket(Product[] productList, int totalPrice) {
+        this.productList = productList;
+        this.totalPrice = totalPrice;
     }
 }
