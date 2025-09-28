@@ -11,12 +11,17 @@ import java.util.Scanner;
  */
 public class App {
 
+    static Scanner sc = new Scanner(System.in);
+    static int totalPrice = 0;
+    static Product[] productList = new Product[100];
+    static Ticket currentTicket = new Ticket(productList, totalPrice);
     /**
      * Main structure for executing the app.
      */
     public static void main(String[] args) {
         App application = new App();
         application.init();
+        application.run();
     }
 
     /**
@@ -24,6 +29,65 @@ public class App {
      * the use of the help command.
      */
     private void init(){
-        System.out.println("Welcome to the ticket module App.\nTicket module. Type 'help' to see commands:");
+        System.out.println("Welcome to the ticket module App.");
+        System.out.println("Ticket module. Type 'help' to see commands:");
+    }
+
+    /**
+     * This method is the core of the main program and
+     * determines how the application runs, it executes
+     * the introduced commands.
+     */
+    private void run(){
+        boolean cont = true;
+        while (cont){
+            System.out.print("> ");
+            String command = sc.next();
+
+            switch (command){
+                case "help":
+                    listCommands();
+                    break;
+                case "exit":
+                    exitProgram();
+                    cont = false;
+                    break;
+                default:
+                    unknownCommand();
+                    break;
+            }
+        }
+        sc.close();
+    }
+
+    /**
+     * Shows in screen all the possible commands for
+     * the user to choose.
+     */
+    private void listCommands(){
+        System.out.println("Command list:");
+        System.out.println("prod add <id> \"<name>\" <category> <price>");
+        System.out.println("prod list");
+        System.out.println("prod update <id> NAME|CATEGORY|PRICE <value>");
+        System.out.println("prod remove <id>");
+        System.out.println("ticket new");
+        System.out.println("ticket add <prodId> <quantity>");
+        System.out.println("ticket remove <prodId>");
+        System.out.println("ticket print");
+        System.out.println("echo \"<texto>\"");
+        System.out.println("help");
+        System.out.println("exit");
+    }
+
+    /**
+     * Shows in screen the farewell message to the user.
+     */
+    private void exitProgram(){
+        System.out.println("Closing application.");
+        System.out.println("Goodbye!");
+    }
+
+    private void unknownCommand(){
+        System.out.println("Command unknown. Type \"help\" to see commands:");
     }
 }
