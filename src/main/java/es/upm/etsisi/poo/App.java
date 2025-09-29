@@ -42,9 +42,26 @@ public class App {
         boolean cont = true;
         while (cont){
             System.out.print("> ");
-            String command = sc.next();
+            String line = sc.nextLine();
+            String[] lineSepSpace = line.split(" ");
 
-            switch (command){
+            switch (lineSepSpace[0]){
+                case "prod":
+                    // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
+                    switch (lineSepSpace[1]){
+                        case "add":
+                            break;
+                    }
+                case "ticket":
+                    switch (lineSepSpace[1]){
+                        case "new":
+                            break;
+                    }
+                    break;
+                case "echo":
+                    String[] echoSepSpace = line.split("\"");
+                    System.out.println("echo \"" + echoSepSpace[1] + "\"");
+                    break;
                 case "help":
                     listCommands();
                     break;
