@@ -1,5 +1,7 @@
 package es.upm.etsisi.poo;
 
+import java.util.Arrays;
+
 /**
  * Tickets is a class for managing the ticket creation
  * and deletion. It also works with the product list,
@@ -19,8 +21,20 @@ public class Ticket {
      * Constructor of the class
      * @param productList List of products on the ticket.
      */
-    public Ticket(Product[] productList, int totalPrice) {
+    public Ticket(Product[] productList) {
         this.productList = productList;
-        this.totalPrice = totalPrice;
+        this.totalPrice = 0;
+    }
+
+    /**
+     * toString
+     * @return Ticket
+     */
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "productList=" + Arrays.toString(productList) +"\n" +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

@@ -14,7 +14,7 @@ public class App {
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
     static Product[] productList = new Product[100];
-    static Ticket currentTicket = new Ticket(productList, totalPrice);
+    static Ticket currentTicket = new Ticket(productList);
     /**
      * Main structure for executing the app.
      */
