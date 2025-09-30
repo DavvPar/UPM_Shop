@@ -60,6 +60,9 @@ public class Ticket {
                 add = true;
             }
         }
+        else {
+            System.out.println("No further products can be added.");
+        }
         return add;
     }
 
