@@ -16,9 +16,9 @@ private int NumProduct;
 }
 
     /**
-     * constructor of the productolist class to load from saved files
+     * constructor of the productList class to load from saved files
      * @param MaxNumProduct maximum number of products that can be added
-     * @param filename
+     * @param filename name of the productList
      */
     public Productlist(int MaxNumProduct, String filename){
 
