@@ -21,36 +21,35 @@ public class Ticket {
     private int numProductInTicket;
 
     /**
-     * Constructor of the class
-     * @param numProduct number of products on the ticket.
+     * ticket class constructor
+     * @param MaxnumProduct Max number of products on the ticket.
      */
-    public Ticket(int numProduct) {
+    public Ticket(int MaxnumProduct) {
         numProductInTicket = 0;
-        MaxNumProduct = numProduct;
+        this.MaxNumProduct = MaxnumProduct;
         productList = new Product[MaxNumProduct];
         num = new int[MaxNumProduct];
         this.totalPrice = 0;
     }
-
     /**
-     * Metodo agregar productos a ticket
-     * @param product a añadir
-     * @param cantidad a añadir
-     * @return true o false (successful o false)
+     * Method for adding products to a ticket
+     * @param product  to be added
+     * @param quantity to be added
+     * @return true or false (successful or falled)
      */
-    public boolean addProductToTicket(Product product, int cantidad){
-        boolean existe = false,add = false;
+    public boolean addProductToTicket(Product product, int quantity){
+        boolean exists = false,add = false;
         if (numProductInTicket<= 100){
             for (int i= 0;i<numProductInTicket;i++){
                 if (product == productList[i]){
-                    num[i]+=cantidad;
-                    existe = true;
+                    num[i]+=quantity;
+                    exists = true;
                     add = true;
                 }
             }
-            if (!existe){
+            if (!exists){
                 productList[numProductInTicket] = product;
-                num[numProductInTicket] =cantidad;
+                num[numProductInTicket] =quantity;
                 numProductInTicket++;
                 add = true;
             }
