@@ -13,8 +13,8 @@ public class App {
 
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
-    static Product[] productList = new Product[100];
-    static Ticket currentTicket = new Ticket(productList);
+    static int MaxNumProduct = 100;
+    static Ticket currentTicket = new Ticket(MaxNumProduct);
     /**
      * Main structure for executing the app.
      */
