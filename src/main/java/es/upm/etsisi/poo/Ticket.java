@@ -9,24 +9,30 @@ import java.util.Arrays;
  */
 public class Ticket {
     /**
-     * The list of products on the ticket.
+     * Maximum number of products in a list
      */
     private int MaxNumProduct;
+    /**
+     * The list of products on the ticket.
+     */
     private Product[] productList;
     private int[] num;
     /**
      * Total price of all the products in the ticket.
      */
     private int totalPrice;
+    /**
+     * Number of products currently in the ticket.
+     */
     private int numProductInTicket;
 
     /**
      * ticket class constructor
-     * @param MaxnumProduct Max number of products on the ticket.
+     * @param MaxNumProduct Max number of products on the ticket.
      */
-    public Ticket(int MaxnumProduct) {
+    public Ticket(int MaxNumProduct) {
         numProductInTicket = 0;
-        this.MaxNumProduct = MaxnumProduct;
+        this.MaxNumProduct = MaxNumProduct;
         productList = new Product[MaxNumProduct];
         num = new int[MaxNumProduct];
         this.totalPrice = 0;
@@ -35,14 +41,14 @@ public class Ticket {
      * Method for adding products to a ticket
      * @param product  to be added
      * @param quantity to be added
-     * @return true or false (successful or falled)
+     * @return true or false (successful or failed)
      */
     public boolean addProductToTicket(Product product, int quantity){
         boolean exists = false,add = false;
-        if (numProductInTicket<= 100){
-            for (int i= 0;i<numProductInTicket;i++){
+        if (numProductInTicket <= 100){
+            for (int i= 0; i < numProductInTicket;i++){
                 if (product == productList[i]){
-                    num[i]+=quantity;
+                    num[i] += quantity;
                     exists = true;
                     add = true;
                 }
@@ -63,8 +69,8 @@ public class Ticket {
      */
 
     public int getTotalPrice(){
-        for (int i =0;i<numProductInTicket;i++){
-            totalPrice+=num[i]*productList[i].getPrice();
+        for (int i =0; i < numProductInTicket; i++){
+            totalPrice += num[i]* productList[i].getPrice();
         }
         return totalPrice;
     }
