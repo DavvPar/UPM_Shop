@@ -56,6 +56,18 @@ public class Ticket {
         }
         return add;
     }
+
+    /**
+     * getter TotalPrice
+     * @return TotalPrice
+     */
+
+    public int getTotalPrice(){
+        for (int i =0;i<numProductInTicket;i++){
+            totalPrice+=num[i]*productList[i].getPrice();
+        }
+        return totalPrice;
+    }
     /**
      * toString
      * @return Ticket
@@ -64,7 +76,7 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "productList=" + Arrays.toString(productList) +"\n" +
-                ", totalPrice=" + totalPrice +
+                ", totalPrice=" + getTotalPrice() +
                 '}';
     }
 }
