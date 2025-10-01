@@ -101,7 +101,6 @@ public class Ticket {
      * toString
      * @return Ticket
      */
-    public
     @Override
     public String toString() {
         return "Ticket{" +
