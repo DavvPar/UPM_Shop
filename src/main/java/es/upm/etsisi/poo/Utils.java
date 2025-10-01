@@ -6,6 +6,12 @@ package es.upm.etsisi.poo;
  * of the code clearer. Here most things will be
  * in public mode.
  */
-public class Utils {
 
+public class Utils {
+public void prod( String message){
+
+    }
+    public void ticket(String message){
+
+    }
 }
