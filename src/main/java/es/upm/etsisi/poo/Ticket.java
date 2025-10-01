@@ -16,6 +16,7 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
+    private int[] discount;
     private int[] num;
     private Productlist product;
     /**
@@ -100,6 +101,7 @@ public class Ticket {
      * toString
      * @return Ticket
      */
+    public
     @Override
     public String toString() {
         return "Ticket{" +
