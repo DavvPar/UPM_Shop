@@ -1,10 +1,9 @@
 package es.upm.etsisi.poo;
-
 public class Productlist {
 private Product[] products;
 private int MaxNumProduct;
 private int NumProduct;
-
+//falta Tostring
     /**
      * empty product list builder
      * @param MaxNumProduct maximum number of products that can be added
