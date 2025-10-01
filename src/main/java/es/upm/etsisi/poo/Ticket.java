@@ -19,6 +19,7 @@ public class Ticket {
     private int[] discount;
     private int[] num;
     private Productlist product;
+
     /**
      * Total price of all the products in the ticket.
      */
@@ -91,11 +92,17 @@ public class Ticket {
      * @return TotalPrice
      */
 
-    public int getTotalPrice(){
+    public double getTotalPrice(){
         for (int i =0; i < NumProductInTicket; i++){
             totalPrice += num[i]* productList[i].getPrice();
         }
         return totalPrice;
+    }
+    public double getTotaldiscunt(){
+        return 1;
+    }
+    public double getFinalPrice(){
+        return 1;
     }
     /**
      * toString
