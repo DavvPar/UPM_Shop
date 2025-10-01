@@ -17,6 +17,7 @@ public class Ticket {
      */
     private Product[] productList;
     private int[] num;
+    private Productlist product;
     /**
      * Total price of all the products in the ticket.
      */
@@ -24,14 +25,14 @@ public class Ticket {
     /**
      * Number of products currently in the ticket.
      */
-    private int numProductInTicket;
+    private int NumProductInTicket;
 
     /**
      * ticket class constructor
      * @param MaxNumProduct Max number of products on the ticket.
      */
     public Ticket(int MaxNumProduct) {
-        numProductInTicket = 0;
+        NumProductInTicket = 0;
         this.MaxNumProduct = MaxNumProduct;
         productList = new Product[MaxNumProduct];
         num = new int[MaxNumProduct];
@@ -39,24 +40,24 @@ public class Ticket {
     }
     /**
      * Method for adding products to a ticket
-     * @param product  to be added
+     * @param Id   Product id to be added
      * @param quantity to be added
      * @return true or false (successful or failed)
      */
-    public boolean addProductToTicket(Product product, int quantity){
+    public boolean addProductToTicket(int Id, int quantity){
         boolean exists = false,add = false;
-        if (numProductInTicket <= 100){
-            for (int i= 0; i < numProductInTicket;i++){
-                if (product == productList[i]){
+        if (NumProductInTicket <= 100){
+            for (int i= 0; i < NumProductInTicket;i++){
+                if ( product.getProduct(Id)== productList[i]){
                     num[i] += quantity;
                     exists = true;
                     add = true;
                 }
             }
             if (!exists){
-                productList[numProductInTicket] = product;
-                num[numProductInTicket] =quantity;
-                numProductInTicket++;
+                productList[NumProductInTicket] = product.getProduct(Id);
+                num[NumProductInTicket] =quantity;
+                NumProductInTicket++;
                 add = true;
             }
         }
@@ -67,12 +68,30 @@ public class Ticket {
     }
 
     /**
+     * Remove ticket product
+     * @param Id product id will remove
+     */
+    public void removeProduct(int Id) {
+        for(int i =0;i<NumProductInTicket;i++) {
+            if (productList[i].getID() == Id){
+                for (int j = i+1; j<NumProductInTicket;j++){
+                    productList[j-1] = productList[j];
+                }
+                NumProductInTicket--;
+                productList[NumProductInTicket] = null;
+
+            }
+
+        }
+    }
+
+    /**
      * getter TotalPrice
      * @return TotalPrice
      */
 
     public int getTotalPrice(){
-        for (int i =0; i < numProductInTicket; i++){
+        for (int i =0; i < NumProductInTicket; i++){
             totalPrice += num[i]* productList[i].getPrice();
         }
         return totalPrice;

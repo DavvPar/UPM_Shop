@@ -24,7 +24,12 @@ private int NumProduct;
 
 }
 
-public boolean addProduct(Product product) {
+    /**
+     * add list product
+     * @param product product will add
+     * @return
+     */
+    public boolean addProduct(Product product) {
         boolean added = false, exists =false;
         if (NumProduct<=MaxNumProduct){
             for (int i= 0;i<NumProduct;i++){
@@ -41,5 +46,38 @@ public boolean addProduct(Product product) {
             System.out.println("No further products can be added, or they already exist in the system.");
         }
         return added;
+    }
+
+    /**
+     * remove list product
+     * @param selected product will remove
+     */
+    public void removeProduct(Product selected) {
+        for(int i =0;i<NumProduct;i++) {
+            if (products[i].getID() == selected.getID()){
+                for (int j = i+1; j<NumProduct;j++){
+                    products[j-1] = products[j];
+                }
+                NumProduct--;
+                products[NumProduct] = null;
+
+            }
+
+        }
+    }
+
+    /**
+     * obtain product by id
+     * @param Id product id
+     * @return
+     */
+    public Product getProduct(int Id){
+        Product find = null;
+        for (int i =0;i<NumProduct;i++){
+            if (products[i].getID() == Id){
+                find = products[i];
+            }
+        }
+        return find;
     }
 }
