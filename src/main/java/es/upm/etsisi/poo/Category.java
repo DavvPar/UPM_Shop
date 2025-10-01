@@ -60,8 +60,8 @@ public class Category {
      * Determines the values that the variable
      * type can take.
      */
-    public boolean applydiscount(boolean apply){
-        apply = false;
+    public boolean applydiscount(Ticket tikect){
+        boolean apply = false;
 
         return apply;
     }
