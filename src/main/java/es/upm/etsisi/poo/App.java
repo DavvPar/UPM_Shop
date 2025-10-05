@@ -10,8 +10,7 @@ import java.util.Scanner;
  * to operate with the data.
  */
 public class App {
-
-    // HAY QUE COMENTAR ESTO
+    static  Utils utils = null;
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
     static int MaxNumProduct = 100;
@@ -48,7 +47,6 @@ public class App {
 
             switch (lineSepSpace[0]){
                 case "prod":
-
                     // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
                     switch (lineSepSpace[1]){
                         case "add":

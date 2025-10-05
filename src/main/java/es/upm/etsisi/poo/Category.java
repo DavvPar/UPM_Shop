@@ -57,6 +57,15 @@ public class Category {
     }
 
     /**
+     *
+     * @param tikect
+     * @return
+     */
+    public boolean[] applydiscount(Ticket tikect){
+        boolean[] apply = new boolean[5];
+        return apply;
+    }
+    /**
      * Determines the values that the variable
      * type can take.
      */
