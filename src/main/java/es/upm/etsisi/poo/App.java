@@ -11,6 +11,7 @@ import java.util.Scanner;
  */
 public class App {
 
+    // HAY QUE COMENTAR ESTO
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
     static int MaxNumProduct = 100;
@@ -47,6 +48,7 @@ public class App {
 
             switch (lineSepSpace[0]){
                 case "prod":
+
                     // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
                     switch (lineSepSpace[1]){
                         case "add":
