@@ -78,4 +78,24 @@ private int NumProduct;
         }
         return find;
     }
+
+    /**
+     * toString
+     * @return ProductList
+     */
+
+    @Override
+    public String toString() {
+        String text = "Catalog:\n";
+        for (int i = 0; i < NumProduct; i++) {
+            Product p = products[i];
+            text += "  {class:Product, id:" + p.getID()
+                    + ", name:'" + p.getName()
+                    + "', category:" + p.getCategory().getType()
+                    + ", price:" + String.format("%.1f", (double)p.getPrice())
+                    + "}\n";
+        }
+        text += "prod list: ok";
+        return text;
+    }
 }
