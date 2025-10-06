@@ -1,29 +1,33 @@
 package es.upm.etsisi.poo;
 
-public class Productlist {
+public class ProductList {
     private Product[] products;
     private int MaxNumProduct;
     private int NumProduct;
 
     /**
-     * empty product list builder
+     * Empty product list builder
      *
      * @param MaxNumProduct maximum number of products that can be added
      */
-    public Productlist(int MaxNumProduct) {
+    public ProductList(int MaxNumProduct) {
         NumProduct = 0;
         this.MaxNumProduct = MaxNumProduct;
         products = new Product[MaxNumProduct];
     }
 
     /**
-     * constructor of the productList class to load from saved files
+     * Constructor of the productList class to load from saved files
      *
      * @param MaxNumProduct maximum number of products that can be added
      * @param filename      name of the productList
      */
-    public Productlist(int MaxNumProduct, String filename) {
+    public ProductList(int MaxNumProduct, String filename) {
 
+    }
+
+    public int getNumProduct() {
+        return NumProduct;
     }
 
     /**

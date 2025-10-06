@@ -25,8 +25,7 @@ public class Ticket {
      * The number of units of each product in the list.
      */
     private int[] num;
-    private Productlist product;
-
+    private ProductList product;
     /**
      * Total price of all the products in the ticket.
      */
@@ -41,12 +40,13 @@ public class Ticket {
      * @param MaxNumProduct Max number of products on the ticket.
      */
     public Ticket(int MaxNumProduct) {
-        NumProductInTicket = 0;
+        this.NumProductInTicket = 0;
         this.MaxNumProduct = MaxNumProduct;
-        productList = new Product[MaxNumProduct];
-        num = new int[MaxNumProduct];
+        this.product = new ProductList(MaxNumProduct);
+        this.num = new int[MaxNumProduct];
         this.totalPrice = 0;
     }
+
     /**
      * Method for adding products to a ticket
      * @param Id   Product id to be added

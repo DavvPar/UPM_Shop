@@ -71,10 +71,10 @@ public class Category {
      * happens if there is 2 or more products of the same
      * Category.
      *
-     * @param tikect
+     * @param ticket
      * @return
      */
-    public boolean[] applydiscount(Ticket tikect){
+    public boolean[] applydiscount(Ticket ticket){
         boolean[] apply = new boolean[5];
         return apply;
     }
