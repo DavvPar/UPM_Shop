@@ -57,6 +57,19 @@ public class Category {
     }
 
     /**
+     * Declares all the possible categories on
+     * the program with their discount included.
+     */
+    public Category MERCH = new Category(Category.CategoryType.MERCH, 0.00);
+    public Category STATIONERY = new Category(Category.CategoryType.STATIONERY, 0.05);
+    public Category CLOTHES = new Category(Category.CategoryType.CLOTHES, 0.07);
+    public Category BOOK = new Category(Category.CategoryType.BOOK, 0.10);
+    public Category ELECTRONICS = new Category(Category.CategoryType.ELECTRONICS, 0.03);
+
+    /**
+     * Checks if the discounts will be applied, which
+     * happens if there is 2 or more products of the same
+     * Category.
      *
      * @param tikect
      * @return
@@ -65,8 +78,9 @@ public class Category {
         boolean[] apply = new boolean[5];
         return apply;
     }
+
     /**
-     * Determines the values that the variable
+     * Determines the valid values that the variable
      * type can take.
      */
     public enum CategoryType {
@@ -76,7 +90,5 @@ public class Category {
         BOOK,
         ELECTRONICS;
     }
-
-
 
 }

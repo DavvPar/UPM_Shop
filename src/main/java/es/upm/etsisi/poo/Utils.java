@@ -8,10 +8,5 @@ package es.upm.etsisi.poo;
  */
 
 public class Utils {
-public void prod( String message){
 
-    }
-    public void ticket(String message){
-
-    }
 }

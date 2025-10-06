@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Tickets is a class for managing the ticket creation
@@ -16,7 +17,13 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
-    private int[] discount;
+
+    private final int[] discount = {};
+
+    public final List<Integer> DISCOUNT = List.of(0,5,7,10,3);
+    /**
+     * The number of units of each product in the list.
+     */
     private int[] num;
     private Productlist product;
 
@@ -88,10 +95,10 @@ public class Ticket {
     }
 
     /**
+     * Returns the total price of the whole product list.
      * getter TotalPrice
      * @return TotalPrice
      */
-
     public double getTotalPrice(){
         for (int i =0; i < NumProductInTicket; i++){
             totalPrice += num[i]* productList[i].getPrice();
@@ -104,8 +111,9 @@ public class Ticket {
     public double getFinalPrice(){
         return 1;
     }
+
     /**
-     * toString
+     * Ticket toString, showing all the
      * @return Ticket
      */
     @Override
