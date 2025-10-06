@@ -51,21 +51,24 @@ public class ProductList {
         return added;
     }
 
-    public void listProducts() {
+    public boolean listProducts() {
+        boolean listed = false;
         if (numProduct == 0) {
             System.out.println("Empty list");
-        }
+        } else{
+            System.out.println("Catalog:");
 
-        System.out.println("Catalog:");
-
-        for (int i = 0; i < numProduct; i++) {
-            Product p = products[i];
-            System.out.printf(" {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%n",
-                    p.getID(),
-                    p.getName(),
-                    p.getCategory().getType(),
-                    p.getPrice());
+            for (int i = 0; i < numProduct; i++) {
+                Product p = products[i];
+                System.out.printf(" {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%n",
+                        p.getID(),
+                        p.getName(),
+                        p.getCategory().getType(),
+                        p.getPrice());
+            }
+            listed = true;
         }
+        return listed;
     }
 
     /**
@@ -73,7 +76,8 @@ public class ProductList {
      *
      * @param selected product will remove
      */
-    public void removeProduct(Product selected) {
+    public boolean removeProduct(Product selected) {
+        boolean removed = false;
         for (int i = 0; i < numProduct; i++) {
             if (products[i].getID() == selected.getID()) {
                 for (int j = i + 1; j < numProduct; j++) {
@@ -81,10 +85,10 @@ public class ProductList {
                 }
                 numProduct--;
                 products[numProduct] = null;
-
+                removed = true;
             }
-
         }
+        return removed;
     }
 
     /**
@@ -108,7 +112,6 @@ public class ProductList {
      *
      * @return ProductList
      */
-
     @Override
     public String toString() {
         String text = "Catalog:\n";

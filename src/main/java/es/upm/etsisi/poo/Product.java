@@ -32,13 +32,13 @@ public class Product {
      */
     public Product(int ID, String name, Category category, double price) {
         if(ID <= 0)
-            throw new IllegalArgumentException("ID must be positive");
+            throw new IllegalArgumentException("ID must be positive.");
         if(category == null)
-            throw new IllegalArgumentException("Category cannot be null");
+            throw new IllegalArgumentException("Category cannot be null.");
         if(name == null || name.length() >= 100)
-            throw new IllegalArgumentException("Invalid name");
+            throw new IllegalArgumentException("Invalid name.");
         if(price < 0)
-            throw new IllegalArgumentException("Price must be positive");
+            throw new IllegalArgumentException("Price must be positive.");
 
         this.ID = ID;
         this.name = name;
@@ -96,4 +96,13 @@ public class Product {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "{class:Product" +
+                ", id=" + ID +
+                ", name='" + name + '\'' +
+                ", " + category.toString() +
+                ", price=" + price +
+                '}';
+    }
 }

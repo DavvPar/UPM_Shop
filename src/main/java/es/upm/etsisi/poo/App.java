@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -10,6 +11,15 @@ import java.util.Scanner;
  * to operate with the data.
  */
 public class App {
+    /**
+     * Declares all the possible categories on
+     * the program with their discount included.
+     */
+    public Category MERCH = new Category(Category.CategoryType.MERCH, 0.00);
+    public Category STATIONERY = new Category(Category.CategoryType.STATIONERY, 0.05);
+    public Category CLOTHES = new Category(Category.CategoryType.CLOTHES, 0.07);
+    public Category BOOK = new Category(Category.CategoryType.BOOK, 0.10);
+    public Category ELECTRONICS = new Category(Category.CategoryType.ELECTRONICS, 0.03);
     static  Utils utils = null;
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
@@ -58,11 +68,9 @@ public class App {
 
             switch (lineSepSpace[0]){
                 case "prod":
+                    optionsOfProd(lineSepSpace);
+                    break;
                     // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
-                    switch (lineSepSpace[1]){
-                        case "add":
-                            break;
-                    }
                 case "ticket":
                     switch (lineSepSpace[1]){
                         case "new":
@@ -102,18 +110,28 @@ public class App {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
                     return;
                 }
-                /*
+
                 int id = Integer.parseInt(messaje[2]);
-                String name = messaje[3].replace("\"", ""); // quita comillas
-                Category category = Category.valueOf(messaje[4].toUpperCase());
+                String name = messaje[3].replace("\"", ""); //quita comillas
+                Category category = MERCH; //TODO: ERROR, ARREGLAR CATEGORIA DEL PRODUCTO
                 double price = Double.parseDouble(messaje[5]);
 
                 Product p = new Product(id, name, category, price);
-                productlist.addProduct(p);*/
+                if(productlist.addProduct(p)){
+                    String stringProd = p.toString();
+                    System.out.println(stringProd);
+                    System.out.println("prod add: ok");
+                }else{
+                    System.out.println("prod add: error");
+                }
                 break;
 
             case "list":
-                productlist.listProducts();
+                if(productlist.listProducts()){
+                    System.out.println("prod list: ok");
+                }else{
+                    System.out.println("prod list: error");
+                }
                 break;
 
             case "update":
@@ -128,6 +146,15 @@ public class App {
                 break;
 
             case "remove":
+                int idRemove = Integer.parseInt(messaje[2]);
+                Product productRemove = productlist.getProduct(idRemove);
+                String stringProd = productRemove.toString();
+                System.out.println(stringProd);
+                if (productlist.removeProduct(productRemove)){
+                    System.out.println("prod remove: ok");
+                } else{
+                    System.out.println("prod remove: error");
+                }
                 break;
         }
     }
