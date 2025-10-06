@@ -21,7 +21,7 @@ public class Product {
     /**
      * Price of the product with no discounts.
      */
-    private int price;
+    private double price;
 
     /**
      * Constructor of the Class
@@ -30,7 +30,7 @@ public class Product {
      * @param name product name.
      * @param price product price.
      */
-    public Product(int ID, Category category, String name, int price) {
+    public Product(int ID, Category category, String name, double price) {
         this.ID = ID;
         this.category = category;
         this.name = name;
@@ -77,13 +77,13 @@ public class Product {
      *
      * @return Price of the product.
      */
-    public int getPrice() {
+    public double getPrice() {
         return this.price;
     }
     /**
      * Setter for the price.
      */
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
