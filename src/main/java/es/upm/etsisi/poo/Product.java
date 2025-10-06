@@ -30,7 +30,7 @@ public class Product {
      * @param name product name.
      * @param price product price.
      */
-    public Product(int ID, Category category, String name, double price) {
+    public Product(int ID, String name, Category category, double price) {
         if(ID <= 0)
             throw new IllegalArgumentException("ID must be positive");
         if(category == null)
@@ -41,8 +41,8 @@ public class Product {
             throw new IllegalArgumentException("Price must be positive");
 
         this.ID = ID;
-        this.category = category;
         this.name = name;
+        this.category = category;
         this.price = price;
     }
     /**

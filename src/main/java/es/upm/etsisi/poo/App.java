@@ -23,6 +23,7 @@ public class App {
      * maximum amount of products.
      */
     static Ticket currentTicket = new Ticket(MaxNumProduct);
+    static ProductList productlist = new ProductList(MaxNumProduct);
 
     /**
      * Main structure for executing the app.
@@ -86,6 +87,52 @@ public class App {
         }
         sc.close();
     }
+
+    private void optionsOfProd(String[] messaje){
+        if (messaje.length < 2) {
+            System.out.println("Usage: prod with add, list, update or remove");
+            return;
+        }
+
+        String command = messaje[1];
+
+        switch (command){
+            case "add":
+                if (messaje.length < 6) {
+                    System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
+                    return;
+                }
+                /*
+                int id = Integer.parseInt(messaje[2]);
+                String name = messaje[3].replace("\"", ""); // quita comillas
+                Category category = Category.valueOf(messaje[4].toUpperCase());
+                double price = Double.parseDouble(messaje[5]);
+
+                Product p = new Product(id, name, category, price);
+                productlist.addProduct(p);*/
+                break;
+
+            case "list":
+                productlist.listProducts();
+                break;
+
+            case "update":
+                if (messaje.length < 5) {
+                    System.out.println("Usage: prod update <id> <field> <value>");
+                    return;
+                }
+                int idToUpdate = Integer.parseInt(messaje[2]);
+                String field = messaje[3].toLowerCase();
+                String value = messaje[4];
+
+                break;
+
+            case "remove":
+                break;
+        }
+    }
+
+
 
     /**
      * Shows in screen all the possible commands for
