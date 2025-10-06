@@ -2,32 +2,28 @@ package es.upm.etsisi.poo;
 
 public class ProductList {
     private Product[] products;
-    private int MaxNumProduct;
-    private int NumProduct;
+    private int maxNumProduct;
+    private int numProduct;
 
     /**
-     * Empty product list builder
+     * empty product list builder
      *
      * @param MaxNumProduct maximum number of products that can be added
      */
     public ProductList(int MaxNumProduct) {
-        NumProduct = 0;
-        this.MaxNumProduct = MaxNumProduct;
+        numProduct = 0;
+        this.maxNumProduct = MaxNumProduct;
         products = new Product[MaxNumProduct];
     }
 
     /**
-     * Constructor of the productList class to load from saved files
+     * constructor of the productList class to load from saved files
      *
      * @param MaxNumProduct maximum number of products that can be added
      * @param filename      name of the productList
      */
     public ProductList(int MaxNumProduct, String filename) {
 
-    }
-
-    public int getNumProduct() {
-        return NumProduct;
     }
 
     /**
@@ -38,15 +34,15 @@ public class ProductList {
      */
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
-        if (NumProduct <= MaxNumProduct) {
-            for (int i = 0; i < NumProduct; i++) {
+        if (numProduct <= maxNumProduct) {
+            for (int i = 0; i < numProduct; i++) {
                 if (product == products[i]) {
                     exists = true;
                 }
             }
             if (!exists) {
-                products[NumProduct] = product;
-                NumProduct++;
+                products[numProduct] = product;
+                numProduct++;
                 added = true;
             }
         } else {
@@ -55,19 +51,36 @@ public class ProductList {
         return added;
     }
 
+    public void listProducts() {
+        if (numProduct == 0) {
+            System.out.println("Empty list");
+        }
+
+        System.out.println("Catalog:");
+
+        for (int i = 0; i < numProduct; i++) {
+            Product p = products[i];
+            System.out.printf(" {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%n",
+                    p.getID(),
+                    p.getName(),
+                    p.getCategory().getType(),
+                    p.getPrice());
+        }
+    }
+
     /**
      * remove list product
      *
      * @param selected product will remove
      */
     public void removeProduct(Product selected) {
-        for (int i = 0; i < NumProduct; i++) {
+        for (int i = 0; i < numProduct; i++) {
             if (products[i].getID() == selected.getID()) {
-                for (int j = i + 1; j < NumProduct; j++) {
+                for (int j = i + 1; j < numProduct; j++) {
                     products[j - 1] = products[j];
                 }
-                NumProduct--;
-                products[NumProduct] = null;
+                numProduct--;
+                products[numProduct] = null;
 
             }
 
@@ -82,7 +95,7 @@ public class ProductList {
      */
     public Product getProduct(int Id) {
         Product find = null;
-        for (int i = 0; i < NumProduct; i++) {
+        for (int i = 0; i < numProduct; i++) {
             if (products[i].getID() == Id) {
                 find = products[i];
             }
@@ -99,7 +112,7 @@ public class ProductList {
     @Override
     public String toString() {
         String text = "Catalog:\n";
-        for (int i = 0; i < NumProduct; i++) {
+        for (int i = 0; i < numProduct; i++) {
             Product p = products[i];
             text += "  {class:Product, id:" + p.getID()
                     + ", name:'" + p.getName()
