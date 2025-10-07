@@ -33,10 +33,10 @@ public class Product {
     public Product(int ID, String name, Category category, double price) {
         if(ID <= 0)
             throw new IllegalArgumentException("ID must be positive.");
-        if(category == null)
-            throw new IllegalArgumentException("Category cannot be null.");
         if(name == null || name.length() >= 100)
             throw new IllegalArgumentException("Invalid name.");
+        if(category == null)
+            throw new IllegalArgumentException("Category cannot be null.");
         if(price < 0)
             throw new IllegalArgumentException("Price must be positive.");
 

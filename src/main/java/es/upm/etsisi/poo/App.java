@@ -20,7 +20,7 @@ public class App {
     public Category CLOTHES = new Category(CategoryType.CLOTHES);
     public Category BOOK = new Category(CategoryType.BOOK);
     public Category ELECTRONICS = new Category(CategoryType.ELECTRONICS);
-    static  Utils utils = null;
+    static Utils utils = null;
     static Scanner sc = new Scanner(System.in);
     static int totalPrice = 0;
     /**
@@ -48,7 +48,7 @@ public class App {
      * Welcomes the user to the program and suggests
      * the use of the help command.
      */
-    private void init(){
+    private void init() {
         System.out.println("Welcome to the ticket module App.");
         System.out.println("Ticket module. Type 'help' to see commands:");
 
@@ -59,20 +59,20 @@ public class App {
      * determines how the application runs, it executes
      * the introduced commands.
      */
-    private void run(){
+    private void run() {
         boolean cont = true;
-        while (cont){
+        while (cont) {
             System.out.print("> ");
             String line = sc.nextLine();
             String[] lineSepSpace = line.split(" ");
 
-            switch (lineSepSpace[0]){
+            switch (lineSepSpace[0].toLowerCase()) {
                 case "prod":
                     optionsOfProd(lineSepSpace);
                     break;
-                    // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
+                // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
                 case "ticket":
-                    switch (lineSepSpace[1]){
+                    switch (lineSepSpace[1]) {
                         case "new":
                             break;
                     }
@@ -96,39 +96,60 @@ public class App {
         sc.close();
     }
 
-    private void optionsOfProd(String[] messaje){
+    private void optionsOfProd(String[] messaje) {
         if (messaje.length < 2) {
             System.out.println("Usage: prod with add, list, update or remove");
             return;
         }
 
         String command = messaje[1];
-        switch (command){
+        switch (command.toLowerCase()) {
             case "add":
                 if (messaje.length < 6) {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
                     return;
                 }
+                try {
+                    //line: prdd add id \name con espacios\ category price
+                    String line = String.join(" ", messaje);
+                    //Separamos por comillas
+                    String[] parts = line.split("\"");
+                    // parts[0] = "prod add <id> "
+                    // parts[1] = "<name>" = nombre con espacios
+                    // parts[2] = " <category> <price>"
 
-                int id = Integer.parseInt(messaje[2]);
-                String name = messaje[3].replace("\"", ""); //quita comillas
-                Category category = MERCH; //TODO: ERROR, ARREGLAR CATEGORIA DEL PRODUCTO
-                double price = Double.parseDouble(messaje[5]);
+                    String[] firstPart = parts[0].trim().split(" "); //prod, add, id
 
-                Product p = new Product(id, name, category, price);
-                if(productlist.addProduct(p)){
-                    String stringProd = p.toString();
-                    System.out.println(stringProd);
-                    System.out.println("prod add: ok");
-                }else{
-                    System.out.println("prod add: error");
+                    int id = Integer.parseInt(firstPart[2]);
+                    String name = parts[1];
+
+                    String[] rest = parts[2].trim().split(" ");//category, price
+
+                    CategoryType type = CategoryType.valueOf(rest[0].toUpperCase());
+                    Category category = new Category(type);
+                    double price = Double.parseDouble(rest[1]);
+
+                    try {
+                        Product p = new Product(id, name, category, price);
+                        if (productlist.addProduct(p)) {
+                            String stringProd = p.toString();
+                            System.out.println(stringProd);
+                            System.out.println("prod add: ok");
+                        } else {
+                            System.out.println("prod add: error");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error creating product: " + e.getMessage());
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: wrong format. Use prod add <id> \"<name>\" <category> <price>");
                 }
                 break;
 
             case "list":
-                if(productlist.listProducts()){
+                if (productlist.listProducts()) {
                     System.out.println("prod list: ok");
-                }else{
+                } else {
                     System.out.println("prod list: error");
                 }
                 break;
@@ -149,9 +170,9 @@ public class App {
                 Product productRemove = productlist.getProduct(idRemove);
                 String stringProd = productRemove.toString();
                 System.out.println(stringProd);
-                if (productlist.removeProduct(productRemove)){
+                if (productlist.removeProduct(productRemove)) {
                     System.out.println("prod remove: ok");
-                } else{
+                } else {
                     System.out.println("prod remove: error");
                 }
                 break;
@@ -159,12 +180,11 @@ public class App {
     }
 
 
-
     /**
      * Shows in screen all the possible commands for
      * the user to choose.
      */
-    private void helpCommand(){
+    private void helpCommand() {
         String[] commands = {
                 "prod add <id> \"<name>\" <category> <price>",
                 "prod update <id> NAME|CATEGORY|PRICE <value>",
@@ -178,7 +198,7 @@ public class App {
                 "exit"
         };
         System.out.println("Command list:");
-        for(String cmd : commands){
+        for (String cmd : commands) {
             System.out.println(" " + cmd);
         }
 
@@ -192,12 +212,12 @@ public class App {
     /**
      * Shows in screen the farewell message to the user.
      */
-    private void exitProgram(){
+    private void exitProgram() {
         System.out.println("Closing application.");
         System.out.println("Goodbye!");
     }
 
-    private void unknownCommand(){
+    private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");
     }
 }

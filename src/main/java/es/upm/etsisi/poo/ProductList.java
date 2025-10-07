@@ -34,9 +34,9 @@ public class ProductList {
      */
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
-        if (numProduct <= maxNumProduct) {
+        if (numProduct < maxNumProduct) {
             for (int i = 0; i < numProduct; i++) {
-                if (product == products[i]) {
+                if (product.getID() == products[i].getID()) {
                     exists = true;
                 }
             }
@@ -44,10 +44,10 @@ public class ProductList {
                 products[numProduct] = product;
                 numProduct++;
                 added = true;
-            }
-        } else {
-            System.out.println("No further products can be added, or they already exist in the system.");
-        }
+            }else
+                System.out.println("The product already exists");
+        } else
+            System.out.println("No further products can be added");
         return added;
     }
 
