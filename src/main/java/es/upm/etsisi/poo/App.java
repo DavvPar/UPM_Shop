@@ -1,6 +1,5 @@
 package es.upm.etsisi.poo;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -15,14 +14,7 @@ public class App {
      * Declares all the possible categories on
      * the program with their discount included.
      */
-    public Category MERCH = new Category(CategoryType.MERCH);
-    public Category STATIONERY = new Category(CategoryType.STATIONERY);
-    public Category CLOTHES = new Category(CategoryType.CLOTHES);
-    public Category BOOK = new Category(CategoryType.BOOK);
-    public Category ELECTRONICS = new Category(CategoryType.ELECTRONICS);
-    static Utils utils = null;
     static Scanner sc = new Scanner(System.in);
-    static double totalPrice = 0;
     /**
      * Maximum number of products that the ticket
      * or product list can have.
@@ -71,25 +63,54 @@ public class App {
                 case "prod":
                     optionsOfProd(lineSepSpace);
                     break;
-                // Continuar casos "prod" y "ticket" cuando hagamos las otras clases.
                 case "ticket":
                     switch (lineSepSpace[1]) {
                         case "new":
                             currentTicket = new Ticket(MaxNumProductTicket);
                             break;
                         case "add":
+                            try {
+                                int id,quantity;
+                                id =Integer.parseInt( lineSepSpace[2]);
+                                quantity =Integer.parseInt(lineSepSpace[3]);
+                                try{
+                                    currentTicket.addProductToTicket(id, quantity);
+                                    System.out.println(currentTicket.toString());
+                                }
+                                catch (Exception e){
+                                    System.out.println("Error adding product");
+                                }
+                            }catch (Exception e){
+                                System.out.println("inappropriate format");
+                                System.out.println("ticket add <id> <quantity>");
+                            }
                             break;
                         case "remove":
+                            if (lineSepSpace.length != 3){
+                                System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                                return;
+                            }
+                            try{
+                                int id = Integer.parseInt(lineSepSpace[2]);
+                                currentTicket.removeProduct(id);
+                                System.out.println(currentTicket.toString());
+                            }catch (Exception e){
+                                System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                            }
                             break;
                         case "print":
                             try{
-                                currentTicket.toString();
+                                System.out.println(currentTicket.toString());
                                 System.out.println("ticket print: ok");
                             }
                             catch (Exception e){
                                 System.out.println("ticket print: fail");
                             }
 
+                            break;
+                        default:
+                            throw new IllegalStateException("insert ticket remove<id>,ticket add <id><quantity>."+ "\n"+
+                                    "ticket print or ticket new");
                     }
                     break;
                 case "echo":
