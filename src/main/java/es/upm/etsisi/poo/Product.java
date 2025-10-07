@@ -105,10 +105,10 @@ public class Product {
     @Override
     public String toString() {
         return "{class:Product" +
-                ", id=" + ID +
-                ", name='" + name + '\'' +
+                ", id:" + ID +
+                ", name:'" + name + '\'' +
                 ", " + category.toString() +
-                ", price=" + price +
+                ", price:" + String.format("%.1f", price) +
                 '}';
     }
 }
