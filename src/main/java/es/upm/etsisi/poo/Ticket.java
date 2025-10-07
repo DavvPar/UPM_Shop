@@ -177,7 +177,7 @@ public class Ticket {
         }
         return message +"Total price: "+getTotalPrice() +"\n"
                 + "Total discount: "+getTotaldiscunt() +"\n"
-                + "Final Price: " +getFinalPrice();
+                + "Final Price: " +getFinalPrice() + "\n";
 
     }
 }
