@@ -30,7 +30,7 @@ public class ProductList {
      * add list product
      *
      * @param product product will add
-     * @return
+     * @return true or false
      */
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;

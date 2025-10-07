@@ -166,9 +166,18 @@ public class Ticket {
      */
     @Override
     public String toString() {
-        return "Ticket{" +
-                "productList=" + Arrays.toString(productList) +"\n" +
-                ", totalPrice=" + getTotalPrice() +
-                '}';
+        String message = "";
+        for (int i =0;i<NumProductInTicket;i++){
+            if (discount[i]>0) {
+                message += productList[i].toString() + "**discount -" + discount[i] + "\n";
+            }
+            else{
+                message += productList[i].toString() + "\n";
+            }
+        }
+        return message +"Total price: "+getTotalPrice() +"\n"
+                + "Total discount: "+getTotaldiscunt() +"\n"
+                + "Final Price: " +getFinalPrice();
+
     }
 }

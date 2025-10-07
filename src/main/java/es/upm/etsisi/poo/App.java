@@ -22,12 +22,13 @@ public class App {
     public Category ELECTRONICS = new Category(CategoryType.ELECTRONICS);
     static Utils utils = null;
     static Scanner sc = new Scanner(System.in);
-    static int totalPrice = 0;
+    static double totalPrice = 0;
     /**
      * Maximum number of products that the ticket
      * or product list can have.
      */
     static int MaxNumProduct = 200;
+    static int MaxNumProductTicket = 100;
     /**
      * Initialize the ticket with 200 as the
      * maximum amount of products.
@@ -95,7 +96,6 @@ public class App {
         }
         sc.close();
     }
-
     private void optionsOfProd(String[] messaje) {
         if (messaje.length < 2) {
             System.out.println("Usage: prod with add, list, update or remove");
@@ -110,7 +110,7 @@ public class App {
                     return;
                 }
                 try {
-                    //line: prdd add id \name con espacios\ category price
+                    //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", messaje);
                     //Separamos por comillas
                     String[] parts = line.split("\"");
