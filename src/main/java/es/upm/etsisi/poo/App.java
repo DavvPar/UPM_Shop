@@ -67,6 +67,7 @@ public class App {
                     switch (lineSepSpace[1]) {
                         case "new":
                             currentTicket = new Ticket(MaxNumProductTicket);
+                            System.out.println("ticket new: ok");
                             break;
                         case "add":
                             try {
@@ -76,6 +77,7 @@ public class App {
                                 try{
                                     currentTicket.addProductToTicket(productlist,id, quantity);
                                     System.out.println(currentTicket.toString());
+                                    System.out.println("ticket add: ok");
                                 }
                                 catch (Exception e){
                                     System.out.println("Error adding product");
@@ -94,6 +96,7 @@ public class App {
                                 int id = Integer.parseInt(lineSepSpace[2]);
                                 currentTicket.removeProduct(id);
                                 System.out.println(currentTicket.toString());
+                                System.out.println("ticket remove: ok");
                             }catch (Exception e){
                                 System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
                             }

@@ -145,13 +145,15 @@ public class Ticket {
      * @return TotalPrice
      */
     public double getTotalPrice(){
+        totalPrice =0;
         for (int i =0; i < NumProductInTicket; i++){
             totalPrice += productList[i].getPrice();
         }
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
-    public double getTotaldiscunt(){
+    public double getTotaldiscount(){
+        totaldiscount =0 ;
         for (int i =0; i < NumProductInTicket; i++){
             totaldiscount += discount[i];
         }
@@ -159,7 +161,7 @@ public class Ticket {
         return totaldiscount;
     }
     public double getFinalPrice(){
-        return getTotalPrice() - getTotaldiscunt();
+        return totalPrice - totaldiscount;
     }
 
     /**
@@ -178,8 +180,8 @@ public class Ticket {
             }
         }
         return message +"Total price: "+getTotalPrice() +"\n"
-                + "Total discount: "+getTotaldiscunt() +"\n"
-                + "Final Price: " +getFinalPrice() + "\n";
+                + "Total discount: "+getTotaldiscount() +"\n"
+                + "Final Price: " +getFinalPrice() ;
 
     }
 }
