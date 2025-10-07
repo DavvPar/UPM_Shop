@@ -261,7 +261,7 @@ public class App {
                 "help",
                 "exit"
         };
-        System.out.println("Command list:");
+        System.out.println("Commands:");
         for (String cmd : commands) {
             System.out.println(" " + cmd);
         }
