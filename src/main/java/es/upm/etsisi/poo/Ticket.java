@@ -157,7 +157,7 @@ public class Ticket {
         return totaldiscount;
     }
     public double getFinalPrice(){
-        return totalPrice - totaldiscount;
+        return getTotalPrice() - getTotaldiscunt();
     }
 
     /**
