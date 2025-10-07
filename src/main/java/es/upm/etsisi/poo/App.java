@@ -230,6 +230,7 @@ public class App {
         for (String f : allowedFields) {
             if (f.equals(field)) {
                 validField = true;
+                break;
             }
         }
 
@@ -262,7 +263,7 @@ public class App {
             System.out.println(" " + cmd);
         }
 
-        System.out.println("\nCategories: " +
+        System.out.println("\n"+"Categories: " +
                 "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS" +
                 "\nDiscounts if there are ≥2 units in the category: " +
                 "MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%"
