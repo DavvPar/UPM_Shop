@@ -60,7 +60,7 @@ public class ProductList {
 
             for (int i = 0; i < numProduct; i++) {
                 Product p = products[i];
-                System.out.printf(" {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%n",
+                System.out.printf("  {class:Product, id:%d, name:'%s', category:%s, price:%.1f}%n",
                         p.getID(),
                         p.getName(),
                         p.getCategory().getType(),
