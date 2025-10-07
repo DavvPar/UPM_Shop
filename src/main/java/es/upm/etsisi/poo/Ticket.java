@@ -38,7 +38,7 @@ public class Ticket {
     public Ticket(int MaxNumProduct) {
         this.NumProductInTicket = 0;
         this.MaxNumProduct = MaxNumProduct;
-        this.product = new ProductList(MaxNumProduct);
+        this.productList = new Product[MaxNumProduct];
         this.totalPrice = 0;
         discount = new double[MaxNumProduct];
     }
@@ -49,11 +49,11 @@ public class Ticket {
      * @param quantity to be added
      * @return true or false (successful or failed)
      */
-    public boolean addProductToTicket(int Id, int quantity){
+    public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket <= 100){
-                    productList[NumProductInTicket] = product.getProduct(Id);
+                    productList[NumProductInTicket] = lista.getProduct(Id);
                     NumProductInTicket++;
                     add = true;
             }
@@ -86,7 +86,7 @@ public class Ticket {
 
     public void applyDiscunt(){
         int[] categorytype = new int[5];
-        for (int i =0;i<productList.length;i++){
+        for (int i =0;i<NumProductInTicket;i++){
             switch (productList[i].getCategory().getType()){
                 case MERCH:
                     categorytype[0]++;
@@ -107,31 +107,31 @@ public class Ticket {
                     break;
             }
         }
-        for (int i =0;i<productList.length;i++){
+        for (int i =0;i<NumProductInTicket;i++){
             switch (productList[i].getCategory().getType()){
                 case MERCH:
                     if (categorytype[0]>=2){
-                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case BOOK:
                     if (categorytype[1]>=2){
-                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case CLOTHES:
                     if (categorytype[2]>=2){
-                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case STATIONERY:
                     if (categorytype[3]>=2){
-                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case ELECTRONICS:
                     if (categorytype[4]>=2){
-                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 default:
@@ -148,12 +148,14 @@ public class Ticket {
         for (int i =0; i < NumProductInTicket; i++){
             totalPrice += productList[i].getPrice();
         }
+        totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
     public double getTotaldiscunt(){
         for (int i =0; i < NumProductInTicket; i++){
             totaldiscount += discount[i];
         }
+        totaldiscount = Math.floor(totaldiscount * 100) / 100;
         return totaldiscount;
     }
     public double getFinalPrice(){

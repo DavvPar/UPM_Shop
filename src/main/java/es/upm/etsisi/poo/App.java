@@ -74,7 +74,7 @@ public class App {
                                 id =Integer.parseInt( lineSepSpace[2]);
                                 quantity =Integer.parseInt(lineSepSpace[3]);
                                 try{
-                                    currentTicket.addProductToTicket(id, quantity);
+                                    currentTicket.addProductToTicket(productlist,id, quantity);
                                     System.out.println(currentTicket.toString());
                                 }
                                 catch (Exception e){
