@@ -62,7 +62,7 @@ public class App {
     private void run() {
         boolean cont = true;
         while (cont) {
-            System.out.print("> ");
+            System.out.print("tUPM> ");
             String line = sc.nextLine();
             String[] lineSepSpace = line.split(" ");
 
@@ -162,6 +162,16 @@ public class App {
                 int idToUpdate = Integer.parseInt(messaje[2]);
                 String field = messaje[3].toLowerCase();
                 String value = messaje[4];
+                if(validField(field)){
+                    if (productlist.updateProduct(idToUpdate, field, value)) {
+                        Product productUpdate = productlist.getProduct(idToUpdate);
+                        String stringUpdate = productUpdate.toString();
+                        System.out.println(stringUpdate);
+                        System.out.println("prod update: ok");
+                    } else {
+                        System.out.println("prod update: error");
+                    }
+                }
 
                 break;
 
@@ -177,6 +187,21 @@ public class App {
                 }
                 break;
         }
+    }
+
+    private boolean validField(String field){
+        String[] allowedFields = {"name", "category", "price"};
+        boolean validField = false;
+        for (String f : allowedFields) {
+            if (f.equals(field)) {
+                validField = true;
+            }
+        }
+
+        if (!validField) {
+            System.out.println("Error: invalid field. The allowed fields are: name, category, price");
+        }
+        return validField;
     }
 
 

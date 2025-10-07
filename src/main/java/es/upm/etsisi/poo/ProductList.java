@@ -44,7 +44,7 @@ public class ProductList {
                 products[numProduct] = product;
                 numProduct++;
                 added = true;
-            }else
+            } else
                 System.out.println("The product already exists");
         } else
             System.out.println("No further products can be added");
@@ -55,7 +55,7 @@ public class ProductList {
         boolean listed = false;
         if (numProduct == 0) {
             System.out.println("Empty list");
-        } else{
+        } else {
             System.out.println("Catalog:");
 
             for (int i = 0; i < numProduct; i++) {
@@ -69,6 +69,37 @@ public class ProductList {
             listed = true;
         }
         return listed;
+    }
+
+
+    public boolean updateProduct(int idToUpdate, String field, String value) {
+        boolean updated = false;
+        if (numProduct == 0)
+            System.out.println("Empty List");
+        else {
+            try {
+                Product productToUpdate = getProduct(idToUpdate);
+                if (productToUpdate != null) {
+                    if (field.equalsIgnoreCase("NAME")) { //TODO IMPRIME LAS COMILLAS Y NO FUNCIONA CON ESPACIOS
+                        productToUpdate.setName(value);
+                        updated = true;
+                    } else if (field.equalsIgnoreCase("CATEGORY")) {
+                        CategoryType type = CategoryType.valueOf(value.toUpperCase());
+                        productToUpdate.setCategory(new Category(type));
+                        updated = true;
+                    } else if (field.equalsIgnoreCase("PRICE")) {
+                        double newPrice = Double.parseDouble(value);
+                        productToUpdate.setPrice(newPrice);
+                        updated = true;
+                    }
+                } else {
+                    System.out.println("The product doesn't exist");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+        return updated;
     }
 
     /**

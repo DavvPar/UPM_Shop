@@ -65,6 +65,8 @@ public class Product {
      * Setter for category
      */
     public void setCategory(Category category) {
+        if (category == null)
+            throw new IllegalArgumentException("Category cannot be null.");
         this.category = category;
     }
     /**
@@ -79,6 +81,8 @@ public class Product {
      * Setter for the name.
      */
     public void setName(String name) {
+        if (name == null || name.length() >= 100)
+            throw new IllegalArgumentException("Invalid name.");
         this.name = name;
     }
     /**
@@ -93,6 +97,8 @@ public class Product {
      * Setter for the price.
      */
     public void setPrice(double price) {
+        if (price < 0)
+            throw new IllegalArgumentException("Price must be positive.");
         this.price = price;
     }
 
