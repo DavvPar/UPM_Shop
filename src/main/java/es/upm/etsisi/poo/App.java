@@ -75,7 +75,21 @@ public class App {
                 case "ticket":
                     switch (lineSepSpace[1]) {
                         case "new":
+                            currentTicket = new Ticket(MaxNumProductTicket);
                             break;
+                        case "add":
+                            break;
+                        case "remove":
+                            break;
+                        case "print":
+                            try{
+                                currentTicket.toString();
+                                System.out.println("ticket print: ok");
+                            }
+                            catch (Exception e){
+                                System.out.println("ticket print: fail");
+                            }
+
                     }
                     break;
                 case "echo":
