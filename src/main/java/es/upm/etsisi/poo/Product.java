@@ -37,7 +37,7 @@ public class Product {
             throw new IllegalArgumentException("Invalid name.");
         if(category == null)
             throw new IllegalArgumentException("Category cannot be null.");
-        if(price < 0)
+        if(price <= 0)
             throw new IllegalArgumentException("Price must be positive.");
 
         this.ID = ID;
@@ -97,7 +97,7 @@ public class Product {
      * Setter for the price.
      */
     public void setPrice(double price) {
-        if (price < 0)
+        if (price <= 0)
             throw new IllegalArgumentException("Price must be positive.");
         this.price = price;
     }
