@@ -5,7 +5,13 @@ package es.upm.etsisi.poo;
  * a discount, it is used to give a operate with products
  * and calculate the discount for each type in a ticket.
  */
-
+enum CategoryType {
+    MERCH,
+    STATIONERY,
+    CLOTHES,
+    BOOK,
+    ELECTRONICS
+}
 public class Category {
     /**
      * Defines the concrete type of Category.
@@ -14,17 +20,18 @@ public class Category {
     /**
      * Percentage of discount for a specific category.
      */
-    private double discount;
-
+    private double discountMerch = 0;
+    private double discountStationery= 0.05;
+    private double discountClothes=0.07;
+    private double discountBook = 0.10;
+    private double discountElectronic=0.03;
     /**
      * Constructor of the Class
      *
      * @param type;
-     * @param discount;
      */
-    public Category(CategoryType type, double discount) {
+    public Category(CategoryType type) {
         this.type = type;
-        this.discount = discount;
     }
 
     /**
@@ -47,13 +54,27 @@ public class Category {
      * @return Discount of the category.
      */
     public double getDiscount() {
-        return this.discount;
+        double discount = 0;
+        switch (getType()){
+            case ELECTRONICS -> discount =discountElectronic;
+            case STATIONERY -> discount = discountStationery;
+            case CLOTHES -> discount =discountClothes;
+            case BOOK -> discount = discountBook;
+            case MERCH -> discount =discountMerch;
+        }
+        return discount;
     }
     /**
      * Setter for the discount.
      */
     public void setDiscount(double discount) {
-        this.discount = discount;
+        switch (getType()){
+            case ELECTRONICS -> discountElectronic = discount;
+            case STATIONERY -> discountStationery = discount;
+            case CLOTHES -> discountClothes = discount;
+            case BOOK ->  discountBook = discount;
+            case MERCH -> discountMerch = discount;
+        }
     }
 
 
@@ -66,22 +87,11 @@ public class Category {
      * @param ticket
      * @return
      */
-    public boolean[] applydiscount(Ticket ticket){
-        boolean[] apply = new boolean[5];
-        return apply;
-    }
 
     /**
      * Determines the valid values that the variable
      * type can take.
      */
-    public enum CategoryType {
-        MERCH,
-        STATIONERY,
-        CLOTHES,
-        BOOK,
-        ELECTRONICS;
-    }
 
     @Override
     public String toString() {

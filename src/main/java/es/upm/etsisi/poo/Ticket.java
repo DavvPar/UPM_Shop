@@ -17,19 +17,15 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
-
-    private final int[] discount = {};
+    private double[] discount ;
 
     public final List<Integer> DISCOUNT = List.of(0,5,7,10,3);
-    /**
-     * The number of units of each product in the list.
-     */
-    private int[] num;
     private ProductList product;
     /**
      * Total price of all the products in the ticket.
      */
-    private int totalPrice;
+    private double totalPrice;
+    private double totaldiscount;
     /**
      * Number of products currently in the ticket.
      */
@@ -43,8 +39,8 @@ public class Ticket {
         this.NumProductInTicket = 0;
         this.MaxNumProduct = MaxNumProduct;
         this.product = new ProductList(MaxNumProduct);
-        this.num = new int[MaxNumProduct];
         this.totalPrice = 0;
+        discount = new double[MaxNumProduct];
     }
 
     /**
@@ -54,28 +50,20 @@ public class Ticket {
      * @return true or false (successful or failed)
      */
     public boolean addProductToTicket(int Id, int quantity){
-        boolean exists = false,add = false;
-        if (NumProductInTicket <= 100){
-            for (int i= 0; i < NumProductInTicket;i++){
-                if ( product.getProduct(Id)== productList[i]){
-                    num[i] += quantity;
-                    exists = true;
+        boolean add = false;
+        for (int i =0;i<quantity;i++){
+            if (NumProductInTicket <= 100){
+                    productList[NumProductInTicket] = product.getProduct(Id);
+                    NumProductInTicket++;
                     add = true;
-                }
             }
-            if (!exists){
-                productList[NumProductInTicket] = product.getProduct(Id);
-                num[NumProductInTicket] =quantity;
-                NumProductInTicket++;
-                add = true;
+            else {
+                System.out.println("No further products can be added.");
             }
         }
-        else {
-            System.out.println("No further products can be added.");
-        }
+        applyDiscunt();
         return add;
     }
-
     /**
      * Remove ticket product
      * @param Id product id will remove
@@ -92,8 +80,65 @@ public class Ticket {
             }
 
         }
+        applyDiscunt();
     }
 
+
+    public void applyDiscunt(){
+        int[] categorytype = new int[5];
+        for (int i =0;i<productList.length;i++){
+            switch (productList[i].getCategory().getType()){
+                case MERCH:
+                    categorytype[0]++;
+                    break;
+                case BOOK:
+                    categorytype[1]++;
+                    break;
+                case CLOTHES:
+                    categorytype[2]++;
+                    break;
+                case STATIONERY:
+                    categorytype[3]++;
+                    break;
+                case ELECTRONICS:
+                    categorytype[4]++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        for (int i =0;i<productList.length;i++){
+            switch (productList[i].getCategory().getType()){
+                case MERCH:
+                    if (categorytype[0]>=2){
+                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                    }
+                    break;
+                case BOOK:
+                    if (categorytype[1]>=2){
+                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                    }
+                    break;
+                case CLOTHES:
+                    if (categorytype[2]>=2){
+                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                    }
+                    break;
+                case STATIONERY:
+                    if (categorytype[3]>=2){
+                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                    }
+                    break;
+                case ELECTRONICS:
+                    if (categorytype[4]>=2){
+                        discount[i] = productList[i].getPrice()*productList[i].getCategory().getDiscount();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     /**
      * Returns the total price of the whole product list.
      * getter TotalPrice
@@ -101,15 +146,18 @@ public class Ticket {
      */
     public double getTotalPrice(){
         for (int i =0; i < NumProductInTicket; i++){
-            totalPrice += num[i]* productList[i].getPrice();
+            totalPrice += productList[i].getPrice();
         }
         return totalPrice;
     }
     public double getTotaldiscunt(){
-        return 1;
+        for (int i =0; i < NumProductInTicket; i++){
+            totaldiscount += discount[i];
+        }
+        return totaldiscount;
     }
     public double getFinalPrice(){
-        return 1;
+        return totalPrice - totaldiscount;
     }
 
     /**
