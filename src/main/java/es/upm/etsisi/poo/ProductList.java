@@ -1,12 +1,22 @@
 package es.upm.etsisi.poo;
 
 public class ProductList {
+    /**
+     * Array of products to create the list of products.
+     */
     private Product[] products;
+    /**
+     * Maximum number of products in the list.
+     */
     private int maxNumProduct;
+    /**
+     * Current number of products in the list.
+     */
     private int numProduct;
 
     /**
-     * empty product list builder
+     * Constructor of the class.
+     * Creates an empty product list.
      *
      * @param MaxNumProduct maximum number of products that can be added
      */
@@ -17,17 +27,18 @@ public class ProductList {
     }
 
     /**
-     * constructor of the productList class to load from saved files
+     * Constructor of the class.
+     * Creates a product list from to load from a save file.
      *
      * @param MaxNumProduct maximum number of products that can be added
-     * @param filename      name of the productList
+     * @param filename name of the productList
      */
     public ProductList(int MaxNumProduct, String filename) {
 
     }
 
     /**
-     * add list product
+     * add list product.
      *
      * @param product product will add
      * @return true or false
@@ -103,7 +114,8 @@ public class ProductList {
     }
 
     /**
-     * remove list product
+     * Removes the selected product from the list, checking
+     * if it is in the list and removing all its instances.
      *
      * @param selected product will remove
      */
@@ -123,10 +135,10 @@ public class ProductList {
     }
 
     /**
-     * obtain product by id
+     * Getter for a Product using its ID to identify.
      *
-     * @param Id product id
-     * @return
+     * @param Id product ID
+     * @return Product with said ID
      */
     public Product getProduct(int Id) {
         Product find = null;

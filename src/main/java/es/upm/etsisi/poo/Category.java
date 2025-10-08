@@ -18,13 +18,14 @@ public class Category {
      */
     private CategoryType type;
     /**
-     * Percentage of discount for a specific category.
+     * Percentage of discount for each specific category.
      */
     private double discountMerch = 0;
     private double discountStationery= 0.05;
     private double discountClothes=0.07;
     private double discountBook = 0.10;
     private double discountElectronic=0.03;
+
     /**
      * Constructor of the Class
      *
@@ -37,7 +38,7 @@ public class Category {
     /**
      * Getter for the type.
      *
-     * @return Type of the category.
+     * @return Type of the category
      */
     public CategoryType getType() {
         return this.type;
@@ -51,7 +52,7 @@ public class Category {
     /**
      * Getter for the discount.
      *
-     * @return Discount of the category.
+     * @return Discount of the category
      */
     public double getDiscount() {
         double discount = 0;
@@ -77,22 +78,11 @@ public class Category {
         }
     }
 
-
-
     /**
-     * Checks if the discounts will be applied, which
-     * happens if there is 2 or more products of the same
-     * Category.
+     * toString for the object Category, showing its type.
      *
-     * @param ticket
-     * @return
+     * @return String with category data
      */
-
-    /**
-     * Determines the valid values that the variable
-     * type can take.
-     */
-
     @Override
     public String toString() {
         return "category: " + type;
