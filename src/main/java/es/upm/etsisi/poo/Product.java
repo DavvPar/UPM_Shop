@@ -33,10 +33,10 @@ public class Product {
     public Product(int ID, String name, Category category, double price) {
         if(ID <= 0)
             throw new IllegalArgumentException("ID must be positive.");
-        if(name == null || name.length() >= 100)
+        if(name == null || name.length() >= 100 || name.trim().isEmpty()) //name.trim().isEmpty() -> para que no acepte que entre comillas este vacio
             throw new IllegalArgumentException("Invalid name.");
-        if(category == null)
-            throw new IllegalArgumentException("Category cannot be null.");
+        if(category == null || category.getType() == null) //TODO
+            throw new IllegalArgumentException("Category must be: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
         if(price <= 0)
             throw new IllegalArgumentException("Price must be positive.");
 

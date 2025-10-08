@@ -1,7 +1,6 @@
 package es.upm.etsisi.poo;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -56,11 +55,6 @@ public class Ticket {
             if (NumProductInTicket <= 100){
                     productList[NumProductInTicket] = lista.getProduct(Id);
                     NumProductInTicket++;
-                Arrays.sort(productList, Comparator.nullsLast(
-                        Comparator.comparing(
-                                lp -> lp.getName(),
-                                String.CASE_INSENSITIVE_ORDER    )
-                ));
                     add = true;
             }
             else {
@@ -89,9 +83,7 @@ public class Ticket {
         applyDiscunt();
     }
 
-    /**
-     * method that calculates the discount and applies it
-     */
+
     public void applyDiscunt(){
         int[] categorytype = new int[5];
         for (int i =0;i<NumProductInTicket;i++){
@@ -160,12 +152,6 @@ public class Ticket {
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
-
-    /**
-     * Returns the total discount of the ticket
-     * getter totaldiscount
-     * @return totaldiscount
-     */
     public double getTotaldiscount(){
         totaldiscount =0 ;
         for (int i =0; i < NumProductInTicket; i++){
@@ -177,6 +163,7 @@ public class Ticket {
     public double getFinalPrice(){
         return getTotalPrice() - getTotaldiscount();
     }
+
     /**
      * Ticket toString, showing all the
      * @return Ticket
