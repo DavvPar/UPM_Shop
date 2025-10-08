@@ -51,7 +51,7 @@ public class Ticket {
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         for (int i =0;i<quantity;i++){
-            if (NumProductInTicket <= 100){
+            if (NumProductInTicket < 100){
                     productList[NumProductInTicket] = lista.getProduct(Id);
                 Arrays.sort(productList, Comparator.nullsLast(
                         Comparator.comparing(
