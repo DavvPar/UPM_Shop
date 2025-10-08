@@ -197,9 +197,17 @@ public class App {
                     System.out.println("Usage: prod update <id> <field> <value>");
                     return;
                 }
+
                 int idToUpdate = Integer.parseInt(messaje[2]);
                 String field = messaje[3].toLowerCase();
-                String value = messaje[4];
+                String value;
+                if(field.equalsIgnoreCase("name")){
+                    String line = String.join(" ", messaje);
+                    String[] parts = line.split("\"");
+                    value = parts[1];
+                }else{
+                    value = messaje[4];
+                }
                 if(validField(field)){
                     if (productlist.updateProduct(idToUpdate, field, value)) {
                         Product productUpdate = productlist.getProduct(idToUpdate);
