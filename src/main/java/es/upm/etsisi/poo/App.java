@@ -50,7 +50,6 @@ public class App {
         App application = new App();
         application.init();
         application.run(sc);
-        application.exitProgram();
     }
 
     /**
