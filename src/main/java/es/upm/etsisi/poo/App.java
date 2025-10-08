@@ -35,16 +35,7 @@ public class App {
         App application = new App();
         application.init();
         application.run();
-    }
-
-    /**
-     * Welcomes the user to the program and suggests
-     * the use of the help command.
-     */
-    private void init() {
-        System.out.println("Welcome to the ticket module App.");
-        System.out.println("Ticket module. Type 'help' to see commands:");
-
+        application.exitProgram();
     }
 
     /**
@@ -85,22 +76,29 @@ public class App {
         sc.close();
     }
 
-    private void optionsOfProd(String[] messaje) {
-        if (messaje.length < 2) {
+    /**
+     * Switch to operate all the possible commands for a product,
+     * and its list, including add, list, update and remove, calling
+     * for methods in the Product and ProductList to implement the commands.
+     *
+     * @param message array of Strings with parameters of the command
+     */
+    private void optionsOfProd(String[] message) {
+        if (message.length < 2) {
             System.out.println("Usage: prod with add, list, update or remove");
             return;
         }
 
-        String command = messaje[1].toLowerCase();
+        String command = message[1].toLowerCase();
         switch (command) {
             case "add":
-                if (messaje.length < 6) {
+                if (message.length < 6) {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
                     return;
                 }
                 try {
                     //line: prod add id \name con espacios\ category price
-                    String line = String.join(" ", messaje);
+                    String line = String.join(" ", message);
                     //Separamos por comillas
                     String[] parts = line.split("\"");
                     // parts[0] = "prod add <id> "
@@ -144,20 +142,20 @@ public class App {
                 break;
 
             case "update":
-                if (messaje.length < 5) {
+                if (message.length < 5) {
                     System.out.println("Usage: prod update <id> <field> <value>");
                     return;
                 }
 
-                int idToUpdate = Integer.parseInt(messaje[2]);
-                String field = messaje[3].toLowerCase();
+                int idToUpdate = Integer.parseInt(message[2]);
+                String field = message[3].toLowerCase();
                 String value;
                 if(field.equalsIgnoreCase("name")){
-                    String line = String.join(" ", messaje);
+                    String line = String.join(" ", message);
                     String[] parts = line.split("\"");
                     value = parts[1];
                 }else{
-                    value = messaje[4];
+                    value = message[4];
                 }
                 if(validField(field)){
                     if (productlist.updateProduct(idToUpdate, field, value)) {
@@ -173,7 +171,7 @@ public class App {
                 break;
 
             case "remove":
-                int idRemove = Integer.parseInt(messaje[2]);
+                int idRemove = Integer.parseInt(message[2]);
                 Product productRemove = productlist.getProduct(idRemove);
                 String stringProd = productRemove.toString();
                 System.out.println(stringProd);
@@ -186,28 +184,19 @@ public class App {
         }
     }
 
-    private boolean validField(String field){
-        String[] allowedFields = {"name", "category", "price"};
-        boolean validField = false;
-        for (String f : allowedFields) {
-            if (f.equals(field)) {
-                validField = true;
-                break;
-            }
-        }
-
-        if (!validField) {
-            System.out.println("Error: invalid field. The allowed fields are: name, category, price");
-        }
-        return validField;
-    }
-
-    private void optionsOfTicket(String[] messaje){
-        if (messaje.length < 2) {
+    /**
+     * Switch to operate all the possible commands for a ticket,
+     * including new, add, remove and print, calling for
+     * methods in the Ticket class that implement the commands.
+     *
+     * @param message array of Strings with parameters of the command
+     */
+    private void optionsOfTicket(String[] message){
+        if (message.length < 2) {
             System.out.println("Usage: ticket with new, add, remove or print");
             return;
         }
-        String command = messaje[1].toLowerCase();
+        String command = message[1].toLowerCase();
         switch (command) {
             case "new":
                 currentTicket = new Ticket(MaxNumProductTicket);
@@ -216,8 +205,8 @@ public class App {
             case "add":
                 try {
                     int id,quantity;
-                    id =Integer.parseInt(messaje[2]);
-                    quantity =Integer.parseInt(messaje[3]);
+                    id =Integer.parseInt(message[2]);
+                    quantity =Integer.parseInt(message[3]);
                     try{
                         currentTicket.addProductToTicket(productlist,id, quantity);
                         System.out.println(currentTicket.toString());
@@ -232,12 +221,12 @@ public class App {
                 }
                 break;
             case "remove":
-                if (messaje.length != 3){
+                if (message.length != 3){
                     System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
                     return;
                 }
                 try{
-                    int id = Integer.parseInt(messaje[2]);
+                    int id = Integer.parseInt(message[2]);
                     currentTicket.removeProduct(id);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket remove: ok");
@@ -257,10 +246,40 @@ public class App {
         }
     }
 
+    /**
+     * Boolean to check if a field introduced by the user is
+     * valid or not.
+     *
+     * @param field field to check its validity
+     * @return true or false (valid or not)
+     */
+    private boolean validField(String field){
+        String[] allowedFields = {"name", "category", "price"};
+        boolean validField = false;
+        for (String f : allowedFields) {
+            if (f.equals(field)) {
+                validField = true;
+                break;
+            }
+        }
+
+        if (!validField) {
+            System.out.println("Error: invalid field. The allowed fields are: name, category, price");
+        }
+        return validField;
+    }
 
     /**
-     * Shows in screen all the possible commands for
-     * the user to choose.
+     * Welcomes the user to the program and suggests the use of the help command.
+     */
+    private void init() {
+        System.out.println("Welcome to the ticket module App.");
+        System.out.println("Ticket module. Type 'help' to see commands:");
+
+    }
+
+    /**
+     * Shows in screen all the possible commands for the user to choose.
      */
     private void helpCommand() {
         String[] commands = {
@@ -295,6 +314,9 @@ public class App {
         System.out.println("Goodbye!");
     }
 
+    /**
+     * Shows in screen that the command introduced is unknown.
+     */
     private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");
     }

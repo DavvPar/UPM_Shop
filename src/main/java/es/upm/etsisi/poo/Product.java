@@ -25,10 +25,11 @@ public class Product {
 
     /**
      * Constructor of the Class
+     * Checks if the entering values are valid for a Product.
      *
-     * @param ID product ID.
-     * @param name product name.
-     * @param price product price.
+     * @param ID product ID
+     * @param name product name
+     * @param price product price
      */
     public Product(int ID, String name, Category category, double price) {
         if(ID <= 0)
@@ -48,21 +49,21 @@ public class Product {
     /**
      * Getter for the ID.
      *
-     * @return ID of the product.
+     * @return ID of the product
      */
     public int getID() {
         return ID;
     }
     /**
-     * Getter for category
+     * Getter for category.
      *
-     * @return Category of the product.
+     * @return Category of the product
      */
     public Category getCategory() {
         return this.category;
     }
     /**
-     * Setter for category
+     * Setter for category.
      */
     public void setCategory(Category category) {
         if (category == null)
@@ -72,7 +73,7 @@ public class Product {
     /**
      * Getter for the name.
      *
-     * @return Name of the product.
+     * @return Name of the product
      */
     public String getName() {
         return this.name;
@@ -88,7 +89,7 @@ public class Product {
     /**
      * Getter for the price.
      *
-     * @return Price of the product.
+     * @return Price of the product
      */
     public double getPrice() {
         return this.price;
@@ -102,6 +103,12 @@ public class Product {
         this.price = price;
     }
 
+    /**
+     * toString for the object Product, showing its ID, name,
+     * category and price, also tied to Category class toString method.
+     *
+     * @return String with product data
+     */
     @Override
     public String toString() {
         return "{class:Product" +
