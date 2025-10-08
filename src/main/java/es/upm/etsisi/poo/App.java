@@ -1,5 +1,8 @@
 package es.upm.etsisi.poo;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 /**
@@ -32,9 +35,20 @@ public class App {
      * Main structure for executing the app.
      */
     public static void main(String[] args) {
+        try {
+            if (args.length>0) {
+                String file_name = args[0];
+                sc = new Scanner(new FileReader(file_name));
+            }
+            else{
+                sc =new Scanner(System.in);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         App application = new App();
         application.init();
-        application.run();
+        application.run(sc);
         application.exitProgram();
     }
 
@@ -43,11 +57,11 @@ public class App {
      * determines how the application runs, it executes
      * the introduced commands.
      */
-    private void run() {
+    private void run( Scanner scanner) {
         boolean cont = true;
         while (cont) {
             System.out.print("tUPM> ");
-            String line = sc.nextLine();
+            String line = scanner.nextLine();
             String[] lineSepSpace = line.split(" ");
 
             switch (lineSepSpace[0].toLowerCase()) {
