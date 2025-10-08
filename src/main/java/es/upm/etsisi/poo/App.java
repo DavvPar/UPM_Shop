@@ -36,7 +36,7 @@ public class App {
      */
     public static void main(String[] args) {
         try {
-            if (args.length>0) {
+            if (args.length>=1) {
                 String file_name = args[0];
                 sc = new Scanner(new FileReader(file_name));
             }
@@ -44,6 +44,7 @@ public class App {
                 sc =new Scanner(System.in);
             }
         } catch (FileNotFoundException e) {
+            sc =new Scanner(System.in);
             throw new RuntimeException(e);
         }
         App application = new App();
