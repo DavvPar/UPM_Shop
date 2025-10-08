@@ -139,6 +139,13 @@ public class ProductList {
     }
 
     /**
+     * getter numProduct
+     * @return numProduct
+     */
+    public int getNumProduct(){
+        return numProduct;
+    }
+    /**
      * toString
      *
      * @return ProductList
