@@ -90,7 +90,6 @@ public class Ticket {
         applyDiscunt();
     }
 
-
     public void applyDiscunt(){
         int[] categorytype = new int[5];
         discount = new double[MaxNumProduct];
