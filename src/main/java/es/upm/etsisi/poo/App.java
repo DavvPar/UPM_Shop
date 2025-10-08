@@ -64,57 +64,7 @@ public class App {
                     optionsOfProd(lineSepSpace);
                     break;
                 case "ticket":
-                    switch (lineSepSpace[1]) {
-                        case "new":
-                            currentTicket = new Ticket(MaxNumProductTicket);
-                            System.out.println("ticket new: ok");
-                            break;
-                        case "add":
-                            try {
-                                int id,quantity;
-                                id =Integer.parseInt( lineSepSpace[2]);
-                                quantity =Integer.parseInt(lineSepSpace[3]);
-                                try{
-                                    currentTicket.addProductToTicket(productlist,id, quantity);
-                                    System.out.println(currentTicket.toString());
-                                    System.out.println("ticket add: ok");
-                                }
-                                catch (Exception e){
-                                    System.out.println("Error adding product");
-                                }
-                            }catch (Exception e){
-                                System.out.println("inappropriate format");
-                                System.out.println("ticket add <id> <quantity>");
-                            }
-                            break;
-                        case "remove":
-                            if (lineSepSpace.length != 3){
-                                System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
-                                return;
-                            }
-                            try{
-                                int id = Integer.parseInt(lineSepSpace[2]);
-                                currentTicket.removeProduct(id);
-                                System.out.println(currentTicket.toString());
-                                System.out.println("ticket remove: ok");
-                            }catch (Exception e){
-                                System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
-                            }
-                            break;
-                        case "print":
-                            try{
-                                System.out.println(currentTicket.toString());
-                                System.out.println("ticket print: ok");
-                            }
-                            catch (Exception e){
-                                System.out.println("ticket print: fail");
-                            }
-
-                            break;
-                        default:
-                            throw new IllegalStateException("insert ticket remove<id>,ticket add <id><quantity>."+ "\n"+
-                                    "ticket print or ticket new");
-                    }
+                    optionsOfTicket(lineSepSpace);
                     break;
                 case "echo":
                     String[] echoSepSpace = line.split("\"");
@@ -134,14 +84,15 @@ public class App {
         }
         sc.close();
     }
+
     private void optionsOfProd(String[] messaje) {
         if (messaje.length < 2) {
             System.out.println("Usage: prod with add, list, update or remove");
             return;
         }
 
-        String command = messaje[1];
-        switch (command.toLowerCase()) {
+        String command = messaje[1].toLowerCase();
+        switch (command) {
             case "add":
                 if (messaje.length < 6) {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
@@ -249,6 +200,61 @@ public class App {
             System.out.println("Error: invalid field. The allowed fields are: name, category, price");
         }
         return validField;
+    }
+
+    private void optionsOfTicket(String[] messaje){
+        if (messaje.length < 2) {
+            System.out.println("Usage: ticket with new, add, remove or print");
+            return;
+        }
+        String command = messaje[1].toLowerCase();
+        switch (command) {
+            case "new":
+                currentTicket = new Ticket(MaxNumProductTicket);
+                System.out.println("ticket new: ok");
+                break;
+            case "add":
+                try {
+                    int id,quantity;
+                    id =Integer.parseInt(messaje[2]);
+                    quantity =Integer.parseInt(messaje[3]);
+                    try{
+                        currentTicket.addProductToTicket(productlist,id, quantity);
+                        System.out.println(currentTicket.toString());
+                        System.out.println("ticket add: ok");
+                    }
+                    catch (Exception e){
+                        System.out.println("Error adding product");
+                    }
+                }catch (Exception e){
+                    System.out.println("inappropriate format");
+                    System.out.println("ticket add <id> <quantity>");
+                }
+                break;
+            case "remove":
+                if (messaje.length != 3){
+                    System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                    return;
+                }
+                try{
+                    int id = Integer.parseInt(messaje[2]);
+                    currentTicket.removeProduct(id);
+                    System.out.println(currentTicket.toString());
+                    System.out.println("ticket remove: ok");
+                }catch (Exception e){
+                    System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                }
+                break;
+            case "print":
+                try{
+                    System.out.println(currentTicket.toString());
+                    System.out.println("ticket print: ok");
+                }
+                catch (Exception e){
+                    System.out.println("ticket print: fail");
+                }
+                break;
+        }
     }
 
 
