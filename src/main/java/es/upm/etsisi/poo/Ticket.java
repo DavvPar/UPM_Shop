@@ -1,5 +1,7 @@
 package es.upm.etsisi.poo;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -16,29 +18,21 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
-    /**
-     * Discount for each individual product in the ticket.
-     */
     private double[] discount ;
 
     /**
      * Total price of all the products in the ticket.
      */
     private double totalPrice;
-    /**
-     * Total discount applied to all the products in the ticket.
-     */
-    private double totalDiscount;
+    private double totaldiscount;
     /**
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
 
     /**
-     * Constructor of the class.
-     * Creates a new empty ticket with a maximum number of products.
-     *
-     * @param MaxNumProduct Max number of products on the ticket
+     * ticket class constructor
+     * @param MaxNumProduct Max number of products on the ticket.
      */
     public Ticket(int MaxNumProduct) {
         this.NumProductInTicket = 0;
@@ -49,17 +43,22 @@ public class Ticket {
     }
 
     /**
-     * Method for adding products to a ticket.
-     *
-     * @param Id ID of the new product added
+     * Method for adding products to a ticket
+     * @param Id   Product id to be added
      * @param quantity to be added
      * @return true or false (successful or failed)
      */
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
-        for (int i = 0; i < quantity; i++){
+        for (int i =0;i<quantity;i++){
             if (NumProductInTicket <= 100){
                     productList[NumProductInTicket] = lista.getProduct(Id);
+                Arrays.sort(productList, Comparator.nullsLast(
+                        Comparator.comparing(
+                                lp -> lp.getName(),
+                                String.CASE_INSENSITIVE_ORDER
+                        )
+                ));
                     NumProductInTicket++;
                     add = true;
             }
@@ -71,12 +70,11 @@ public class Ticket {
         return add;
     }
     /**
-     * Removes the product with the passed ID from the ticket.
-     *
-     * @param Id product ID from product that will be removed
+     * Remove ticket product
+     * @param Id product id will remove
      */
     public void removeProduct(int Id) {
-        for(int i = 0; i < NumProductInTicket; i++) {
+        for(int i =0;i<NumProductInTicket;i++) {
             if (productList[i].getID() == Id){
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
@@ -90,14 +88,10 @@ public class Ticket {
         applyDiscunt();
     }
 
-    /**
-     * Checks if the discount applies for each category of product,
-     * if it does, it applies it accordingly.
-     *
-     */
     public void applyDiscunt(){
         int[] categorytype = new int[5];
-        for (int i = 0; i<NumProductInTicket; i++){
+        discount = new double[MaxNumProduct];
+        for (int i =0;i<NumProductInTicket;i++){
             switch (productList[i].getCategory().getType()){
                 case MERCH:
                     categorytype[0]++;
@@ -118,31 +112,31 @@ public class Ticket {
                     break;
             }
         }
-        for (int i = 0; i<NumProductInTicket; i++){
+        for (int i =0;i<NumProductInTicket;i++){
             switch (productList[i].getCategory().getType()){
                 case MERCH:
                     if (categorytype[0]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice() * productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case BOOK:
                     if (categorytype[1]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice() * productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case CLOTHES:
                     if (categorytype[2]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice() * productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case STATIONERY:
                     if (categorytype[3]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice() * productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case ELECTRONICS:
                     if (categorytype[4]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice() * productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
                     }
                     break;
                 default:
@@ -150,50 +144,39 @@ public class Ticket {
             }
         }
     }
-
     /**
      * Returns the total price of the whole product list.
-     * Getter TotalPrice
-     *
+     * getter TotalPrice
      * @return TotalPrice
      */
     public double getTotalPrice(){
-        totalPrice = 0;
-        for (int i = 0; i<NumProductInTicket; i++){
+        totalPrice =0;
+        for (int i =0; i < NumProductInTicket; i++){
             totalPrice += productList[i].getPrice();
         }
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
-
-    /**
-     * Returns the total amount discounted from all the products in the ticket.
-     * Getter TotalDiscount
-     *
-     * @return total discount.
-     */
-    public double getTotalDiscount(){
-        totalDiscount = 0 ;
-        for (int i =0; i<NumProductInTicket; i++){
-            totalDiscount += discount[i];
+    public double getTotaldiscount(){
+        totaldiscount =0 ;
+        for (int i =0; i < NumProductInTicket; i++){
+            totaldiscount += discount[i];
         }
-        totalDiscount = Math.floor(totalDiscount * 100) / 100;
-        return totalDiscount;
+        totaldiscount = Math.floor(totaldiscount * 100) / 100;
+        return totaldiscount;
     }
     public double getFinalPrice(){
-        return getTotalPrice() - getTotalDiscount();
+        return getTotalPrice() - getTotaldiscount();
     }
 
     /**
-     * Ticket toString, showing all the products in the list, the
-     * total price, total discount and final price with discount applied.
-     *
+     * Ticket toString, showing all the
      * @return Ticket
      */
     @Override
     public String toString() {
         String message = "";
-        for (int i = 0; i < NumProductInTicket; i++){
+        for (int i =0;i<NumProductInTicket;i++){
             if (discount[i]>0) {
                 message += productList[i].toString() + "**discount -" + discount[i] + "\n";
             }
@@ -202,7 +185,7 @@ public class Ticket {
             }
         }
         return message +"Total price: "+getTotalPrice() +"\n"
-                + "Total discount: "+ getTotalDiscount() +"\n"
+                + "Total discount: "+getTotaldiscount() +"\n"
                 + "Final Price: " +getFinalPrice() ;
 
     }
