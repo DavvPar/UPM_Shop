@@ -93,6 +93,7 @@ public class Ticket {
 
     public void applyDiscunt(){
         int[] categorytype = new int[5];
+        discount = new double[MaxNumProduct];
         for (int i =0;i<NumProductInTicket;i++){
             switch (productList[i].getCategory().getType()){
                 case MERCH:
