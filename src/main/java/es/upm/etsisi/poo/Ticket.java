@@ -21,8 +21,6 @@ public class Ticket {
      */
     private double[] discount ;
 
-    public final List<Integer> DISCOUNT = List.of(0,5,7,10,3);
-    private ProductList product;
     /**
      * Total price of all the products in the ticket.
      */
