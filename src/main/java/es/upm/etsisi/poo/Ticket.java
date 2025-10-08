@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -54,6 +55,12 @@ public class Ticket {
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket <= 100){
                     productList[NumProductInTicket] = lista.getProduct(Id);
+                Arrays.sort(productList, Comparator.nullsLast(
+                        Comparator.comparing(
+                                lp -> lp.getName(),
+                                String.CASE_INSENSITIVE_ORDER
+                        )
+                ));
                     NumProductInTicket++;
                     add = true;
             }
