@@ -24,6 +24,7 @@ public class App {
      */
     static int MaxNumProduct = 200;
     static int MaxNumProductTicket = 100;
+    Utils utils = new Utils();
     /**
      * Initialize the ticket with 200 as the
      * maximum amount of products.
@@ -114,7 +115,6 @@ public class App {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
                     //Separamos por comillas
-                    Utils utils = new Utils();
                     String name = utils.getNameScanner(line); //cambio en get nombre de scanner
                     int id = Integer.parseInt(message[2]);
                     CategoryType type = CategoryType.valueOf(message[message.length-2].toUpperCase());
@@ -154,13 +154,9 @@ public class App {
 
                 int idToUpdate = Integer.parseInt(message[2]);
                 String field = message[3].toLowerCase();
-                String value;
+                String value = "";
                 if(field.equalsIgnoreCase("name")){
-                    String line = String.join(" ", message);
-                    String[] parts = line.split("\"");
-                    value = parts[1];
-                }else{
-                    value = message[4];
+                    value = utils.getNameScanner(String.join(" ", message));
                 }
                 if(validField(field)){
                     if (productlist.updateProduct(idToUpdate, field, value)) {

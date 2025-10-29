@@ -16,7 +16,7 @@ public class Utils {
         for(int i = message.length()-1;i>=0 && !found ;i--){
             c = String.valueOf(message.charAt(i));
             if(!found && c.equals("\"")){
-                indexN = i-1;
+                indexN = i;
                 found = true;
             }
         }
