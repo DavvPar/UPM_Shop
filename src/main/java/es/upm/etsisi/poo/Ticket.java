@@ -79,8 +79,8 @@ public class Ticket {
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
                 }
-                NumProductInTicket--;
-                productList[NumProductInTicket] = null;
+
+                productList[NumProductInTicket] = null;NumProductInTicket--;
 
             }
 

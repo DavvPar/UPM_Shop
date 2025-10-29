@@ -122,7 +122,8 @@ public class App {
                     String[] firstPart = parts[0].trim().split(" "); //prod, add, id
 
                     int id = Integer.parseInt(firstPart[2]);
-                    String name = parts[1];
+                    Utils utils = new Utils();
+                    String name = utils.getNameScanner(line); //cambio en get nombre de scanner
 
                     String[] rest = parts[2].trim().split(" ");//category, price
 
