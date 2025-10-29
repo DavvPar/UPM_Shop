@@ -114,22 +114,12 @@ public class App {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
                     //Separamos por comillas
-                    String[] parts = line.split("\"");
-                    // parts[0] = "prod add <id> "
-                    // parts[1] = "<name>" = nombre con espacios
-                    // parts[2] = " <category> <price>"
-
-                    String[] firstPart = parts[0].trim().split(" "); //prod, add, id
-
-                    int id = Integer.parseInt(firstPart[2]);
                     Utils utils = new Utils();
                     String name = utils.getNameScanner(line); //cambio en get nombre de scanner
-
-                    String[] rest = parts[2].trim().split(" ");//category, price
-
-                    CategoryType type = CategoryType.valueOf(rest[0].toUpperCase());
+                    int id = Integer.parseInt(message[2]);
+                    CategoryType type = CategoryType.valueOf(message[message.length-2].toUpperCase());
                     Category category = new Category(type);
-                    double price = Double.parseDouble(rest[1]);
+                    double price = Double.parseDouble(message[message.length-1]);
 
                     try {
                         Product p = new Product(id, name, category, price);
