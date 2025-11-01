@@ -18,12 +18,17 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
-    private double[] discount ;
-
+    /**
+     * Stores the discount of each product in the ticket.
+     */
+    private double[] discount;
     /**
      * Total price of all the products in the ticket.
      */
     private double totalPrice;
+    /**
+     * Total discount of all the products in the ticket.
+     */
     private double totaldiscount;
     /**
      * Number of products currently in the ticket.
@@ -69,6 +74,7 @@ public class Ticket {
         applyDiscunt();
         return add;
     }
+
     /**
      * Remove ticket product
      * @param Id product id will remove
@@ -144,6 +150,7 @@ public class Ticket {
             }
         }
     }
+    
     /**
      * Returns the total price of the whole product list.
      * getter TotalPrice

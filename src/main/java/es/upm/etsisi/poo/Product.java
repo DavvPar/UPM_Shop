@@ -115,7 +115,7 @@ public class Product {
                 ", id:" + ID +
                 ", name:'" + name + '\'' +
                 ", " + category.toString() +
-                ", price:" + String.format("%.1f", price) +
+                ", price:" + String.format("%.2f", price) +
                 '}';
     }
 }
