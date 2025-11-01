@@ -24,6 +24,7 @@ public class App {
      */
     static int MaxNumProduct = 200;
     static int MaxNumProductTicket = 100;
+    Utils utils = new Utils();
     /**
      * Initialize the ticket with 200 as the
      * maximum amount of products.
@@ -114,21 +115,11 @@ public class App {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
                     //Separamos por comillas
-                    String[] parts = line.split("\"");
-                    // parts[0] = "prod add <id> "
-                    // parts[1] = "<name>" = nombre con espacios
-                    // parts[2] = " <category> <price>"
-
-                    String[] firstPart = parts[0].trim().split(" "); //prod, add, id
-
-                    int id = Integer.parseInt(firstPart[2]);
-                    String name = parts[1];
-
-                    String[] rest = parts[2].trim().split(" ");//category, price
-
-                    CategoryType type = CategoryType.valueOf(rest[0].toUpperCase());
+                    String name = utils.getNameScanner(line); //cambio en get nombre de scanner
+                    int id = Integer.parseInt(message[2]);
+                    CategoryType type = CategoryType.valueOf(message[message.length-2].toUpperCase());
                     Category category = new Category(type);
-                    double price = Double.parseDouble(rest[1]);
+                    double price = Double.parseDouble(message[message.length-1]);
 
                     try {
                         Product p = new Product(id, name, category, price);
@@ -163,13 +154,9 @@ public class App {
 
                 int idToUpdate = Integer.parseInt(message[2]);
                 String field = message[3].toLowerCase();
-                String value;
+                String value = "";
                 if(field.equalsIgnoreCase("name")){
-                    String line = String.join(" ", message);
-                    String[] parts = line.split("\"");
-                    value = parts[1];
-                }else{
-                    value = message[4];
+                    value = utils.getNameScanner(String.join(" ", message));
                 }
                 if(validField(field)){
                     if (productlist.updateProduct(idToUpdate, field, value)) {

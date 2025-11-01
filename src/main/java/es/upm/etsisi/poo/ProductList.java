@@ -91,7 +91,7 @@ public class ProductList {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
                 if (productToUpdate != null) {
-                    if (field.equalsIgnoreCase("NAME")) { //TODO IMPRIME LAS COMILLAS Y NO FUNCIONA CON ESPACIOS
+                    if (field.equalsIgnoreCase("NAME")) {
                         productToUpdate.setName(value);
                         updated = true;
                     } else if (field.equalsIgnoreCase("CATEGORY")) {
