@@ -317,7 +317,7 @@ public class App {
         }
 
         System.out.println("\n"+"Categories: " +
-                "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS" +
+                "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS, FOOD, MEETING" +
                 "\nDiscounts if there are ≥2 units in the category: " +
                 "MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%"
         );
