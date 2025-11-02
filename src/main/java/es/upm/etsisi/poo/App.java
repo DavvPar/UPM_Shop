@@ -32,9 +32,7 @@ public class App {
     static Ticket currentTicket = new Ticket(MaxNumProduct);
     static ProductList productlist = new ProductList(MaxNumProduct);
 
-    /**
-     * Main structure for executing the app.
-     */
+    // Main structure for executing the app.
     public static void main(String[] args) {
         try {
             if (args.length>=1) {
@@ -284,16 +282,34 @@ public class App {
      */
     private void helpCommand() {
         String[] commands = {
-                "prod add <id> \"<name>\" <category> <price>",
-                "prod update <id> NAME|CATEGORY|PRICE <value>",
-                "prod remove <id>",
-                "ticket new",
-                "ticket add <prodId> <quantity>",
-                "ticket remove <prodId>",
-                "ticket print",
-                "echo \"<texto>\"",
-                "help",
-                "exit"
+                "◦ Client/Cash commands:",
+                "   client add \"<name>\" <DNI> <email> <cashId>",
+                "   client remove <DNI>",
+                "   client list",
+                "   cash add [<id>] \"<name>\" <email>",
+                "   cash remove <id>",
+                "   cash list",
+                "   cash tickets <id>",
+
+                "◦ Ticket commands:",
+                "   ticket new [<id>] <cashId> <userId>",
+                "   ticket add <ticketId> <cashId> <prodId> <amount> [--p<txt> --p<txt>]",
+                "   ticket remove <ticketId> <cashId> <prodId>",
+                "   ticket print <ticketId> <cashId>",
+                "   ticket list",
+
+                "◦ Product commands:",
+                "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>]",
+                "   prod update <id> NAME|CATEGORY|PRICE <value>",
+                "   prod addFood [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
+                "   prod addMeeting [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
+                "   prod list",
+                "   prod remove <id>",
+
+                "◦ General commands:",
+                "   echo \"<texto>\"",
+                "   help",
+                "   exit"
         };
         System.out.println("Commands:");
         for (String cmd : commands) {

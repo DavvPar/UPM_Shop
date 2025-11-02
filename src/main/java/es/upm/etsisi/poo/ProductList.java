@@ -62,6 +62,10 @@ public class ProductList {
         return added;
     }
 
+    /**
+     * Lists the produc
+     * @return
+     */
     public boolean listProducts() {
         boolean listed = false;
         if (numProduct == 0) {
@@ -82,7 +86,14 @@ public class ProductList {
         return listed;
     }
 
-
+    /**
+     * Updates the NAME, CATEGORY or PRICE of the product with
+     * passed ID.
+     * @param idToUpdate ID of the product to update.
+     * @param field The field that will be changed on the product
+     * @param value New value to set the field to
+     * @return
+     */
     public boolean updateProduct(int idToUpdate, String field, String value) {
         boolean updated = false;
         if (numProduct == 0)

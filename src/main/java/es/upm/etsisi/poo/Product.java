@@ -6,27 +6,18 @@ package es.upm.etsisi.poo;
  * them and show its data.
  */
 public class Product {
-    /**
-     * ID for unique identification of the product.
-     */
+    // ID for unique identification of the product.
     private final int ID;
-    /**
-     * Indicates the type of product.
-     */
+   // Indicates the type of product.
     private Category category;
-    /**
-     * Name of the product.
-     */
+    // Name of the product.
     private String name;
-    /**
-     * Price of the product with no discounts.
-     */
+    // Price of the product with no discounts.
     private double price;
 
     /**
-     * Constructor of the Class
+     * Constructor of the Class Product.
      * Checks if the entering values are valid for a Product.
-     *
      * @param ID product ID
      * @param name product name
      * @param price product price
@@ -48,7 +39,6 @@ public class Product {
     }
     /**
      * Getter for the ID.
-     *
      * @return ID of the product
      */
     public int getID() {
@@ -56,15 +46,12 @@ public class Product {
     }
     /**
      * Getter for category.
-     *
      * @return Category of the product
      */
     public Category getCategory() {
         return this.category;
     }
-    /**
-     * Setter for category.
-     */
+    // Setter for category.
     public void setCategory(Category category) {
         if (category == null)
             throw new IllegalArgumentException("Category cannot be null.");
@@ -72,15 +59,12 @@ public class Product {
     }
     /**
      * Getter for the name.
-     *
      * @return Name of the product
      */
     public String getName() {
         return this.name;
     }
-    /**
-     * Setter for the name.
-     */
+    // Setter for the name
     public void setName(String name) {
         if (name == null || name.length() >= 100)
             throw new IllegalArgumentException("Invalid name.");
@@ -88,15 +72,12 @@ public class Product {
     }
     /**
      * Getter for the price.
-     *
      * @return Price of the product
      */
     public double getPrice() {
         return this.price;
     }
-    /**
-     * Setter for the price.
-     */
+    // Setter for the price.
     public void setPrice(double price) {
         if (price <= 0)
             throw new IllegalArgumentException("Price must be positive.");
@@ -106,7 +87,6 @@ public class Product {
     /**
      * toString for the object Product, showing its ID, name,
      * category and price, also tied to Category class toString method.
-     *
      * @return String with product data
      */
     @Override

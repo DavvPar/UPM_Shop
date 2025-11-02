@@ -9,7 +9,9 @@ public class ClientsList {
         this.MaxNumClients = MaxNumclients;
         ClientsNum = 0;
     }
+
     public int getClientsNum(){return ClientsNum;}
+
     public boolean addClients(Clients client) {
         boolean added = false, exists = false;
         if (ClientsNum < MaxNumClients) {
@@ -28,6 +30,7 @@ public class ClientsList {
             System.out.println("No further clients can be added");
         return added;
     }
+
     public boolean removeClients(Clients selected) {
         boolean removed = false;
         for (int i = 0; i < ClientsNum; i++) {

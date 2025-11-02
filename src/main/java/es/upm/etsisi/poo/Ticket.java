@@ -10,33 +10,21 @@ import java.util.List;
  * the prices, the dates and bills.
  */
 public class Ticket {
-    /**
-     * Maximum number of products in a list
-     */
+    // Maximum number of products in a list
     private int MaxNumProduct;
-    /**
-     * The list of products on the ticket.
-     */
+    // The list of products on the ticket.
     private Product[] productList;
-    /**
-     * Stores the discount of each product in the ticket.
-     */
+     // Stores the discount of each product in the ticket.
     private double[] discount;
-    /**
-     * Total price of all the products in the ticket.
-     */
+     // Total price of all the products in the ticket.
     private double totalPrice;
-    /**
-     * Total discount of all the products in the ticket.
-     */
+     // Total discount of all the products in the ticket.
     private double totaldiscount;
-    /**
-     * Number of products currently in the ticket.
-     */
+    // Number of products currently in the ticket.
     private int NumProductInTicket;
 
     /**
-     * ticket class constructor
+     * Constructor of the Class Ticket.
      * @param MaxNumProduct Max number of products on the ticket.
      */
     public Ticket(int MaxNumProduct) {
@@ -94,6 +82,10 @@ public class Ticket {
         applyDiscunt();
     }
 
+    /**
+     * If there are at least 2 products of the same category in the list, it applies
+     * the according discount to it.
+     */
     public void applyDiscunt(){
         int[] categorytype = new int[5];
         discount = new double[MaxNumProduct];
