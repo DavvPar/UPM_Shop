@@ -1,28 +1,36 @@
 package es.upm.etsisi.poo;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
- * Tickets is a class for managing the ticket creation
- * and deletion. It also works with the product list,
- * the prices, the dates and bills.
+ * Tickets is a class for managing the ticket creation and deletion. It also works with
+ * the product list, the prices, the dates and bills.
  */
 public class Ticket {
-    // Maximum number of products in a list
+    /**
+     * Maximum number of products in a list
+     */
     private int MaxNumProduct;
-    // The list of products on the ticket.
+    /**
+     * The list of products on the ticket.
+     */
     private Product[] productList;
-     // Stores the discount of each product in the ticket.
+    /**
+     * Stores the discount of each product in the ticket.
+     */
     private double[] discount;
-     // Total price of all the products in the ticket.
+    /**
+     * Total price of all the products in the ticket.
+     */
     private double totalPrice;
-     // Total discount of all the products in the ticket.
+    /**
+     * Total discount of all the products in the ticket.
+     */
     private double totaldiscount;
-    // Number of products currently in the ticket.
+    /**
+     * Number of products currently in the ticket.
+     */
     private int NumProductInTicket;
-
     /**
      * Constructor of the Class Ticket.
      * @param MaxNumProduct Max number of products on the ticket.

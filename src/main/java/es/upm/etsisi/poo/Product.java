@@ -6,13 +6,21 @@ package es.upm.etsisi.poo;
  * them and show its data.
  */
 public class Product {
-    // ID for unique identification of the product.
+    /**
+     * ID for unique identification of the product.
+     */
     private final int ID;
-   // Indicates the type of product.
+    /**
+     * Indicates the type of product.
+     */
     private Category category;
-    // Name of the product.
+    /**
+     * Name of the product.
+     */
     private String name;
-    // Price of the product with no discounts.
+    /**
+     * Price of the product with no discounts.
+     */
     private double price;
 
     /**
@@ -51,7 +59,11 @@ public class Product {
     public Category getCategory() {
         return this.category;
     }
-    // Setter for category.
+
+    /**
+     * Setter for category.
+     * @param category
+     */
     public void setCategory(Category category) {
         if (category == null)
             throw new IllegalArgumentException("Category cannot be null.");
@@ -64,7 +76,11 @@ public class Product {
     public String getName() {
         return this.name;
     }
-    // Setter for the name
+
+    /**
+     * Setter for the name
+     * @param name
+     */
     public void setName(String name) {
         if (name == null || name.length() >= 100)
             throw new IllegalArgumentException("Invalid name.");
@@ -77,7 +93,11 @@ public class Product {
     public double getPrice() {
         return this.price;
     }
-    // Setter for the price.
+
+    /**
+     * Setter for the price.
+     * @param price
+     */
     public void setPrice(double price) {
         if (price <= 0)
             throw new IllegalArgumentException("Price must be positive.");

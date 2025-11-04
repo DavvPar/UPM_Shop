@@ -3,13 +3,12 @@ package es.upm.etsisi.poo;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
- * App is the main class where the program is
- * executed. It uses the methods from other classes
- * and executes a Command Line Interface for the
- * user to interact with and introduce commands
+ * App is the main class where the program is executed. It uses the methods from other classes
+ * and executes a Command Line Interface for the user to interact with and introduce commands
  * to operate with the data.
  */
 public class App {
@@ -19,10 +18,14 @@ public class App {
      */
     static Scanner sc = new Scanner(System.in);
     /**
-     * Maximum number of products that the ticket
-     * or product list can have.
+     * Maximum number of products that the product list
+     * can have.
      */
     static int MaxNumProduct = 200;
+    /**
+     * Maximum number of products that the ticket
+     * can have.
+     */
     static int MaxNumProductTicket = 100;
     Utils utils = new Utils();
     /**
@@ -32,7 +35,10 @@ public class App {
     static Ticket currentTicket = new Ticket(MaxNumProduct);
     static ProductList productlist = new ProductList(MaxNumProduct);
 
-    // Main structure for executing the app.
+    /**
+     * Main structure for executing the app.
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             if (args.length>=1) {

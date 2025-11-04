@@ -13,9 +13,13 @@ enum CategoryType {
     ELECTRONICS
 }
 public class Category {
-    // Defines the concrete type of Category.
+    /**
+     * Defines the concrete type of Category.
+     */
     private CategoryType type;
-    // Percentage of discount for each specific category.
+    /**
+     * Percentage of discount for each specific category.
+     */
     private double discountMerch = 0;
     private double discountStationery= 0.05;
     private double discountClothes=0.07;
@@ -37,7 +41,10 @@ public class Category {
     public CategoryType getType() {
         return this.type;
     }
-    // Setter for the type
+    /**
+     * Setter for the type
+     * @param type
+     */
     public void setType(CategoryType type) {
         this.type = type;
     }
@@ -56,7 +63,11 @@ public class Category {
         }
         return discount;
     }
-    // Setter for the discount
+
+    /**
+     * Setter for the discount
+     * @param discount
+     */
     public void setDiscount(double discount) {
         switch (getType()){
             case ELECTRONICS -> discountElectronic = discount;
