@@ -1,7 +1,34 @@
 package es.upm.etsisi.poo;
 
-public class Utils {
+import java.util.Calendar;
+import java.util.TimeZone;
 
+public class Utils {
+    /**
+     *method that returns the date of a time zone
+     * @param timezone time Zone.For example, Spain is in the GMT+1 time zone.
+     * @return
+     */
+    public String getTime(String timezone){
+        String resul = "";
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone));
+        resul = calendar.get(Calendar.YEAR) + "-"+calendar.get(Calendar.MONTH)+"-"+
+                calendar.get(Calendar.DAY_OF_MONTH) + "-"+ calendar.get(Calendar.HOUR_OF_DAY)+":"+
+                calendar.get(Calendar.MINUTE);
+        return resul;
+    }
+    /**
+     * method that returns n random numbers
+     * @param n numbers to need
+     * @return random number with length n
+     */
+    public int getRandomNumber(int n){
+        StringBuilder resul = new StringBuilder();
+        for(int i = 0;i<n;i++){
+            resul.append((int) (Math.random() * 10));
+        }
+        return Integer.parseInt(resul.toString());
+    }
     /**
      * Takes the name from between ""
      * @param message
