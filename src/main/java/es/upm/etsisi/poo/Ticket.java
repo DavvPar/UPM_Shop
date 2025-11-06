@@ -31,13 +31,21 @@ public class Ticket {
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
+    private int clienteId;
+    private String cashId;
+    private String tickeyId;
+    private Utils utils;
     /**
      * Constructor of the Class Ticket.
-     * @param MaxNumProduct Max number of products on the ticket.
+     * @param CashId
+     * @param clienteId
      */
-    public Ticket(int MaxNumProduct) {
+    public Ticket(int clienteId,String CashId) {
+        tickeyId = utils.getTime("GMT+1") + utils.getRandomNumber(7);
+        this.clienteId = clienteId;
+        this.cashId = CashId;
         this.NumProductInTicket = 0;
-        this.MaxNumProduct = MaxNumProduct;
+        this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
         this.totalPrice = 0;
         discount = new double[MaxNumProduct];

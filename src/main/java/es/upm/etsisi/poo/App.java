@@ -26,13 +26,12 @@ public class App {
      * Maximum number of products that the ticket
      * can have.
      */
-    static int MaxNumProductTicket = 100;
     Utils utils = new Utils();
     /**
      * Initialize the ticket with 200 as the
      * maximum amount of products.
      */
-    static Ticket currentTicket = new Ticket(MaxNumProduct);
+    static Ticket currentTicket;
     static ProductList productlist = new ProductList(MaxNumProduct);
 
     /**
@@ -202,9 +201,9 @@ public class App {
             return;
         }
         String command = message[1].toLowerCase();
+
         switch (command) {
             case "new":
-                currentTicket = new Ticket(MaxNumProductTicket);
                 System.out.println("ticket new: ok");
                 break;
             case "add":
