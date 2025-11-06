@@ -33,17 +33,18 @@ public class Ticket {
     private int NumProductInTicket;
     private int clienteId;
     private String cashId;
-    private String tickeyId;
+    private String ticketId;
     private Utils utils;
     /**
      * Constructor of the Class Ticket.
-     * @param CashId
-     * @param clienteId
+     @param idTicket TicketId
+     @param cashId id to cash
+     @param clienteId id to clienteId
      */
-    public Ticket(int clienteId,String CashId) {
-        tickeyId = utils.getTime("GMT+1") + utils.getRandomNumber(7);
+    public Ticket(String idTicket,String cashId,int clienteId) {
+        this.ticketId = idTicket;
+        this.cashId = cashId;
         this.clienteId = clienteId;
-        this.cashId = CashId;
         this.NumProductInTicket = 0;
         this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
@@ -183,7 +184,9 @@ public class Ticket {
     public double getFinalPrice(){
         return getTotalPrice() - getTotaldiscount();
     }
-
+    public int getClienteId(){return clienteId;}
+    public String getCashId(){return cashId;}
+    public String getTicketId(){return ticketId;}
     /**
      * Ticket toString, showing all the
      * @return Ticket
