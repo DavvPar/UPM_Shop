@@ -24,7 +24,7 @@ public class ClientList {
         boolean added = false, exists = false;
         if (clientNum < MaxNumClients) {
             for (int i = 0; i < clientNum; i++) {
-                if (client.getCashId() == clients[i].getCashId()) {
+                if (client.getDNI().equals(clients[i].getDNI())) {
                     exists = true;
                 }
             }
@@ -42,7 +42,7 @@ public class ClientList {
     public boolean removeClients(Client selected) {
         boolean removed = false;
         for (int i = 0; i < clientNum; i++) {
-            if (clients[i].getCashId() == selected.getCashId()) {
+            if (clients[i].getDNI().equals(selected.getDNI())) {
                 for (int j = i + 1; j < clientNum; j++) {
                     clients[j - 1] = clients[j];
                 }
