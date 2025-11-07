@@ -1,6 +1,8 @@
 package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class TicketList {
 private ArrayList<Ticket> ticketList;
@@ -26,7 +28,7 @@ public TicketList(){
 }
     public Ticket createTicket(String TicketId,String clientId,String CashId){
         Ticket t = null;
-        if (ticketList ==null){
+        if (TicketId ==null){
             t = new Ticket(createId(),CashId,clientId);
         }else {
             if (ValidId(TicketId)){
@@ -119,5 +121,26 @@ public TicketList(){
         String NewId = utils.getTime("GMT+1") + ticket.getTicketId().substring(IndexO);
         ticket.setTicketId(NewId);
         addTicket(ticket);
+    }
+
+    /**
+     * method that returns all tickets according to the cashId
+     * @param cashId
+     * @return tickets according to be cashId
+     */
+    public ArrayList<Ticket> getTicketofCashId(String cashId){
+        ArrayList<Ticket> t = new ArrayList<>();
+        for (Ticket ticket: ticketList){
+            if (ticket.getCashId().equals(cashId)){
+                t.add(ticket);
+            }
+        }
+        t.sort(Comparator.nullsLast(
+                Comparator.comparing(
+                        Ticket::getCashId,
+                        String.CASE_INSENSITIVE_ORDER)
+                                    )
+                );
+        return t;
     }
 }
