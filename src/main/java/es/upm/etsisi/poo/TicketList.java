@@ -4,27 +4,57 @@ import java.util.ArrayList;
 
 public class TicketList {
 private ArrayList<Ticket> ticketList;
-private ArrayList<String> ticketid;
 private Utils utils;
 public TicketList(){
     ticketList = new ArrayList<>();
 }
-private boolean ValidId(String id){
+
+    /**
+     * method that checks if the ID is valid
+     * @param id
+     * @return true if id is valid and false if not
+     */
+    private boolean ValidId(String id){
     boolean ok = true;
-    for(String string:ticketid){
-        if (string.equals(id)){
-            ok = false;
+        for (Ticket ticket : ticketList) {
+            if (ticket.getTicketId().contains(id) && id.length() != 5) {
+                ok = false;
+                break;
+            }
         }
-    }
     return ok;
 }
-private String createId(){
+    public Ticket createTicket(String TicketId,String clientId,String CashId){
+        Ticket t = null;
+        if (ticketList ==null){
+            t = new Ticket(createId(),CashId,clientId);
+        }else {
+            if (ValidId(TicketId)){
+            t = new Ticket(utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId);
+            }
+        }
+        if(t != null){
+        addTicket(t);
+        }
+        return t ;
+    }
+    /**
+     * method that creates an ID to assign
+     * @return return a valid id to assign
+     */
+    private String createId(){
     String id = utils.getTime("GMT+1") + "-"+utils.getRandomNumber(5);
     while(!ValidId(id)){
         id =utils.getTime("GMT+1") + "-"+utils.getRandomNumber(5);
     }
     return id;
 }
+
+    /**
+     * method that adds a ticket to the ticket list
+      * @param ticket
+     * @return success or failure
+     */
     public boolean addTicket(Ticket ticket) {
         boolean added = false, exists = false;
             for(Ticket t : ticketList){
@@ -39,5 +69,55 @@ private String createId(){
             } else
                 System.out.println("The Ticket already exists");
         return added;
+    }
+
+    /**
+     *method that deletes the ticket from the list
+     * @param id
+     * @return returns whether it was deleted or not;
+     * if false, the ticket searched for is not found in the list
+     */
+    public boolean removeTicket(String id) {
+        boolean removed = false;
+        Ticket ticket = getTicket(id);
+        if (ticketList.contains(ticket)){
+            ticketList.remove(ticket);
+            removed = true;
+        }
+        return removed;
+    }
+
+    /**
+     *method that returns the ticket according to its ID
+     * @param id ticket id
+     * @return return null if it does not exist and ticket if it does
+     */
+    public Ticket getTicket(String id) {
+        Ticket ticket = null;
+        for (Ticket t : ticketList){
+            if (t.getTicketId().contains(id)){
+                ticket = t;
+            }
+        }
+        return ticket;
+    }
+
+    /**
+     * Method for changing the ticket ID at the time of completion
+     * @param ticket
+     */
+    public void SetId(Ticket ticket){
+        int IndexO = 0;
+        boolean found= false;
+        removeTicket(ticket.getTicketId());
+        for (int i = ticket.getTicketId().length()-1;i>=0;i--){
+            if (ticket.getTicketId().charAt(i) == '-' && !found){
+                IndexO = i;
+                found = true;
+            }
+        }
+        String NewId = utils.getTime("GMT+1") + ticket.getTicketId().substring(IndexO);
+        ticket.setTicketId(NewId);
+        addTicket(ticket);
     }
 }

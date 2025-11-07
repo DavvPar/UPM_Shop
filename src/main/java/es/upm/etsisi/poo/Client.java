@@ -8,7 +8,6 @@ public class Client extends User {
     /**
      * Identification of the cashier that registered the client
      */
-    private final String cashId;
 
     /**
      *
@@ -17,10 +16,9 @@ public class Client extends User {
      * @param DNI
      * @param email
      */
-    public Client(String name, String DNI, String email, String cashId){
+    public Client(String name, String DNI, String email){
         super(name, email);
         this.DNI = DNI;
-        this.cashId = cashId;
     }
 
     /**
@@ -33,9 +31,4 @@ public class Client extends User {
      * @param DNI
      */
     public void setDNI(String DNI){this.DNI = DNI;}
-    /**
-     * Getter for cashId
-     * @return cashId
-     */
-    public String getCashId(){return cashId;}
 }

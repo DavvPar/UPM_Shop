@@ -31,7 +31,7 @@ public class Ticket {
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
-    private int clienteId;
+    private String clienteId;
     private String cashId;
     private String ticketId;
     private Utils utils;
@@ -41,7 +41,7 @@ public class Ticket {
      @param cashId id to cash
      @param clienteId id to clienteId
      */
-    public Ticket(String idTicket,String cashId,int clienteId) {
+    public Ticket(String idTicket,String cashId,String clienteId) {
         this.ticketId = idTicket;
         this.cashId = cashId;
         this.clienteId = clienteId;
@@ -184,9 +184,10 @@ public class Ticket {
     public double getFinalPrice(){
         return getTotalPrice() - getTotaldiscount();
     }
-    public int getClienteId(){return clienteId;}
+    public String  getClienteId(){return clienteId;}
     public String getCashId(){return cashId;}
     public String getTicketId(){return ticketId;}
+    public void setTicketId(String id){ticketId = id;}
     /**
      * Ticket toString, showing all the
      * @return Ticket
