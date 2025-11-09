@@ -18,17 +18,24 @@ public class UserList {
 
     /**
      * Adds a client to the List
-     * Name and email validations must be done in main
+     * Name and email format validations must be done in main
+     * before adding a client
      * @param client user
      */
     public boolean addClient(Client client) {
         boolean canAdd = true;
         boolean added = false;
-        if (getUser(client.getIdentifier()) != null) {
+        // Comprueba si existe el id en la lista
+        if (containsId(client.getIdentifier())) {
             System.out.println("Already exists a client with DNI: " + client.getIdentifier());
             canAdd = false;
         }
-        User cashier = getUser(client.getCashId());
+        // Comprueba si existe el email en la lista
+        if (containsEmail(client.getEmail())){
+            System.out.println("Already exists a user with email: " + client.getEmail());
+        }
+        User cashier = getUserByID(client.getCashId());
+        // Comprueba si existe el cajero que le esta creando
         if (!(cashier instanceof Cash)) {
             System.out.println("No existing cashier with cashId: " + client.getCashId());
             canAdd = false;
@@ -41,30 +48,28 @@ public class UserList {
         return added;
     }
 
-    /**
-     * Generates a new unique and valid cashId.
-     * @return cashId
-     */
-    private String generateUniqueCashId() {
-        String id;
-        do {
-            id = Utils.generateCashId();
-        } while (getUser(id) != null);
-        return id;
-    }
+
 
     /**
      * Adds a cash to the List
-     * Name and email validations must be done in main
+     * Name and email format validations must be done in main
+     * before adding a cashier
      * @param cash user
      */
     public boolean addCash(Cash cash) {
         boolean canAdd = true;
         boolean added = false;
+        // Comprueba si se le dio un id al crearlo, si no tiene uno, se lo da antes de crearlo
         if (cash.getIdentifier() == null) {
             cash.setCashId(generateUniqueCashId());
-        } else if (getUser(cash.getIdentifier()) != null) {
-            System.out.println("Already exists a cash with DNI: " + cash.getIdentifier());
+        // Comprueba si existe el id en la lista
+        } else if (containsId(cash.getIdentifier())) {
+            System.out.println("Already exists a cash with cashId: " + cash.getIdentifier());
+            canAdd = false;
+        }
+        // Comprueba si existe el email en la lista
+        if (containsEmail(cash.getEmail())){
+            System.out.println("Already exists a user with email: " + cash.getEmail());
             canAdd = false;
         }
         if(canAdd){
@@ -80,7 +85,7 @@ public class UserList {
      * @param identifier DNI for Client, CashId for Cash
      */
     public boolean removeUser(String identifier) {
-        User user = getUser(identifier);
+        User user = getUserByID(identifier);
         boolean b = false;
         if (user != null) {
             users.remove(user);
@@ -96,11 +101,24 @@ public class UserList {
     public int getClientsNum(){return users.size();}
 
     /**
+     * Generates a new unique and valid cashId.
+     * @return cashId
+     */
+    private String generateUniqueCashId() {
+        String id;
+        do {
+            id = Utils.generateCashId();
+        } while (getUserByID(id) != null);
+        return id;
+    }
+
+    /**
      * Getter for a certain user, searching for its identifier
      * @param identifier DNI for Client, CashId for Cashiers
      * @return User with said identifier
      */
-    public User getUser(String identifier) {
+    public User getUserByID(String identifier) {
+        identifier = identifier.toUpperCase();
         for (User user : users) {
             if (user.getIdentifier().equals(identifier)) {
                 return user;
@@ -108,6 +126,18 @@ public class UserList {
         }
         return null; //If not found
     }
+
+    private User getUserByEmail(String email) {
+        email = email.toUpperCase();
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
 
     /**
      * Getter for all clients
@@ -135,6 +165,22 @@ public class UserList {
             }
         }
         return cashiers;
+    }
+
+    /**
+     * @param id to check if is contained
+     * @return true if there is already a user on the list with this id
+     */
+    boolean containsId(String id){
+        return getUserByEmail(id) != null;
+    }
+
+    /**
+     * @param email to check if is contained
+     * @return true if there is already a user on the list with this email
+     */
+    boolean containsEmail(String email){
+        return getUserByEmail(email) != null;
     }
 
     /**

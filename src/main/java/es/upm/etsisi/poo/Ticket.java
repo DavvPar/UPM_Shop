@@ -31,7 +31,13 @@ public class Ticket {
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
+    /**
+     * DNI of the client that is buying
+     */
     private String clienteId;
+    /**
+     * cashId of the cashier that is selling
+     */
     private String cashId;
     private String ticketId;
     private Utils utils;
