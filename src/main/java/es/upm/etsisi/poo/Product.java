@@ -23,6 +23,9 @@ public class Product {
      */
     private double price;
 
+    private String[] personalization;
+    private int maxPers;
+
     /**
      * Constructor of the Class Product.
      * Checks if the entering values are valid for a Product.
@@ -45,6 +48,13 @@ public class Product {
         this.category = category;
         this.price = price;
     }
+
+    public Product(int ID, String name, double price) {
+        this.ID = ID;
+        this.name = name;
+        this.price = price;
+    }
+
     /**
      * Getter for the ID.
      * @return ID of the product
