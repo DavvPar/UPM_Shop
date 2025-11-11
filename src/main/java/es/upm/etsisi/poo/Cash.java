@@ -9,32 +9,46 @@ public class Cash extends User{
     private String cashId;
     /**
      * Constructor of the class Cash
-     * @param nombre
-     * @param email
-     * @param cashId
+     * @param nombre name of the Cash
+     * @param email email of the Cash
+     * @param cashId unique identification of the Cash
      */
     public Cash(String nombre, String email, String cashId){
         super(email, nombre);
         this.cashId = cashId;
-        //AL CREARLO ASI HAY QUE AÑADIR CASHID AL SET DE CASHIDS
     }
 
     public Cash(String nombre, String email){
         super(email, nombre);
-        this.cashId = CashList.generateUniqueId();
+        this.cashId = null;
     }
 
     /**
      * Getter fot cashId
      * @return cashId
      */
-    public String getCashId() {
+    public String getIdentifier() {
         return cashId;
     }
 
-    public void setCashId(){
+    /**
+     * Setter for cashId
+     * @param cashId cash
+     */
+    public void setCashId(String cashId){
         this.cashId = cashId;
     }
 
-    //TODO toString
+    /**
+     * toString of the object Cash, showing its name, email and identification.
+     * @return String containing cash info
+     */
+    @Override
+    public String toString() {
+        return "{class:Cash" +
+                ", name:" + getName() +
+                ", email:" + getEmail() +
+                ", cashId:" + getIdentifier() +
+                "}";
+    }
 }

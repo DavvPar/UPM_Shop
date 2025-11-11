@@ -9,7 +9,7 @@ public class Utils {
      * @param timezone time Zone.For example, Spain is in the GMT+1 time zone.
      * @return YYYY-MM-DD-HH:MM
      */
-    public String getTime(String timezone){
+    public static String getTime(String timezone){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone));
         return calendar.get(Calendar.YEAR) + "-"+calendar.get(Calendar.MONTH)+"-"+
                 calendar.get(Calendar.DAY_OF_MONTH) + "-"+ calendar.get(Calendar.HOUR_OF_DAY)+":"+
@@ -20,7 +20,7 @@ public class Utils {
      * @param n numbers to need
      * @return random number with length n
      */
-    public int getRandomNumber(int n){
+    public static int getRandomNumber(int n){
         StringBuilder resul = new StringBuilder();
         for(int i = 0;i<n;i++){
             resul.append((int) (Math.random() * 10));
@@ -32,7 +32,7 @@ public class Utils {
      * @param message
      * @return the name inside
      */
-    public String getNameScanner(String message){
+    public static String getNameScanner(String message){
         int index0 = 0,indexN = 0;
         boolean found = false;
         String c = "";
@@ -59,16 +59,39 @@ public class Utils {
         return message.substring(index0,indexN);
     }
 
-    public boolean validName(String name) {
+    public static String generateCashId(){
+        String id;
+        id = ("UW" + (getRandomNumber(7)));
+        return id;
+    }
+
+    public static boolean validName(String name) {
         return name != null && !name.trim().isEmpty();
     }
 
-    public boolean validEmail(String email) {
+    public static boolean validEmail(String email) {
         return email != null && email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
     }
 
-    public boolean validCashId(String cashId) {
-        return ((cashId != null && (cashId.matches("^UW\\d{7}$"))) && !CashList.cashIdUsed(cashId));
+    public static boolean validDNI(String dni) {
+        if (dni == null) return false;
+        dni = dni.toUpperCase();
+        if (!dni.matches("\\d{8}[A-Z]")) {
+            return false;
+        }
+        String[] letters = {
+                "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X",
+                "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"
+        };
+        int num = Integer.parseInt(dni.substring(0, 8));
+        String correctLetter = letters[num % 23];
+        String DNIletter = dni.substring(8);
+
+        return DNIletter.equals(correctLetter);
+    }
+
+    public static boolean validCashId(String cashId) {
+        return ((cashId != null && (cashId.matches("^UW\\d{7}$"))));
     }
 
 }

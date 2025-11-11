@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.SQLOutput;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -72,6 +75,9 @@ public class App {
                 case "prod":
                     optionsOfProd(lineSepSpace);
                     break;
+                case "addMeeting":
+                    optionsOfMeeting(lineSepSpace);
+                    break;
                 case "ticket":
                     optionsOfTicket(lineSepSpace);
                     break;
@@ -92,6 +98,38 @@ public class App {
             }
         }
         sc.close();
+    }
+
+    private void optionsOfMeeting(String[] message) {
+        if(message.length < 7){
+            System.out.println("Usage: prod addMeeting <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
+            return;
+        }
+        try{
+            String line = String.join(" ",message);
+            String name = utils.getNameScanner(line);
+            int id = Integer.parseInt(message[2]);
+            double price = Double.parseDouble(message[message.length - 3]);
+            String expirationStrg = message[message.length - 2];
+            int maxPeople = Integer.parseInt(message[message.length - 1]);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date expiration = sdf.parse(expirationStrg);
+
+            ComplexProduct complexProduct = new ComplexProduct(id, name, price, expiration, maxPeople);
+            if (productlist.addProduct(complexProduct)) {
+                String stringProd = complexProduct.toString();
+                System.out.println(stringProd);
+                System.out.println("prod add: ok");
+            } else {
+                System.out.println("prod add: error");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**

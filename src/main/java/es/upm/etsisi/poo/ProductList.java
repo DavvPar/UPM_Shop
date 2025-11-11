@@ -62,11 +62,12 @@ public class ProductList {
         return added;
     }
 
+
     /**
      * Lists the produc
      * @return
      */
-    public boolean listProducts() {
+    /*public boolean listProducts() {
         boolean listed = false;
         if (numProduct == 0) {
             System.out.println("Empty list");
@@ -75,15 +76,35 @@ public class ProductList {
 
             for (int i = 0; i < numProduct; i++) {
                 Product p = products[i];
+                if(p instanceof ComplexProduct){
+                    ComplexProduct cp = (ComplexProduct) p;
+                    System.out.printf(
+                            "  {class:ComplexProduct, id:%d, name:'%s', price:%.1f, expiration:%s, people:%d}%n",
+                            cp.getID(), cp.getName(), cp.getPrice(),
+                            cp.getExpirationDate(), cp.getPeople());
+                }
+                else {
                 System.out.printf("  {class:Product, id:%d, name:'%s', category:%s, price:%.1f}%n",
                         p.getID(),
                         p.getName(),
                         p.getCategory().getType(),
                         p.getPrice());
+                }
             }
             listed = true;
         }
         return listed;
+    }*/
+    public boolean listProducts() {
+        if (numProduct == 0) {
+            System.out.println("Empty list");
+            return false;
+        }
+        System.out.println("Catalog:");
+        for (int i = 0; i < numProduct; i++) {
+            System.out.println("  " + products[i].toString());
+        }
+        return true;
     }
 
     /**
