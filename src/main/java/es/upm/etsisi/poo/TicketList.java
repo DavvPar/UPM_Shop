@@ -26,6 +26,14 @@ public TicketList(){
         }
     return ok;
 }
+
+    /**
+     * method that returns a created ticket
+     * @param TicketId
+     * @param clientId
+     * @param CashId
+     * @return ticket
+     */
     public Ticket createTicket(String TicketId,String clientId,String CashId){
         Ticket t = null;
         if (TicketId ==null){
