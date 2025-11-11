@@ -37,10 +37,10 @@ public TicketList(){
     public Ticket createTicket(String TicketId,String clientId,String CashId){
         Ticket t = null;
         if (TicketId ==null){
-            t = new Ticket(createId(),CashId,clientId);
+            t = new Ticket(createId(),CashId,clientId,stateTicet.empty);
         }else {
             if (ValidId(TicketId)){
-            t = new Ticket(utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId);
+            t = new Ticket(utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId,stateTicet.empty);
             }
         }
         if(t != null){
@@ -116,7 +116,7 @@ public TicketList(){
      * Method for changing the ticket ID at the time of completion
      * @param ticket
      */
-    public void SetId(Ticket ticket){
+    public void CloseTicket(Ticket ticket){
         int IndexO = 0;
         boolean found= false;
         removeTicket(ticket.getTicketId());
@@ -129,6 +129,7 @@ public TicketList(){
         String NewId = utils.getTime("GMT+1") + ticket.getTicketId().substring(IndexO);
         ticket.setTicketId(NewId);
         addTicket(ticket);
+        ticket.setState(stateTicet.closed);
     }
 
     /**

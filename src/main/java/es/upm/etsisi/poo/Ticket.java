@@ -6,6 +6,11 @@ import java.util.*;
  * Tickets is a class for managing the ticket creation and deletion. It also works with
  * the product list, the prices, the dates and bills.
  */
+enum stateTicet{
+    empty,
+    active,
+    closed
+}
 public class Ticket {
     /**
      * Maximum number of products in a list
@@ -41,13 +46,14 @@ public class Ticket {
     private String cashId;
     private String ticketId;
     private Utils utils;
+    private stateTicet state;
     /**
      * Constructor of the Class Ticket.
      @param idTicket TicketId
      @param cashId id to cash
      @param clienteId id to clienteId
      */
-    public Ticket(String idTicket,String cashId,String clienteId) {
+    public Ticket(String idTicket,String cashId,String clienteId,stateTicet state) {
         this.ticketId = idTicket;
         this.cashId = cashId;
         this.clienteId = clienteId;
@@ -67,7 +73,7 @@ public class Ticket {
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         for (int i =0;i<quantity;i++){
-            if (NumProductInTicket < 100){
+            if (NumProductInTicket < 100 && state !=stateTicet.closed){
                     productList[NumProductInTicket] = lista.getProduct(Id);
                 Arrays.sort(productList, Comparator.nullsLast(
                         Comparator.comparing(
@@ -77,6 +83,9 @@ public class Ticket {
                 ));
                     NumProductInTicket++;
                     add = true;
+                    if (state == stateTicet.empty){
+                        state = stateTicet.active;
+                    }
             }
             else {
                 System.out.println("No further products can be added.");
@@ -92,7 +101,7 @@ public class Ticket {
      */
     public void removeProduct(int Id) {
         for(int i =0;i<NumProductInTicket;i++) {
-            if (productList[i].getID() == Id){
+            if (productList[i].getID() == Id &&state !=stateTicet.closed){
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
                 }
@@ -101,6 +110,9 @@ public class Ticket {
 
             }
 
+        }
+        if (NumProductInTicket == 0){
+            state = stateTicet.empty;
         }
         applyDiscunt();
     }
@@ -194,6 +206,7 @@ public class Ticket {
     public String getCashId(){return cashId;}
     public String getTicketId(){return ticketId;}
     public void setTicketId(String id){ticketId = id;}
+    public void setState(stateTicet state) {this.state= state;}
     /**
      * Ticket toString, showing all the
      * @return Ticket
