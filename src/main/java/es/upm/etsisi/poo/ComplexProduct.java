@@ -29,26 +29,6 @@ public class ComplexProduct extends Product{
         this.people = people;
     }
 
-    private boolean validatePlanningTime(String typeProduct, Date expirationDate){
-        boolean validate = false;
-        Date now = new Date();
-
-        //Diferencia en milisegundos (es como Date guarda los datos)
-        long difms = expirationDate.getTime() - now.getTime();
-
-        //Convertimos a horas
-        long difHours = difms / (1000 * 60 * 60);
-        if(typeProduct.equalsIgnoreCase("addMeeting")){
-            if(difHours >= 12)
-                validate = true;
-        }
-        else if(typeProduct.equalsIgnoreCase("addFood")){
-            //72h = 3 dias
-            if(difHours >= 72)
-                validate = true;
-        }
-        return validate;
-    }
 
     public Date getExpirationDate() {
         return expirationDate;
@@ -73,16 +53,8 @@ public class ComplexProduct extends Product{
     }
 
 
-    //TODO SIN ACABAR
     @Override
-    public String toString() {
-        return super.toString().replace("}","") +
-                "expirationDate=" + expirationDate +
-                ", people=" + people +
-                '}';
-    }
-
-    /*public String toString(){
+    public String toString(){
         return "{Product" +
                 ", id:" + getID() +
                 ", name:'" + getName() + '\'' +
@@ -90,5 +62,5 @@ public class ComplexProduct extends Product{
                 ", expirationDate:" + expirationDate +
                 ", people:" + people +
                 '}';
-    }*/
+    }
 }

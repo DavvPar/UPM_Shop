@@ -39,19 +39,19 @@ public class App {
 
     /**
      * Main structure for executing the app.
+     *
      * @param args
      */
     public static void main(String[] args) {
         try {
-            if (args.length>=1) {
+            if (args.length >= 1) {
                 String file_name = args[0];
                 sc = new Scanner(new FileReader(file_name));
-            }
-            else{
-                sc =new Scanner(System.in);
+            } else {
+                sc = new Scanner(System.in);
             }
         } catch (FileNotFoundException e) {
-            sc =new Scanner(System.in);
+            sc = new Scanner(System.in);
             throw new RuntimeException(e);
         }
         App application = new App();
@@ -64,7 +64,7 @@ public class App {
      * determines how the application runs, it executes
      * the introduced commands.
      */
-    private void run( Scanner scanner) {
+    private void run(Scanner scanner) {
         boolean cont = true;
         while (cont) {
             System.out.print("tUPM> ");
@@ -74,9 +74,6 @@ public class App {
             switch (lineSepSpace[0].toLowerCase()) {
                 case "prod":
                     optionsOfProd(lineSepSpace);
-                    break;
-                case "addMeeting":
-                    optionsOfMeeting(lineSepSpace);
                     break;
                 case "ticket":
                     optionsOfTicket(lineSepSpace);
@@ -98,38 +95,6 @@ public class App {
             }
         }
         sc.close();
-    }
-
-    private void optionsOfMeeting(String[] message) {
-        if(message.length < 7){
-            System.out.println("Usage: prod addMeeting <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
-            return;
-        }
-        try{
-            String line = String.join(" ",message);
-            String name = utils.getNameScanner(line);
-            int id = Integer.parseInt(message[2]);
-            double price = Double.parseDouble(message[message.length - 3]);
-            String expirationStrg = message[message.length - 2];
-            int maxPeople = Integer.parseInt(message[message.length - 1]);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date expiration = sdf.parse(expirationStrg);
-
-            ComplexProduct complexProduct = new ComplexProduct(id, name, price, expiration, maxPeople);
-            if (productlist.addProduct(complexProduct)) {
-                String stringProd = complexProduct.toString();
-                System.out.println(stringProd);
-                System.out.println("prod add: ok");
-            } else {
-                System.out.println("prod add: error");
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     /**
@@ -158,9 +123,9 @@ public class App {
                     //Separamos por comillas
                     String name = utils.getNameScanner(line); //cambio en get nombre de scanner
                     int id = Integer.parseInt(message[2]);
-                    CategoryType type = CategoryType.valueOf(message[message.length-2].toUpperCase());
+                    CategoryType type = CategoryType.valueOf(message[message.length - 2].toUpperCase());
                     Category category = new Category(type);
-                    double price = Double.parseDouble(message[message.length-1]);
+                    double price = Double.parseDouble(message[message.length - 1]);
 
                     try {
                         Product p = new Product(id, name, category, price);
@@ -196,10 +161,10 @@ public class App {
                 int idToUpdate = Integer.parseInt(message[2]);
                 String field = message[3].toLowerCase();
                 String value = "";
-                if(field.equalsIgnoreCase("name")){
+                if (field.equalsIgnoreCase("name")) {
                     value = utils.getNameScanner(String.join(" ", message));
                 }
-                if(validField(field)){
+                if (validField(field)) {
                     if (productlist.updateProduct(idToUpdate, field, value)) {
                         Product productUpdate = productlist.getProduct(idToUpdate);
                         String stringUpdate = productUpdate.toString();
@@ -223,7 +188,65 @@ public class App {
                     System.out.println("prod remove: error");
                 }
                 break;
+
+            case "addmeeting":
+            case "addfood":
+                if (message.length < 6) {
+                    System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
+                    return;
+                }
+                try {
+                    String line = String.join(" ", message);
+                    String name = utils.getNameScanner(line);
+                    int id = Integer.parseInt(message[2]);
+                    double price = Double.parseDouble(message[message.length - 3]);
+                    String expirationStrg = message[message.length - 2];
+                    int maxPeople = Integer.parseInt(message[message.length - 1]);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date expiration = sdf.parse(expirationStrg);
+                    validatePlanningTime(command, expiration);
+
+                    try {
+                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expiration, maxPeople);
+                        if (productlist.addProduct(complexProduct)) {
+                            String stringProdCplx = complexProduct.toString();
+                            System.out.println(stringProdCplx);
+                            System.out.println("prod add: ok");
+                        } else {
+                            System.out.println("prod add: error");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error creating product: " + e.getMessage());
+
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: wrong format. Use prod addMeeting " +
+                            "<id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people >");
+                }
+                break;
+
         }
+    }
+    private boolean validatePlanningTime(String typeProduct, Date expirationDate){
+        boolean validate = false;
+        Date now = new Date();
+
+        //Diferencia en milisegundos (es como Date guarda los datos)
+        long difms = expirationDate.getTime() - now.getTime();
+
+        //Convertimos a horas
+        long difHours = difms / (1000 * 60 * 60);
+        if(typeProduct.equalsIgnoreCase("addMeeting")){
+            if(difHours >= 12)
+                validate = true;
+        }
+        else if(typeProduct.equalsIgnoreCase("addFood")){
+            //72h = 3 dias
+            if(difHours >= 72)
+                validate = true;
+        }
+        return validate;
     }
 
     /**
@@ -233,7 +256,7 @@ public class App {
      *
      * @param message array of Strings with parameters of the command
      */
-    private void optionsOfTicket(String[] message){
+    private void optionsOfTicket(String[] message) {
         if (message.length < 2) {
             System.out.println("Usage: ticket with new, add, remove or print");
             return;
@@ -246,42 +269,40 @@ public class App {
                 break;
             case "add":
                 try {
-                    int id,quantity;
-                    id =Integer.parseInt(message[2]);
-                    quantity =Integer.parseInt(message[3]);
-                    try{
-                        currentTicket.addProductToTicket(productlist,id, quantity);
+                    int id, quantity;
+                    id = Integer.parseInt(message[2]);
+                    quantity = Integer.parseInt(message[3]);
+                    try {
+                        currentTicket.addProductToTicket(productlist, id, quantity);
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket add: ok");
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Error adding product");
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("inappropriate format");
                     System.out.println("ticket add <id> <quantity>");
                 }
                 break;
             case "remove":
-                if (message.length != 3){
-                    System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                if (message.length != 3) {
+                    System.out.println("inappropriate format" + "\n" + "ticket remove<id>");
                     return;
                 }
-                try{
+                try {
                     int id = Integer.parseInt(message[2]);
                     currentTicket.removeProduct(id);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket remove: ok");
-                }catch (Exception e){
-                    System.out.println("inappropriate format" + "\n"+"ticket remove<id>");
+                } catch (Exception e) {
+                    System.out.println("inappropriate format" + "\n" + "ticket remove<id>");
                 }
                 break;
             case "print":
-                try{
+                try {
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket print: ok");
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("ticket print: fail");
                 }
                 break;
@@ -295,7 +316,7 @@ public class App {
      * @param field field to check its validity
      * @return true or false (valid or not)
      */
-    private boolean validField(String field){
+    private boolean validField(String field) {
         String[] allowedFields = {"name", "category", "price"};
         boolean validField = false;
         for (String f : allowedFields) {
@@ -359,7 +380,7 @@ public class App {
             System.out.println(" " + cmd);
         }
 
-        System.out.println("\n"+"Categories: " +
+        System.out.println("\n" + "Categories: " +
                 "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS, FOOD, MEETING" +
                 "\nDiscounts if there are ≥2 units in the category: " +
                 "MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%"
