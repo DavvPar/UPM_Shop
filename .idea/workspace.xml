@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54d6d267-8c1e-4937-b290-e4940b76c1fe" name="Changes" comment="creacion validatePlanningTime">
+    <list default="true" id="54d6d267-8c1e-4937-b290-e4940b76c1fe" name="Changes" comment="implementado addmeeting y addfood">
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/CustomProduct.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ComplexProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ComplexProduct.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Product.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,13 +105,32 @@
       <option name="project" value="LOCAL" />
       <updated>1762689850013</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="implementado addmeeting y addfood">
+      <created>1763044200226</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763044200226</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="User, Client, Cash update" />
     <MESSAGE value="Client and Cash final updates&#10;User as abstract&#10;Addition of UserList" />
-    <option name="LAST_COMMIT_MESSAGE" value="Client and Cash final updates&#10;User as abstract&#10;Addition of UserList" />
+    <MESSAGE value="implementado addmeeting y addfood" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementado addmeeting y addfood" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

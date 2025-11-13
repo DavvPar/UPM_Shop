@@ -23,8 +23,7 @@ public class Product {
      */
     private double price;
 
-    private String[] personalization;
-    private int maxPers;
+
 
     /**
      * Constructor of the Class Product.
