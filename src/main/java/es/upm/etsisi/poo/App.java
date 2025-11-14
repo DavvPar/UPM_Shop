@@ -127,7 +127,8 @@ public class App {
                     Category category = new Category(type);
                     double price = Double.parseDouble(message[message.length - 1]);
 
-                    try {
+                    Product p;
+                    /*try {
                         Product p = new Product(id, name, category, price);
                         if (productlist.addProduct(p)) {
                             String stringProd = p.toString();
@@ -138,9 +139,24 @@ public class App {
                         }
                     } catch (Exception e) {
                         System.out.println("Error creating product: " + e.getMessage());
+                    }*/
+                    if (message.length == 7) {
+                        int maxPers = Integer.parseInt(message[6]);
+                        p = new CustomProduct(id, name, category, price, maxPers);
+                    } else {
+                        // No hay maxPers → product normal
+                        p = new Product(id, name, category, price);
+                    }
+                    if (productlist.addProduct(p)) {
+                        System.out.println(p.toString());
+                        System.out.println("prod add: ok");
+                    } else {
+                        System.out.println("prod add: error");
                     }
                 } catch (Exception e) {
-                    System.out.println("Error: wrong format. Use prod add <id> \"<name>\" <category> <price>");
+                    //System.out.println("Error: wrong format. Use prod add <id> \"<name>\" <category> <price>");
+                    System.out.println("Error: " + e.getMessage());
+                    System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [<maxPers>]");
                 }
                 break;
 

@@ -30,11 +30,9 @@ public class CustomProduct extends Product{
         return super.getPrice() + complexPrice;
     }
 
-    //TODO ACTUALIZARLO
     @Override
     public String toString() {
-        return "CustomProduct{" +
-                "personalization=" + personalization +
+        return super.toString().replace("}", "") +
                 ", maxPers=" + maxPers +
                 '}';
     }
