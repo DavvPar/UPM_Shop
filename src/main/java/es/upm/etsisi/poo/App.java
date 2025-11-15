@@ -113,42 +113,31 @@ public class App {
         String command = message[1].toLowerCase();
         switch (command) {
             case "add":
-                if (message.length < 6) {
-                    System.out.println("Usage: prod add <id> \"<name>\" <category> <price>");
+                String input = String.join(" ", message);
+                if (!input.toLowerCase().startsWith("prod add")) {
+                    System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers]");
                     return;
                 }
                 try {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
-                    //Separamos por comillas
                     String name = utils.getNameScanner(line); //cambio en get nombre de scanner
                     int id = Integer.parseInt(message[2]);
-                    CategoryType type = CategoryType.valueOf(message[message.length - 2].toUpperCase());
-                    Category category = new Category(type);
-                    double price = Double.parseDouble(message[message.length - 1]);
 
-                    Product p;
-                    /*try {
-                        Product p = new Product(id, name, category, price);
-                        if (productlist.addProduct(p)) {
-                            String stringProd = p.toString();
-                            System.out.println(stringProd);
-                            System.out.println("prod add: ok");
-                        } else {
-                            System.out.println("prod add: error");
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error creating product: " + e.getMessage());
-                    }*/
-                    if (message.length == 7) {
-                        int maxPers = Integer.parseInt(message[6]);
-                        p = new CustomProduct(id, name, category, price, maxPers);
+                    String[] rightParts = secondPartArray(input);
+                    CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
+                    Category category = new Category(type);
+                    double price = Double.parseDouble(rightParts[1]);
+                    Product product;
+                    if (rightParts.length == 3) {
+                        int maxPers = Integer.parseInt(rightParts[2]);
+                        product = new CustomProduct(id, name, category, price, maxPers);
                     } else {
-                        // No hay maxPers → product normal
-                        p = new Product(id, name, category, price);
+                        product = new Product(id, name, category, price);
                     }
-                    if (productlist.addProduct(p)) {
-                        System.out.println(p.toString());
+                    if (productlist.addProduct(product)) {
+                        String addProduct = product.toString();
+                        System.out.println(addProduct);
                         System.out.println("prod add: ok");
                     } else {
                         System.out.println("prod add: error");
@@ -243,6 +232,14 @@ public class App {
                 break;
 
         }
+    }
+    private String[] secondPartArray(String input){
+        int firstQuote = input.indexOf('"');
+        int secondQuote = input.indexOf('"', firstQuote + 1);
+
+        String right = input.substring(secondQuote + 1).trim();
+        String[] rightParts = right.split(" ");
+        return rightParts;
     }
     private boolean validatePlanningTime(String typeProduct, Date expirationDate){
         boolean validate = false;

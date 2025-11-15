@@ -20,11 +20,10 @@ public class ComplexProduct extends Product{
     public ComplexProduct(int ID, String name, double price, Date expirationDate, int people) {
         super(ID, name, price);
         if(people <= 0 || people > MAX_PEOPLE)
-            throw new IllegalArgumentException("El numero de participantes debe estar entre 1 y " + MAX_PEOPLE);
-        //TODO REVISAR
+            throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
         Date now = new Date();
         if(expirationDate.before(now))
-            throw new IllegalArgumentException("La fecha de caducidad no puede ser anterior a hoy");
+            throw new IllegalArgumentException("The expiration date cannot be earlier than today.");
         this.expirationDate = expirationDate;
         this.people = people;
     }
@@ -44,7 +43,7 @@ public class ComplexProduct extends Product{
 
     public void setPeople(int people) {
         if(people <= 0 || people > MAX_PEOPLE)
-            throw new IllegalArgumentException("El numero de participantes debe estar entre 1 y " + MAX_PEOPLE);
+            throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
         this.people = people;
     }
 
@@ -59,7 +58,7 @@ public class ComplexProduct extends Product{
                 ", id:" + getID() +
                 ", name:'" + getName() + '\'' +
                 ", price:" + String.format("%.2f", getPrice()) +
-                ", expirationDate:" + expirationDate +
+                ", date of Event:" + expirationDate +
                 ", people:" + people +
                 '}';
     }

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54d6d267-8c1e-4937-b290-e4940b76c1fe" name="Changes" comment="se crea CustomProduct">
+    <list default="true" id="54d6d267-8c1e-4937-b290-e4940b76c1fe" name="Changes" comment="cambios por CustomProduct">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ComplexProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ComplexProduct.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/CustomProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/CustomProduct.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1763047385451</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="cambios por CustomProduct">
+      <created>1763140507487</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1763140507487</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,7 +146,8 @@
     <MESSAGE value="Client and Cash final updates&#10;User as abstract&#10;Addition of UserList" />
     <MESSAGE value="implementado addmeeting y addfood" />
     <MESSAGE value="se crea CustomProduct" />
-    <option name="LAST_COMMIT_MESSAGE" value="se crea CustomProduct" />
+    <MESSAGE value="cambios por CustomProduct" />
+    <option name="LAST_COMMIT_MESSAGE" value="cambios por CustomProduct" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

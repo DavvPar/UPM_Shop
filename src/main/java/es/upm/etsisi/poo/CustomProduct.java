@@ -33,7 +33,7 @@ public class CustomProduct extends Product{
     @Override
     public String toString() {
         return super.toString().replace("}", "") +
-                ", maxPers=" + maxPers +
+                ", max People allowed: " + maxPers +
                 '}';
     }
 }
