@@ -1,11 +1,9 @@
 package es.upm.etsisi.poo;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ComplexProduct extends Product{
-    private Date expirationDate;
+    private LocalDate expirationDate;
     private int people;
     private final int MAX_PEOPLE = 100;
 
@@ -17,23 +15,23 @@ public class ComplexProduct extends Product{
      * @param name     product name
      * @param price    product price
      */
-    public ComplexProduct(int ID, String name, double price, Date expirationDate, int people) {
+    public ComplexProduct(int ID, String name, double price, LocalDate expirationDate, int people) {
         super(ID, name, price);
         if(people <= 0 || people > MAX_PEOPLE)
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
-        Date now = new Date();
-        if(expirationDate.before(now))
+        LocalDate today = LocalDate.now();
+        if(expirationDate.isBefore(today))
             throw new IllegalArgumentException("The expiration date cannot be earlier than today.");
         this.expirationDate = expirationDate;
         this.people = people;
     }
 
 
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 

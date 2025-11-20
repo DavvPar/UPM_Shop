@@ -1,12 +1,8 @@
 package es.upm.etsisi.poo;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.SQLOutput;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 /**
@@ -208,9 +204,10 @@ public class App {
                     String expirationStrg = message[message.length - 2];
                     int maxPeople = Integer.parseInt(message[message.length - 1]);
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Date expiration = sdf.parse(expirationStrg);
-                    validatePlanningTime(command, expiration);
+                    LocalDate expiration = LocalDate.parse(expirationStrg);
+                    if(!validatePlanningTime(command, expiration)){
+                        return;
+                    }
 
                     try {
                         ComplexProduct complexProduct = new ComplexProduct(id, name, price, expiration, maxPeople);
@@ -241,26 +238,24 @@ public class App {
         String[] rightParts = right.split(" ");
         return rightParts;
     }
-    private boolean validatePlanningTime(String typeProduct, Date expirationDate){
-        boolean validate = false;
-        Date now = new Date();
 
-        //Diferencia en milisegundos (es como Date guarda los datos)
-        long difms = expirationDate.getTime() - now.getTime();
+    private boolean validatePlanningTime(String typeProduct, LocalDate expirationDate) {
+        LocalDate today = LocalDate.now();
 
-        //Convertimos a horas
-        long difHours = difms / (1000 * 60 * 60);
-        if(typeProduct.equalsIgnoreCase("addMeeting")){
-            if(difHours >= 12)
-                validate = true;
+        long diffDays = expirationDate.toEpochDay() - today.toEpochDay(); //transforma la fecha a un numero
+
+        if (typeProduct.equalsIgnoreCase("addMeeting")) {
+            System.out.println("12 hours' notice is required");
+            return diffDays > 1;
         }
-        else if(typeProduct.equalsIgnoreCase("addFood")){
-            //72h = 3 dias
-            if(difHours >= 72)
-                validate = true;
+        else if (typeProduct.equalsIgnoreCase("addFood")) {
+            System.out.println("Three days' notice is required.");
+            return diffDays >= 3;
         }
-        return validate;
+
+        return false;
     }
+
 
     /**
      * Switch to operate all the possible commands for a ticket,
