@@ -327,6 +327,95 @@ public class App {
         System.out.println("client list: ok");
     }
 
+
+private void optionsCash(String[] message) {
+        if (message.length < 2) {
+            System.out.println("Usage: cash add/remove/list/tickets");
+            return;
+        }
+        String command = message[1].toLowerCase();
+        switch (command) {
+            case "add":
+                cashAdd(mssage);
+                break;
+            case "remove":
+                cashRemove(message);
+                break;
+            case "list":
+                cashList();
+                break;
+            case "tickets":
+                cashTickets(message);
+                break;
+            default:
+                System.out.println("Usage: cash add/remove/list/tickets");
+        }
+    }
+
+    private void cashAdd(String[] message) {
+        try {
+            String fullLine = String.join(" ", message);
+            String name = utils.getNameScanner(fullLine);
+            String[] rightParts = secondPartArray(fullLine);
+            String email;
+            String id = null;
+
+            if (message.length >= 4 && message[2].startsWith("UW")) {
+                id = message[2];
+                email = message[message.length - 1];
+            } else {
+                email = message[message.length - 1];
+            }
+
+            if (!Utils.validName(name) || !Utils.validEmail(email) || (id != null && !Utils.validCashId(id))) {
+                System.out.println("cash add: error");
+                return;
+            }
+
+            Cash cash;
+            if (id == null) cash = new Cash(name, email);
+            else cash = new Cash(name, email, id);
+
+            boolean added = userList.addCash(cash);
+            if (added) {
+                System.out.println("cash add: ok");
+            } else {
+                System.out.println("cash add: error");
+            }
+        } catch (Exception e) {
+            System.out.println("cash add: error");
+        }
+    }
+
+    private void cashRemove(String[] message) {
+        if (message.length < 3) {
+            System.out.println("cash remove: error");
+            return;
+        }
+        String id = message[2];
+        boolean removed = userList.removeUser(id);
+        if (removed) System.out.println("cash remove: ok");
+        else System.out.println("cash remove: error");
+    }
+
+    private void cashList() {
+        ArrayList<Cash> cashiers = userList.getCashiers();
+        cashiers.sort(Comparator.comparing(Cash::getName, String.CASE_INSENSITIVE_ORDER));
+        System.out.println("Cash:");
+        for (Cash c : cashiers) {
+            System.out.println("  " + c.toString());
+        }
+        System.out.println("cash list: ok");
+    }
+
+    private void cashTickets(String[] message) {
+        if (message.length < 3) {
+            System.out.println("cash tickets: error");
+            return;
+        }
+        //FALTA POR HACERLO
+    }
+    
     
     private String[] secondPartArray(String input){
         int firstQuote = input.indexOf('"');
