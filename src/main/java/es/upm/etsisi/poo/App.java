@@ -32,6 +32,8 @@ public class App {
      */
     static Ticket currentTicket;
     static ProductList productlist = new ProductList(MaxNumProduct);
+    static UserList userList = new UserList();
+    static TicketList ticketList = new TicketList();
 
     /**
      * Main structure for executing the app.
@@ -71,6 +73,11 @@ public class App {
                 case "prod":
                     optionsOfProd(lineSepSpace);
                     break;
+                case "client":
+                    optionsClient(lineSepSpace);
+                    break;
+                case "cash":
+                    optionsCash(lineSepSpace);
                 case "ticket":
                     optionsOfTicket(lineSepSpace);
                     break;
@@ -230,6 +237,97 @@ public class App {
 
         }
     }
+
+    
+    private void optionsClient(String[] message) {
+        if (message.length < 2) {
+            System.out.println("Usage: client add/remove/list");
+            return;
+        }
+        String command = message[1].toLowerCase();
+        switch (command) {
+            case "add":
+                clientAdd(message);
+                break;
+            case "remove":
+                clientRemove(message);
+                break;
+            case "list":
+                clientList();
+                break;
+            default:
+                System.out.println("Usage: client add/remove/list");
+        }
+    }
+
+    private void clientAdd(String[] message) {
+        try {
+            String fullLine = String.join(" ", message);
+            String name = utils.getNameScanner(fullLine);
+            String[] rightParts = secondPartArray(fullLine);
+            
+            if (rightParts.length < 3) {
+                System.out.println("client add: error");
+                return;
+            }
+            String dni = rightParts[0];
+            String email = rightParts[1];
+            String cashId = rightParts[2];
+
+            if (!Utils.validName(name)) {
+                System.out.println("client add: error");
+                return;
+            }
+            if (!Utils.validDNI(dni)) {
+                System.out.println("client add: error");
+                return;
+            }
+            if (!Utils.validEmail(email)) {
+                System.out.println("client add: error");
+                return;
+            }
+            if (!Utils.validCashId(cashId)) {
+                System.out.println("client add: error");
+                return;
+            }
+
+            Client c = new Client(name, dni, email, cashId);
+            boolean added = userList.addClient(c);
+            if (added) {
+                System.out.println("client add: ok");
+            } else {
+                System.out.println("client add: error");
+            }
+        } catch (Exception e) {
+            System.out.println("client add: error");
+        }
+    }
+
+    private void clientRemove(String[] message) {
+        if (message.length < 3) {
+            System.out.println("client remove: error");
+            return;
+        }
+        String dni = message[2];
+        boolean removed = userList.removeUser(dni);
+        if (removed) {
+            System.out.println("client remove: ok");
+        } else {
+            System.out.println("client remove: error");
+        }
+    }
+
+    private void clientList() {
+        ArrayList<Client> clients = userList.getClients();
+        clients.sort(Comparator.comparing(Client::getName, String.CASE_INSENSITIVE_ORDER));
+        System.out.println("Client:");
+        for (Client c : clients) {
+            System.out.println("  " + c.toString());
+        }
+        System.out.println("client list: ok");
+    }
+
+    
     private String[] secondPartArray(String input){
         int firstQuote = input.indexOf('"');
         int secondQuote = input.indexOf('"', firstQuote + 1);
