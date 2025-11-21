@@ -3,9 +3,10 @@ package es.upm.etsisi.poo;
 import java.time.LocalDate;
 
 public class ComplexProduct extends Product{
-    private LocalDate expirationDate;
+    private String expirationDate;
     private int people;
     private final int MAX_PEOPLE = 100;
+    private ProductType type;
 
     /**
      * Constructor of the Class Product.
@@ -15,23 +16,23 @@ public class ComplexProduct extends Product{
      * @param name     product name
      * @param price    product price
      */
-    public ComplexProduct(int ID, String name, double price, LocalDate expirationDate, int people) {
+    public ComplexProduct(int ID, String name, double price, String expirationDate, int people,ProductType type) {
         super(ID, name, price);
-        if(people <= 0 || people > MAX_PEOPLE)
+        this.type = type;
+        if(people <= 0 || people > MAX_PEOPLE){
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
-        LocalDate today = LocalDate.now();
-        if(expirationDate.isBefore(today))
-            throw new IllegalArgumentException("The expiration date cannot be earlier than today.");
+           // throw new IllegalArgumentException("The expiration date cannot be earlier than today.");
+        }
         this.expirationDate = expirationDate;
         this.people = people;
     }
 
 
-    public LocalDate getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -49,6 +50,11 @@ public class ComplexProduct extends Product{
         return MAX_PEOPLE;
     }
 
+
+    @Override
+    public ProductType getProductType() {
+        return type;
+    }
 
     @Override
     public String toString(){

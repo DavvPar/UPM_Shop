@@ -27,18 +27,6 @@ public class ProductList {
         this.maxNumProduct = MaxNumProduct;
         products = new ArrayList<>();
     }
-
-    /**
-     * Constructor of the class.
-     * Creates a product list from to load from a save file.
-     *
-     * @param MaxNumProduct maximum number of products that can be added
-     * @param filename name of the productList
-     */
-    public ProductList(int MaxNumProduct, String filename) {
-
-    }
-
     /**
      * add list product.
      *
