@@ -57,34 +57,6 @@ public class ProductList {
      * Lists the produc
      * @return
      */
-    /*public boolean listProducts() {
-        boolean listed = false;
-        if (numProduct == 0) {
-            System.out.println("Empty list");
-        } else {
-            System.out.println("Catalog:");
-
-            for (int i = 0; i < numProduct; i++) {
-                Product p = products[i];
-                if(p instanceof ComplexProduct){
-                    ComplexProduct cp = (ComplexProduct) p;
-                    System.out.printf(
-                            "  {class:ComplexProduct, id:%d, name:'%s', price:%.1f, expiration:%s, people:%d}%n",
-                            cp.getID(), cp.getName(), cp.getPrice(),
-                            cp.getExpirationDate(), cp.getPeople());
-                }
-                else {
-                System.out.printf("  {class:Product, id:%d, name:'%s', category:%s, price:%.1f}%n",
-                        p.getID(),
-                        p.getName(),
-                        p.getCategory().getType(),
-                        p.getPrice());
-                }
-            }
-            listed = true;
-        }
-        return listed;
-    }*/
     public boolean listProducts() {
         if (numProduct == 0) {
             System.out.println("Empty list");
@@ -187,12 +159,7 @@ public class ProductList {
         String text = "Catalog:\n";
         for (int i = 0; i < numProduct; i++) {
             Product p = products.get(i);
-            CustomProduct product = (CustomProduct) p;
-            text += "  {class:Product, id:" + p.getID()
-                    + ", name:'" + p.getName()
-                    + "', category:" + product.getCategory().getType()
-                    + ", price:" + String.format("%.1f", (double) p.getPrice())
-                    + "}\n";
+            text += p.toString() + "\n";
         }
         text += "prod list: ok";
         return text;
