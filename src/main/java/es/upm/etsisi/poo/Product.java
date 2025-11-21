@@ -80,6 +80,7 @@ public abstract class  Product {
             throw new IllegalArgumentException("Invalid name.");
         this.name = name;
     }
+
     /**
      * Getter for the price.
      * @return Price of the product

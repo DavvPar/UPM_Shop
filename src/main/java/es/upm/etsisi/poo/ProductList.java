@@ -118,7 +118,8 @@ public class ProductList {
                         updated = true;
                     } else if (field.equalsIgnoreCase("CATEGORY")) {
                         CategoryType type = CategoryType.valueOf(value.toUpperCase());
-                        productToUpdate.setCategory(new Category(type));
+                        CustomProduct customProduct = (CustomProduct) productToUpdate;
+                        customProduct.setCategory(new Category(type));
                         updated = true;
                     } else if (field.equalsIgnoreCase("PRICE")) {
                         double newPrice = Double.parseDouble(value);
@@ -186,9 +187,10 @@ public class ProductList {
         String text = "Catalog:\n";
         for (int i = 0; i < numProduct; i++) {
             Product p = products.get(i);
+            CustomProduct product = (CustomProduct) p;
             text += "  {class:Product, id:" + p.getID()
                     + ", name:'" + p.getName()
-                    + "', category:" + p.getCategory().getType()
+                    + "', category:" + product.getCategory().getType()
                     + ", price:" + String.format("%.1f", (double) p.getPrice())
                     + "}\n";
         }

@@ -57,7 +57,7 @@ public class CustomProduct extends Product{
         return type;
     }
     public Category getCategory(){return category;}
-
+    public void setCategory(Category category){this.category = category;}
     @Override
     public double getPrice() {
         double complexPrice = 0.10 * getPrice() * maxPers;
