@@ -3,6 +3,8 @@ package es.upm.etsisi.poo;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -136,7 +138,7 @@ public class App {
                         int maxPers = Integer.parseInt(rightParts[2]);
                         product = new CustomProduct(id, name, category, price, maxPers);
                     } else {
-                        product = new Product(id, name, category, price);
+                        product = new CustomProduct(id, name, category, price,-1);
                     }
                     if (productlist.addProduct(product)) {
                         String addProduct = product.toString();
@@ -210,14 +212,12 @@ public class App {
                     double price = Double.parseDouble(message[message.length - 3]);
                     String expirationStrg = message[message.length - 2];
                     int maxPeople = Integer.parseInt(message[message.length - 1]);
-
-                    LocalDate expiration = LocalDate.parse(expirationStrg);
-                    if(!validatePlanningTime(command, expiration)){
+                    if(!validatePlanningTime(ProductType.Food, expirationStrg)){
                         return;
                     }
 
                     try {
-                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expiration, maxPeople);
+                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
                         if (productlist.addProduct(complexProduct)) {
                             String stringProdCplx = complexProduct.toString();
                             System.out.println(stringProdCplx);
@@ -336,7 +336,7 @@ private void optionsCash(String[] message) {
         String command = message[1].toLowerCase();
         switch (command) {
             case "add":
-                cashAdd(mssage);
+                cashAdd(message);
                 break;
             case "remove":
                 cashRemove(message);
@@ -426,23 +426,19 @@ private void optionsCash(String[] message) {
         return rightParts;
     }
 
-    private boolean validatePlanningTime(String typeProduct, LocalDate expirationDate) {
-        LocalDate today = LocalDate.now();
+    private boolean validatePlanningTime( ProductType typeProduct, String expirationDate) {
+        String compare = Utils.getTime("GMT+1");
+        if(typeProduct ==ProductType.Food){
 
-        long diffDays = expirationDate.toEpochDay() - today.toEpochDay(); //transforma la fecha a un numero
-
-        if (typeProduct.equalsIgnoreCase("addMeeting")) {
-            System.out.println("12 hours' notice is required");
-            return diffDays > 1;
         }
-        else if (typeProduct.equalsIgnoreCase("addFood")) {
-            System.out.println("Three days' notice is required.");
-            return diffDays >= 3;
+        else {
         }
 
         return false;
     }
-
+    private String addTime(String time,String time2){
+        return null;
+    }
 
     /**
      * Switch to operate all the possible commands for a ticket,

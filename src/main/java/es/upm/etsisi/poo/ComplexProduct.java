@@ -63,7 +63,8 @@ public class ComplexProduct extends Product{
                 ", name:'" + getName() + '\'' +
                 ", price:" + String.format("%.2f", getPrice()) +
                 ", date of Event:" + expirationDate +
-                ", people:" + people +
+                ", max of people allowed:" + MAX_PEOPLE +
+                ", actual people in event:"+people+
                 '}';
     }
 }
