@@ -1,10 +1,12 @@
 package es.upm.etsisi.poo;
 
+import java.util.ArrayList;
+
 public class ProductList {
     /**
      * Array of products to create the list of products.
      */
-    private Product[] products;
+    private ArrayList<Product> products;
     /**
      * Maximum number of products in the list.
      */
@@ -23,7 +25,7 @@ public class ProductList {
     public ProductList(int MaxNumProduct) {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
-        products = new Product[MaxNumProduct];
+        products = new ArrayList<>();
     }
 
     /**
@@ -47,12 +49,12 @@ public class ProductList {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {
             for (int i = 0; i < numProduct; i++) {
-                if (product.getID() == products[i].getID()) {
+                if (product.getID() == products.get(i).getID()) {
                     exists = true;
                 }
             }
             if (!exists) {
-                products[numProduct] = product;
+                products.add(product);
                 numProduct++;
                 added = true;
             } else
@@ -102,7 +104,7 @@ public class ProductList {
         }
         System.out.println("Catalog:");
         for (int i = 0; i < numProduct; i++) {
-            System.out.println("  " + products[i].toString());
+            System.out.println("  " + products.get(i).toString());
         }
         return true;
     }
@@ -154,12 +156,9 @@ public class ProductList {
     public boolean removeProduct(Product selected) {
         boolean removed = false;
         for (int i = 0; i < numProduct; i++) {
-            if (products[i].getID() == selected.getID()) {
-                for (int j = i + 1; j < numProduct; j++) {
-                    products[j - 1] = products[j];
-                }
+            if (products.get(i).getID() == selected.getID()) {
+                products.remove(selected);
                 numProduct--;
-                products[numProduct] = null;
                 removed = true;
             }
         }
@@ -175,8 +174,8 @@ public class ProductList {
     public Product getProduct(int Id) {
         Product find = null;
         for (int i = 0; i < numProduct; i++) {
-            if (products[i].getID() == Id) {
-                find = products[i];
+            if (products.get(i).getID() == Id) {
+                find = products.get(i);
             }
         }
         return find;
@@ -198,7 +197,7 @@ public class ProductList {
     public String toString() {
         String text = "Catalog:\n";
         for (int i = 0; i < numProduct; i++) {
-            Product p = products[i];
+            Product p = products.get(i);
             text += "  {class:Product, id:" + p.getID()
                     + ", name:'" + p.getName()
                     + "', category:" + p.getCategory().getType()
