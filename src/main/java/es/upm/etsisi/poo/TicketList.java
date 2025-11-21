@@ -7,6 +7,7 @@ import java.util.Comparator;
 public class TicketList {
 private ArrayList<Ticket> ticketList;
 private Utils utils;
+private int N_id;
 public TicketList(){
     ticketList = new ArrayList<>();
 }
@@ -19,7 +20,7 @@ public TicketList(){
     private boolean ValidId(String id){
     boolean ok = true;
         for (Ticket ticket : ticketList) {
-            if (ticket.getTicketId().contains(id) && id.length() != 5) {
+            if (ticket.getTicketId().contains(id) || !id.matches("[0-9]+")) {
                 ok = false;
                 break;
             }
@@ -40,6 +41,7 @@ public TicketList(){
             t = new Ticket(createId(),CashId,clientId,stateTicet.empty);
         }else {
             if (ValidId(TicketId)){
+                N_id = Integer.parseInt(TicketId);
             t = new Ticket(utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId,stateTicet.empty);
             }
         }
@@ -57,6 +59,7 @@ public TicketList(){
     while(!ValidId(id)){
         id =utils.getTime("GMT+1") + "-"+utils.getRandomNumber(5);
     }
+    N_id = Integer.parseInt(id);
     return id;
 }
 
@@ -117,16 +120,8 @@ public TicketList(){
      * @param ticket
      */
     public void CloseTicket(Ticket ticket){
-        int IndexO = 0;
-        boolean found= false;
         removeTicket(ticket.getTicketId());
-        for (int i = ticket.getTicketId().length()-1;i>=0;i--){
-            if (ticket.getTicketId().charAt(i) == '-' && !found){
-                IndexO = i;
-                found = true;
-            }
-        }
-        String NewId = utils.getTime("GMT+1") + ticket.getTicketId().substring(IndexO);
+        String NewId = utils.getTime("GMT+1") + N_id;
         ticket.setTicketId(NewId);
         addTicket(ticket);
         ticket.setState(stateTicet.closed);
