@@ -1,10 +1,12 @@
 package es.upm.etsisi.poo;
 
+import java.util.ArrayList;
+
 public class ProductList {
     /**
      * Array of products to create the list of products.
      */
-    private Product[] products;
+    private ArrayList<Product> products;
     /**
      * Maximum number of products in the list.
      */
@@ -23,20 +25,8 @@ public class ProductList {
     public ProductList(int MaxNumProduct) {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
-        products = new Product[MaxNumProduct];
+        products = new ArrayList<>();
     }
-
-    /**
-     * Constructor of the class.
-     * Creates a product list from to load from a save file.
-     *
-     * @param MaxNumProduct maximum number of products that can be added
-     * @param filename name of the productList
-     */
-    public ProductList(int MaxNumProduct, String filename) {
-
-    }
-
     /**
      * add list product.
      *
@@ -47,12 +37,12 @@ public class ProductList {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {
             for (int i = 0; i < numProduct; i++) {
-                if (product.getID() == products[i].getID()) {
+                if (product.getID() == products.get(i).getID()) {
                     exists = true;
                 }
             }
             if (!exists) {
-                products[numProduct] = product;
+                products.add(product);
                 numProduct++;
                 added = true;
             } else
@@ -62,27 +52,31 @@ public class ProductList {
         return added;
     }
 
+
+    /**
+     * Lists the produc
+     * @return
+     */
     public boolean listProducts() {
-        boolean listed = false;
         if (numProduct == 0) {
             System.out.println("Empty list");
-        } else {
-            System.out.println("Catalog:");
-
-            for (int i = 0; i < numProduct; i++) {
-                Product p = products[i];
-                System.out.printf("  {class:Product, id:%d, name:'%s', category:%s, price:%.1f}%n",
-                        p.getID(),
-                        p.getName(),
-                        p.getCategory().getType(),
-                        p.getPrice());
-            }
-            listed = true;
+            return false;
         }
-        return listed;
+        System.out.println("Catalog:");
+        for (int i = 0; i < numProduct; i++) {
+            System.out.println("  " + products.get(i).toString());
+        }
+        return true;
     }
 
-
+    /**
+     * Updates the NAME, CATEGORY or PRICE of the product with
+     * passed ID.
+     * @param idToUpdate ID of the product to update.
+     * @param field The field that will be changed on the product
+     * @param value New value to set the field to
+     * @return
+     */
     public boolean updateProduct(int idToUpdate, String field, String value) {
         boolean updated = false;
         if (numProduct == 0)
@@ -91,12 +85,13 @@ public class ProductList {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
                 if (productToUpdate != null) {
-                    if (field.equalsIgnoreCase("NAME")) { //TODO IMPRIME LAS COMILLAS Y NO FUNCIONA CON ESPACIOS
+                    if (field.equalsIgnoreCase("NAME")) {
                         productToUpdate.setName(value);
                         updated = true;
                     } else if (field.equalsIgnoreCase("CATEGORY")) {
                         CategoryType type = CategoryType.valueOf(value.toUpperCase());
-                        productToUpdate.setCategory(new Category(type));
+                        CustomProduct customProduct = (CustomProduct) productToUpdate;
+                        customProduct.setCategory(new Category(type));
                         updated = true;
                     } else if (field.equalsIgnoreCase("PRICE")) {
                         double newPrice = Double.parseDouble(value);
@@ -122,12 +117,9 @@ public class ProductList {
     public boolean removeProduct(Product selected) {
         boolean removed = false;
         for (int i = 0; i < numProduct; i++) {
-            if (products[i].getID() == selected.getID()) {
-                for (int j = i + 1; j < numProduct; j++) {
-                    products[j - 1] = products[j];
-                }
+            if (products.get(i).getID() == selected.getID()) {
+                products.remove(selected);
                 numProduct--;
-                products[numProduct] = null;
                 removed = true;
             }
         }
@@ -143,8 +135,8 @@ public class ProductList {
     public Product getProduct(int Id) {
         Product find = null;
         for (int i = 0; i < numProduct; i++) {
-            if (products[i].getID() == Id) {
-                find = products[i];
+            if (products.get(i).getID() == Id) {
+                find = products.get(i);
             }
         }
         return find;
@@ -166,12 +158,8 @@ public class ProductList {
     public String toString() {
         String text = "Catalog:\n";
         for (int i = 0; i < numProduct; i++) {
-            Product p = products[i];
-            text += "  {class:Product, id:" + p.getID()
-                    + ", name:'" + p.getName()
-                    + "', category:" + p.getCategory().getType()
-                    + ", price:" + String.format("%.1f", (double) p.getPrice())
-                    + "}\n";
+            Product p = products.get(i);
+            text += p.toString() + "\n";
         }
         text += "prod list: ok";
         return text;

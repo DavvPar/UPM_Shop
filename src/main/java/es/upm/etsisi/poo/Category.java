@@ -27,8 +27,7 @@ public class Category {
     private double discountElectronic=0.03;
 
     /**
-     * Constructor of the Class
-     *
+     * Constructor of the Class Category.
      * @param type;
      */
     public Category(CategoryType type) {
@@ -37,7 +36,6 @@ public class Category {
 
     /**
      * Getter for the type.
-     *
      * @return Type of the category
      */
     public CategoryType getType() {
@@ -45,13 +43,13 @@ public class Category {
     }
     /**
      * Setter for the type
+     * @param type
      */
     public void setType(CategoryType type) {
         this.type = type;
     }
     /**
      * Getter for the discount.
-     *
      * @return Discount of the category
      */
     public double getDiscount() {
@@ -65,8 +63,10 @@ public class Category {
         }
         return discount;
     }
+
     /**
-     * Setter for the discount.
+     * Setter for the discount
+     * @param discount
      */
     public void setDiscount(double discount) {
         switch (getType()){
@@ -80,7 +80,6 @@ public class Category {
 
     /**
      * toString for the object Category, showing its type.
-     *
      * @return String with category data
      */
     @Override
