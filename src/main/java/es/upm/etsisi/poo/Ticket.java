@@ -2,13 +2,16 @@ package es.upm.etsisi.poo;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 /**
- * Tickets is a class for managing the ticket creation
- * and deletion. It also works with the product list,
- * the prices, the dates and bills.
+ * Tickets is a class for managing the ticket creation and deletion. It also works with
+ * the product list, the prices, the dates and bills.
  */
+enum stateTicet{
+    empty,
+    active,
+    closed
+}
 public class Ticket {
     /**
      * Maximum number of products in a list
@@ -18,25 +21,45 @@ public class Ticket {
      * The list of products on the ticket.
      */
     private Product[] productList;
-    private double[] discount ;
-
+    /**
+     * Stores the discount of each product in the ticket.
+     */
+    private double[] discount;
     /**
      * Total price of all the products in the ticket.
      */
     private double totalPrice;
+    /**
+     * Total discount of all the products in the ticket.
+     */
     private double totaldiscount;
     /**
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
-
     /**
-     * ticket class constructor
-     * @param MaxNumProduct Max number of products on the ticket.
+     * DNI of the client that is buying
      */
-    public Ticket(int MaxNumProduct) {
+    private String clienteId;
+    /**
+     * cashId of the cashier that is selling
+     */
+    private String cashId;
+    private String ticketId;
+    private Utils utils;
+    private stateTicet state;
+    /**
+     * Constructor of the Class Ticket.
+     @param idTicket TicketId
+     @param cashId id to cash
+     @param clienteId id to clienteId
+     */
+    public Ticket(String idTicket,String cashId,String clienteId,stateTicet state) {
+        this.ticketId = idTicket;
+        this.cashId = cashId;
+        this.clienteId = clienteId;
         this.NumProductInTicket = 0;
-        this.MaxNumProduct = MaxNumProduct;
+        this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
         this.totalPrice = 0;
         discount = new double[MaxNumProduct];
@@ -51,7 +74,7 @@ public class Ticket {
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         for (int i =0;i<quantity;i++){
-            if (NumProductInTicket < 100){
+            if (NumProductInTicket < 100 && state !=stateTicet.closed){
                     productList[NumProductInTicket] = lista.getProduct(Id);
                 Arrays.sort(productList, Comparator.nullsLast(
                         Comparator.comparing(
@@ -61,6 +84,9 @@ public class Ticket {
                 ));
                     NumProductInTicket++;
                     add = true;
+                    if (state == stateTicet.empty){
+                        state = stateTicet.active;
+                    }
             }
             else {
                 System.out.println("No further products can be added.");
@@ -69,30 +95,39 @@ public class Ticket {
         applyDiscunt();
         return add;
     }
+
     /**
      * Remove ticket product
      * @param Id product id will remove
      */
     public void removeProduct(int Id) {
         for(int i =0;i<NumProductInTicket;i++) {
-            if (productList[i].getID() == Id){
+            if (productList[i].getID() == Id &&state !=stateTicet.closed){
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
                 }
-                NumProductInTicket--;
-                productList[NumProductInTicket] = null;
+
+                productList[NumProductInTicket] = null;NumProductInTicket--;
 
             }
 
         }
+        if (NumProductInTicket == 0){
+            state = stateTicet.empty;
+        }
         applyDiscunt();
     }
 
+    /**
+     * If there are at least 2 products of the same category in the list, it applies
+     * the according discount to it.
+     */
     public void applyDiscunt(){
         int[] categorytype = new int[5];
         discount = new double[MaxNumProduct];
         for (int i =0;i<NumProductInTicket;i++){
-            switch (productList[i].getCategory().getType()){
+            CustomProduct product = (CustomProduct)productList[i];
+            switch (product.getCategory().getType()){
                 case MERCH:
                     categorytype[0]++;
                     break;
@@ -113,30 +148,31 @@ public class Ticket {
             }
         }
         for (int i =0;i<NumProductInTicket;i++){
-            switch (productList[i].getCategory().getType()){
+            CustomProduct product = (CustomProduct)productList[i];
+            switch (product.getCategory().getType()){
                 case MERCH:
                     if (categorytype[0]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*product.getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case BOOK:
                     if (categorytype[1]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*product.getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case CLOTHES:
                     if (categorytype[2]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*product.getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case STATIONERY:
                     if (categorytype[3]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*product.getCategory().getDiscount()*100)/100;
                     }
                     break;
                 case ELECTRONICS:
                     if (categorytype[4]>=2){
-                        discount[i] = Math.floor(productList[i].getPrice()*productList[i].getCategory().getDiscount()*100)/100;
+                        discount[i] = Math.floor(productList[i].getPrice()*product.getCategory().getDiscount()*100)/100;
                     }
                     break;
                 default:
@@ -144,6 +180,7 @@ public class Ticket {
             }
         }
     }
+    
     /**
      * Returns the total price of the whole product list.
      * getter TotalPrice
@@ -168,7 +205,11 @@ public class Ticket {
     public double getFinalPrice(){
         return getTotalPrice() - getTotaldiscount();
     }
-
+    public String  getClienteId(){return clienteId;}
+    public String getCashId(){return cashId;}
+    public String getTicketId(){return ticketId;}
+    public void setTicketId(String id){ticketId = id;}
+    public void setState(stateTicet state) {this.state= state;}
     /**
      * Ticket toString, showing all the
      * @return Ticket
