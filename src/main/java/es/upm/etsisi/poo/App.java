@@ -83,6 +83,7 @@ public class App {
                     break;
                 case "cash":
                     optionsCash(lineSepSpace);
+                    break;
                 case "ticket":
                     optionsOfTicket(lineSepSpace);
                     break;
@@ -138,13 +139,13 @@ public class App {
                     double price = Double.parseDouble(rightParts[1]);
                     Product product;
                     if (rightParts.length == 3) {
-                        int maxPers = Integer.parseInt(rightParts[2]);
+                        int maxPers = Integer.parseInt(message[message.length-1]);
                         product = new CustomProduct(id, name, category, price, maxPers);
                     } else {
                         product = new CustomProduct(id, name, category, price,-1);
                     }
                     if (productlist.addProduct(product)) {
-                        String addProduct = product.toString();
+                        String addProduct = productlist.toString();
                         System.out.println(addProduct);
                         System.out.println("prod add: ok");
                     } else {
@@ -175,7 +176,10 @@ public class App {
                 String field = message[3].toLowerCase();
                 String value = "";
                 if (field.equalsIgnoreCase("name")) {
-                    value = utils.getNameScanner(String.join(" ", message));
+                    value = Utils.getNameScanner(String.join(" ", message));
+                }
+                else{
+                    value = message[message.length-1];
                 }
                 if (validField(field)) {
                     if (productlist.updateProduct(idToUpdate, field, value)) {
@@ -446,6 +450,10 @@ private void optionsCash(String[] message) {
             System.out.println("cash tickets: error");
             return;
         }
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        tickets = ticketList.getTicketofCashId(message[2]);
+        for (int i =0;i<tickets.size();i++){
+        System.out.println(tickets.get(i).toString());}
         //FALTA POR HACERLO
     }
     
@@ -503,8 +511,10 @@ private void optionsCash(String[] message) {
                 if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
                     if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
                         currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
+                        System.out.println("ticket create: ok");
                     } else {
-                        currentTicket = ticketList.createTicket(null, message[3], message[4]);
+                        currentTicket = ticketList.createTicket(null, message[2], message[3]);
+                        System.out.println("ticket create: ok");
                     }
                 }
                 else{
@@ -541,7 +551,7 @@ private void optionsCash(String[] message) {
                     }
                 } catch (Exception e) {
                     System.out.println("inappropriate format");
-                    System.out.println("ticket add <id> <quantity>");
+                    System.out.println("ticket add <ticketID> <CashId> <id> <quantity>");
                 }
                 break;
             case "remove":

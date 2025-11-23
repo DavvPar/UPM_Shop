@@ -84,6 +84,7 @@ public class ProductList {
         else {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
+                
                 if (productToUpdate != null) {
                     if (field.equalsIgnoreCase("NAME")) {
                         productToUpdate.setName(value);

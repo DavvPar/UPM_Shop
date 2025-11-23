@@ -225,7 +225,7 @@ public class Ticket {
                 message += productList[i].toString() + "\n";
             }
         }
-        return message +"Total price: "+getTotalPrice() +"\n"
+        return "Ticket : "+ticketId+"\n"+message +"Total price: "+getTotalPrice() +"\n"
                 + "Total discount: "+getTotaldiscount() +"\n"
                 + "Final Price: " +getFinalPrice() ;
 

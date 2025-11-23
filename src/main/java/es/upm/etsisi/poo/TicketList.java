@@ -39,16 +39,15 @@ public TicketList(){
         Ticket t = null;
         if (TicketId == null){
             t = new Ticket(createId(),CashId,clientId,stateTicket.empty);
+            addTicket(t);
         }else {
             if (ValidId(TicketId)){
             t = new Ticket(Utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId,stateTicket.empty);
+            addTicket(t);
             }
             else{
                 throw new IllegalArgumentException("invalid TicketId");
             }
-        }
-        if(t != null){
-        addTicket(t);
         }
         return t ;
     }
@@ -109,21 +108,11 @@ public TicketList(){
     public Ticket getTicket(String id) {
         Ticket ticket = null;
         for (Ticket t : ticketList){
-            if (t.getTicketId().equals(GetIdnumber(id))){
+            if (t.getTicketId().contains(id)){
                 ticket = t;
             }
         }
         return ticket;
-    }
-    private String GetIdnumber(String Id){
-        String[] resul = Id.trim().split("-");
-        String r = null;
-        for (int i =0; i<resul.length;i++){
-            if (resul[i].length()>=5 && resul[i].matches("[0-9]+")){
-                r = resul[i];
-            }
-        }
-        return r;
     }
 
     /**
