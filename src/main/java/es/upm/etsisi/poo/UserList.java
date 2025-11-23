@@ -172,7 +172,7 @@ public class UserList {
      * @return true if there is already a user on the list with this id
      */
     boolean containsId(String id){
-        return getUserByEmail(id) != null;
+        return getUserByID(id) != null;
     }
 
     /**

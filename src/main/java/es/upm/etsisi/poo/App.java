@@ -497,9 +497,21 @@ private void optionsCash(String[] message) {
         }
         String command = message[1].toLowerCase();
 
+
         switch (command) {
             case "new":
-                System.out.println("ticket new: ok");
+                if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
+                    if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
+                        currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
+                    } else {
+                        currentTicket = ticketList.createTicket(null, message[3], message[4]);
+                    }
+                }
+                else{
+                    throw new IllegalArgumentException("customer cash in existing incorrect format \n"+
+                            "ticket new <ticketId> <CashId> <ClientID> or \n" +
+                            "ticket new <CashId> <ClienteId>");
+                }
                 break;
             case "add":
                 try {

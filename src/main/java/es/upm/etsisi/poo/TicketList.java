@@ -34,9 +34,9 @@ public TicketList(){
      * @param CashId
      * @return ticket
      */
-    public Ticket createTicket(String TicketId,String clientId,String CashId){
+    public Ticket createTicket(String TicketId,String CashId,String clientId){
         Ticket t = null;
-        if (TicketId ==null){
+        if (TicketId == null){
             t = new Ticket(createId(),CashId,clientId,stateTicet.empty);
         }else {
             if (ValidId(TicketId)){
