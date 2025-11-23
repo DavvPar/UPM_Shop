@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -120,9 +121,10 @@ public class App {
         }
 
         String command = message[1].toLowerCase();
+        String input = String.join(" ", message);
+        String[] rightParts = secondPartArray(input);
         switch (command) {
             case "add":
-                String input = String.join(" ", message);
                 if (!input.toLowerCase().startsWith("prod add")) {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers]");
                     return;
@@ -133,7 +135,6 @@ public class App {
                     String name = utils.getNameScanner(line); //cambio en get nombre de scanner
                     int id = Integer.parseInt(message[2]);
 
-                    String[] rightParts = secondPartArray(input);
                     CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
                     Category category = new Category(type);
                     double price = Double.parseDouble(rightParts[1]);
@@ -207,7 +208,7 @@ public class App {
                 break;
 
             case "addmeeting":
-                if (message.length < 6) {
+                if (rightParts.length != 3) {
                     System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
                     return;
                 }
@@ -215,9 +216,9 @@ public class App {
                     String line = String.join(" ", message);
                     String name = utils.getNameScanner(line);
                     int id = Integer.parseInt(message[2]);
-                    double price = Double.parseDouble(message[message.length - 3]);
-                    String expirationStrg = message[message.length - 2];
-                    int maxPeople = Integer.parseInt(message[message.length - 1]);
+                    double price = Double.parseDouble(rightParts[0]);
+                    String expirationStrg = rightParts[1];
+                    int maxPeople = Integer.parseInt(rightParts[2]);
                     if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){
                         return;
                     }
@@ -239,7 +240,8 @@ public class App {
                             "<id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people >");
                 }
             case "addfood":
-                if (message.length < 6) {
+                String in = String.join(" ", message);
+                if (rightParts.length != 3) {
                     System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
                     return;
                 }
@@ -247,9 +249,9 @@ public class App {
                     String line = String.join(" ", message);
                     String name = utils.getNameScanner(line);
                     int id = Integer.parseInt(message[2]);
-                    double price = Double.parseDouble(message[message.length - 3]);
-                    String expirationStrg = message[message.length - 2];
-                    int maxPeople = Integer.parseInt(message[message.length - 1]);
+                    double price = Double.parseDouble(rightParts[0]);
+                    String expirationStrg = rightParts[1];
+                    int maxPeople = Integer.parseInt(rightParts[2]);
                     if(!validatePlanningTime(ProductType.Food, expirationStrg)){
                         return;
                     }
@@ -467,28 +469,13 @@ private void optionsCash(String[] message) {
         return rightParts;
     }
 
-    private boolean validatePlanningTime( ProductType typeProduct, String expirationDate) {
-        String compare = Utils.getTime("GMT+1");
-        boolean ok = true;
-        // Mi formato de tiempo es YYYY-MM-DD-HH:MM
-        // los del output sueren ser YYYY-MM-DD-HH:MM
-        DateTimeFormatter Timeformat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
-        DateTimeFormatter Dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
+        String currentTimeString = Utils.getTime("GMT+1");
+        boolean isValid = true;
 
-        // pasar a LocalDateTime con los formatos
-        LocalDateTime CurrentTime = LocalDateTime.parse(compare, Timeformat);
-            LocalDate  verifiedTime = LocalDate.parse(expirationDate, Dateformat);
-        // Convertir LocalDate a LocalDateTime (añadiendo tiempo 00:00)
-        LocalDateTime dateTime = verifiedTime.atStartOfDay();
-        Duration difference = Duration.between(dateTime, CurrentTime);
-        long hour = difference.toHours();
-        if(typeProduct ==ProductType.Food){
-            ok= hour >= 72;
-        }
-        else {
-            ok = hour >= 12;
-        }
-        return ok;
+
+
+        return isValid;
     }
 
     /**
