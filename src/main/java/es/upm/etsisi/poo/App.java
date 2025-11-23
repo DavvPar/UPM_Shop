@@ -2,6 +2,10 @@ package es.upm.etsisi.poo;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -199,6 +203,37 @@ public class App {
                 break;
 
             case "addmeeting":
+                if (message.length < 6) {
+                    System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
+                    return;
+                }
+                try {
+                    String line = String.join(" ", message);
+                    String name = utils.getNameScanner(line);
+                    int id = Integer.parseInt(message[2]);
+                    double price = Double.parseDouble(message[message.length - 3]);
+                    String expirationStrg = message[message.length - 2];
+                    int maxPeople = Integer.parseInt(message[message.length - 1]);
+                    if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){
+                        return;
+                    }
+
+                    try {
+                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
+                        if (productlist.addProduct(complexProduct)) {
+                            System.out.println(productlist.toString());
+                            System.out.println("prod add: ok");
+                        } else {
+                            System.out.println("prod add: error");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error creating product: " + e.getMessage());
+
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: wrong format. Use prod addMeeting " +
+                            "<id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people >");
+                }
             case "addfood":
                 if (message.length < 6) {
                     System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
@@ -218,8 +253,7 @@ public class App {
                     try {
                         ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
                         if (productlist.addProduct(complexProduct)) {
-                            String stringProdCplx = complexProduct.toString();
-                            System.out.println(stringProdCplx);
+                            System.out.println(productlist.toString());
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -427,16 +461,26 @@ private void optionsCash(String[] message) {
 
     private boolean validatePlanningTime( ProductType typeProduct, String expirationDate) {
         String compare = Utils.getTime("GMT+1");
-        if(typeProduct ==ProductType.Food){
+        boolean ok = true;
+        // Mi formato de tiempo es YYYY-MM-DD-HH:MM
+        // los del output sueren ser YYYY-MM-DD-HH:MM
+        DateTimeFormatter Timeformat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        DateTimeFormatter Dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        // pasar a LocalDateTime con los formatos
+        LocalDateTime CurrentTime = LocalDateTime.parse(compare, Timeformat);
+            LocalDate  verifiedTime = LocalDate.parse(expirationDate, Dateformat);
+        // Convertir LocalDate a LocalDateTime (añadiendo tiempo 00:00)
+        LocalDateTime dateTime = verifiedTime.atStartOfDay();
+        Duration difference = Duration.between(dateTime, CurrentTime);
+        long hour = difference.toHours();
+        if(typeProduct ==ProductType.Food){
+            ok= hour >= 72;
         }
         else {
+            ok = hour >= 12;
         }
-
-        return false;
-    }
-    private String addTime(String time,String time2){
-        return null;
+        return ok;
     }
 
     /**

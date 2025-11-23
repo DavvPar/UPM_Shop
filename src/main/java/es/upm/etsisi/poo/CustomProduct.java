@@ -32,23 +32,24 @@ public class CustomProduct extends Product{
 
     }
 
-    public boolean allowedText(String text){
-        if(personalization.size() >= maxPers) {
+    public boolean allowedText(String[] text){
+        if(text.length <= maxPers) {
             System.out.println("No more custom text can be added.");
             return false;
         }
-        personalization.add(text);
         return true;
 
     }
     public boolean addPersonalized(String personalized){
         boolean add = false;
         String[] r = personalized.trim().split("--p");
-        if (r.length>0){
-            for (int i=0;i<r.length;i++){
-            personalization.add(r[i]);
+            if(allowedText(r)){
+                if (r.length>0){
+                for (int i=0;i<r.length;i++){
+                personalization.add(r[i]);
+                }
+                }
             }
-        }
         return add;
     }
 
