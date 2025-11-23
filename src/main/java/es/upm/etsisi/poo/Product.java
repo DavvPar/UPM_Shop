@@ -11,6 +11,7 @@ enum ProductType{
     Meeting,
     Food
 }
+
 public abstract class  Product {
     /**
      * ID for unique identification of the product.

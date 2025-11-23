@@ -317,7 +317,7 @@ public class App {
                 System.out.println("client add: error");
                 return;
             }
-            if (!Utils.validDNI(dni)) {
+            if (!Utils.validDNI(dni) || !Utils.validNIE(dni)) {
                 System.out.println("client add: error");
                 return;
             }

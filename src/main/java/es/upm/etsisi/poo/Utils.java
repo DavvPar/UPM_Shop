@@ -90,6 +90,26 @@ public class Utils {
         return DNIletter.equals(correctLetter);
     }
 
+    public static boolean validNIE(String nie) {
+        if (nie == null) return false;
+        nie = nie.toUpperCase();
+        if (!nie.matches("^[XYZ][0-9]{7}[A-Z]$")) {
+            return false;
+        }
+        char first = nie.charAt(0);
+        String number = switch (first) {
+            case 'X' -> "0";
+            case 'Y' -> "1";
+            case 'Z' -> "2";
+            default  -> "";
+        };
+        number += nie.substring(1, 8);
+        String letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int num = Integer.parseInt(number);
+        char correctLetter = letters.charAt(num % 23);
+        return correctLetter == nie.charAt(8);
+    }
+
     public static boolean validCashId(String cashId) {
         return ((cashId != null && (cashId.matches("^UW\\d{7}$"))));
     }

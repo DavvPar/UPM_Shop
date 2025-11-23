@@ -12,6 +12,7 @@ enum stateTicket{
     active,
     closed
 }
+
 public class Ticket {
     /**
      * Maximum number of products in a list
