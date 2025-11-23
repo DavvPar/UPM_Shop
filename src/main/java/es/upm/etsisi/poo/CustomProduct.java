@@ -9,6 +9,7 @@ public class CustomProduct extends Product{
     private int maxPers;
     private ProductType type;
     private Category category;
+    private int N_Pers;
 
     /**
      * class constructor
@@ -29,6 +30,7 @@ public class CustomProduct extends Product{
         this.category = category;
         this.maxPers = maxPers;
         this.personalization = new ArrayList<>();
+        N_Pers = 0;
 
     }
 
@@ -47,9 +49,11 @@ public class CustomProduct extends Product{
                 if (r.length>0){
                 for (int i=0;i<r.length;i++){
                 personalization.add(r[i]);
+                N_Pers++;
                 }
                 }
             }
+            setPrice(getPrice()*(1+(0.1*N_Pers)));
         return add;
     }
 
@@ -61,8 +65,7 @@ public class CustomProduct extends Product{
     public void setCategory(Category category){this.category = category;}
     @Override
     public double getPrice() {
-        double complexPrice = 0.10 * getPrice() * maxPers;
-        return super.getPrice() + complexPrice;
+        return super.getPrice();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class CustomProduct extends Product{
         String r = "";
         if (type == ProductType.ProductPersonalized){
             r = ", maxPersonal:"+maxPers;
-            if (personalization.size()!=0){
+            if (!personalization.isEmpty()){
                 r+= "\n, personalizationList:[";
                 for (int i =0;i<personalization.size();i++){
                     if(i<personalization.size()-1){

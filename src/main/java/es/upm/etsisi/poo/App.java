@@ -516,14 +516,28 @@ private void optionsCash(String[] message) {
             case "add":
                 try {
                     int id, quantity;
-                    id = Integer.parseInt(message[2]);
-                    quantity = Integer.parseInt(message[3]);
+                    currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                    id = Integer.parseInt(message[4]);
+                    quantity = Integer.parseInt(message[5]);
+                    String Custom = "";
+                    for (int i =6;i<message.length;i++){
+                        Custom += (message[i]);
+                    }
+                    if (!Custom.isEmpty()){
+                        CustomProduct product = (CustomProduct) productlist.getProduct(id);
+                        product.addPersonalized(Custom);
+                    }
                     try {
                         currentTicket.addProductToTicket(productlist, id, quantity);
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket add: ok");
                     } catch (Exception e) {
                         System.out.println("Error adding product");
+                    }
+                    }else {
+                        throw new IllegalArgumentException("ticket or cashID not found");
                     }
                 } catch (Exception e) {
                     System.out.println("inappropriate format");
@@ -536,18 +550,29 @@ private void optionsCash(String[] message) {
                     return;
                 }
                 try {
-                    int id = Integer.parseInt(message[2]);
+                    currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                    int id = Integer.parseInt(message[message.length-1]);
                     currentTicket.removeProduct(id);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket remove: ok");
+                    }else {
+                        throw new IllegalArgumentException("ticket or cashID not found");
+                    }
                 } catch (Exception e) {
                     System.out.println("inappropriate format" + "\n" + "ticket remove<id>");
                 }
                 break;
             case "print":
-                try {
+                try {currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket print: ok");
+                    }else {
+                        throw new IllegalArgumentException("ticket or cashID not found");
+                    }
                 } catch (Exception e) {
                     System.out.println("ticket print: fail");
                 }

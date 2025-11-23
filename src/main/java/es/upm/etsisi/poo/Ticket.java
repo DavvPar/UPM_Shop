@@ -7,7 +7,7 @@ import java.util.Comparator;
  * Tickets is a class for managing the ticket creation and deletion. It also works with
  * the product list, the prices, the dates and bills.
  */
-enum stateTicet{
+enum stateTicket{
     empty,
     active,
     closed
@@ -47,14 +47,14 @@ public class Ticket {
     private String cashId;
     private String ticketId;
     private Utils utils;
-    private stateTicet state;
+    private stateTicket state;
     /**
      * Constructor of the Class Ticket.
      @param idTicket TicketId
      @param cashId id to cash
      @param clienteId id to clienteId
      */
-    public Ticket(String idTicket,String cashId,String clienteId,stateTicet state) {
+    public Ticket(String idTicket,String cashId,String clienteId,stateTicket state) {
         this.ticketId = idTicket;
         this.cashId = cashId;
         this.clienteId = clienteId;
@@ -74,7 +74,7 @@ public class Ticket {
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         for (int i =0;i<quantity;i++){
-            if (NumProductInTicket < 100 && state !=stateTicet.closed){
+            if (NumProductInTicket < 100 && state !=stateTicket.closed){
                     productList[NumProductInTicket] = lista.getProduct(Id);
                 Arrays.sort(productList, Comparator.nullsLast(
                         Comparator.comparing(
@@ -84,8 +84,8 @@ public class Ticket {
                 ));
                     NumProductInTicket++;
                     add = true;
-                    if (state == stateTicet.empty){
-                        state = stateTicet.active;
+                    if (state == stateTicket.empty){
+                        state = stateTicket.active;
                     }
             }
             else {
@@ -102,7 +102,7 @@ public class Ticket {
      */
     public void removeProduct(int Id) {
         for(int i =0;i<NumProductInTicket;i++) {
-            if (productList[i].getID() == Id &&state !=stateTicet.closed){
+            if (productList[i].getID() == Id &&state !=stateTicket.closed){
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
                 }
@@ -113,7 +113,7 @@ public class Ticket {
 
         }
         if (NumProductInTicket == 0){
-            state = stateTicet.empty;
+            state = stateTicket.empty;
         }
         applyDiscunt();
     }
@@ -209,7 +209,7 @@ public class Ticket {
     public String getCashId(){return cashId;}
     public String getTicketId(){return ticketId;}
     public void setTicketId(String id){ticketId = id;}
-    public void setState(stateTicet state) {this.state= state;}
+    public void setState(stateTicket state) {this.state= state;}
     /**
      * Ticket toString, showing all the
      * @return Ticket
