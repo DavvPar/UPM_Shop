@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -217,6 +218,7 @@ public class App {
                     String name = utils.getNameScanner(line);
                     int id = Integer.parseInt(message[2]);
                     double price = Double.parseDouble(rightParts[0]);
+                    if (!Utils.ValidDate(rightParts[1])){return;}
                     String expirationStrg = rightParts[1];
                     int maxPeople = Integer.parseInt(rightParts[2]);
                     if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){
@@ -317,7 +319,7 @@ public class App {
                 System.out.println("client add: error");
                 return;
             }
-            if (!Utils.validDNI(dni) || !Utils.validNIE(dni)) {
+            if (!(Utils.validDNI(dni) || Utils.validNIE(dni))) {
                 System.out.println("client add: error");
                 return;
             }
@@ -470,11 +472,21 @@ private void optionsCash(String[] message) {
     }
 
     private boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
-        String currentTimeString = Utils.getTime("GMT+1");
+        //YYYY-MM-DD-HH:MM
+        String[] currentTimeString = Utils.getTime("GMT+1").trim().split("[:-]");
+        String[] time = expirationDate.trim().split("[:-]");
+        LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),
+                Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));
+        LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),
+                0,0);
+        long HourD = ChronoUnit.HOURS.between(now,Date);
+        System.out.println(HourD +" estoy aqui");
         boolean isValid = true;
-
-
-
+        if (typeProduct == ProductType.Food) {
+            if (HourD < 72) {isValid = false;}
+        }else{
+            if (HourD< 12){isValid=false;}
+        }
         return isValid;
     }
 

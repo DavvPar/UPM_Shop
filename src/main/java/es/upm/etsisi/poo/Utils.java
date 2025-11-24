@@ -1,5 +1,8 @@
 package es.upm.etsisi.poo;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -11,7 +14,7 @@ public class Utils {
      */
     public static String getTime(String timezone){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone));
-        return calendar.get(Calendar.YEAR) + "-"+calendar.get(Calendar.MONTH)+"-"+
+        return calendar.get(Calendar.YEAR) + "-"+(calendar.get(Calendar.MONTH)+1)+"-"+
                 calendar.get(Calendar.DAY_OF_MONTH) + "-"+ calendar.get(Calendar.HOUR_OF_DAY)+":"+
                 calendar.get(Calendar.MINUTE);
     }
@@ -114,4 +117,15 @@ public class Utils {
         return ((cashId != null && (cashId.matches("^UW\\d{7}$"))));
     }
 
+    public static boolean ValidDate(String Date) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fecha = LocalDate.parse(Date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            System.out.println("Check that the date is correct, exists, and is in the correct format." +
+                    "YYYY/MM/DD");
+            return false;
+        }
+    }
 }
