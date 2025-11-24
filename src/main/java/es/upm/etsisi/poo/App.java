@@ -224,7 +224,6 @@ public class App {
                     if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){
                         return;
                     }
-
                     try {
                         ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
                         if (productlist.addProduct(complexProduct)) {
