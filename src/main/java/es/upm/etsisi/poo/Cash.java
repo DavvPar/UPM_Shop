@@ -14,7 +14,7 @@ public class Cash extends User{
      * @param cashId unique identification of the Cash
      */
     public Cash(String nombre, String email, String cashId){
-        super(email, nombre);
+        super(nombre, email);
         this.cashId = cashId;
     }
 
