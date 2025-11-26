@@ -209,6 +209,7 @@ public class Ticket {
     public String  getClienteId(){return clienteId;}
     public String getCashId(){return cashId;}
     public String getTicketId(){return ticketId;}
+    public stateTicket getState (){return state;}
     public void setTicketId(String id){ticketId = id;}
     public void setState(stateTicket state) {this.state= state;}
     /**

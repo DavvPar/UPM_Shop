@@ -122,9 +122,11 @@ public TicketList(){
      * @param ticket
      */
     public void CloseTicket(Ticket ticket){
+        if (ticket.getState() != stateTicket.closed){
         String NewId = ticket.getTicketId() +"-"+Utils.getTime("GMT+1");
         ticket.setTicketId(NewId);
-        ticket.setState(stateTicket.closed);
+        ticket.setState(stateTicket.closed);}
+
     }
 
     /**
