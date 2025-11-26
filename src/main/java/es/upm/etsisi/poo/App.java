@@ -434,6 +434,8 @@ private void optionsCash(String[] message) {
         }
         String id = message[2];
         boolean removed = userList.removeUser(id);
+        Cash cash  = (Cash) userList.getUserByID(id);
+        ticketList.removeTicket(cash.getIdentifier());
         if (removed) System.out.println("cash remove: ok");
         else System.out.println("cash remove: error");
     }
@@ -479,7 +481,6 @@ private void optionsCash(String[] message) {
         LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),
                 0,0);
         long HourD = ChronoUnit.HOURS.between(now,Date);
-        System.out.println(HourD +" estoy aqui");
         boolean isValid = true;
         if (typeProduct == ProductType.Food) {
             if (HourD < 72) {isValid = false;}
