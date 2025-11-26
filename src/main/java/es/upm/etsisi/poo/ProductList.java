@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class ProductList {
     /**
@@ -45,6 +46,10 @@ public class ProductList {
                 products.add(product);
                 numProduct++;
                 added = true;
+                products.sort(Comparator.nullsLast(
+                        Comparator.comparing(
+                                Product::getName,
+                                String.CASE_INSENSITIVE_ORDER)));
             } else
                 System.out.println("The product already exists");
         } else
