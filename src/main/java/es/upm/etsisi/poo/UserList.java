@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class UserList {
     /**
@@ -43,6 +44,10 @@ public class UserList {
         if (canAdd){
             users.add(client);
             added = true;
+            users.sort(Comparator.nullsLast(
+                    Comparator.comparing(
+                            User::getName,
+                            String.CASE_INSENSITIVE_ORDER)));
             System.out.println(client.toString());
         }
         return added;
