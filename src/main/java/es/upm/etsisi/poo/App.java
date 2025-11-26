@@ -227,7 +227,7 @@ public class App {
                     try {
                         ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
                         if (productlist.addProduct(complexProduct)) {
-                            System.out.println(productlist.toString());
+                            System.out.println(complexProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -248,7 +248,7 @@ public class App {
                 }
                 try {
                     String line = String.join(" ", message);
-                    String name = utils.getNameScanner(line);
+                    String name = Utils.getNameScanner(line);
                     int id = Integer.parseInt(message[2]);
                     double price = Double.parseDouble(rightParts[0]);
                     String expirationStrg = rightParts[1];
@@ -260,7 +260,7 @@ public class App {
                     try {
                         ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
                         if (productlist.addProduct(complexProduct)) {
-                            System.out.println(productlist.toString());
+                            System.out.println(complexProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
