@@ -19,7 +19,7 @@ public class Cash extends User{
     }
 
     public Cash(String nombre, String email){
-        super(email, nombre);
+        super(nombre, email);
         this.cashId = null;
     }
 
