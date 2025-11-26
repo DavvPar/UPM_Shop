@@ -428,14 +428,17 @@ private void optionsCash(String[] message) {
     }
 
     private void cashRemove(String[] message) {
+        boolean removed = false;
         if (message.length < 3) {
             System.out.println("cash remove: error");
             return;
         }
         String id = message[2];
-        boolean removed = userList.removeUser(id);
         Cash cash  = (Cash) userList.getUserByID(id);
+        if (cash != null){
         ticketList.removeTicket(cash.getIdentifier());
+        removed = userList.removeUser(id);
+        }
         if (removed) System.out.println("cash remove: ok");
         else System.out.println("cash remove: error");
     }
@@ -577,6 +580,7 @@ private void optionsCash(String[] message) {
                 try {currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
+                        ticketList.CloseTicket(currentTicket);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket print: ok");
                     }else {
