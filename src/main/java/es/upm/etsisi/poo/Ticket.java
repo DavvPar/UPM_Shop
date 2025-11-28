@@ -77,12 +77,6 @@ public class Ticket {
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100 && state !=stateTicket.closed){
                     productList[NumProductInTicket] = lista.getProduct(Id);
-                Arrays.sort(productList, Comparator.nullsLast(
-                        Comparator.comparing(
-                                lp -> lp.getName(),
-                                String.CASE_INSENSITIVE_ORDER
-                        )
-                ));
                     NumProductInTicket++;
                     add = true;
                     if (state == stateTicket.empty){
@@ -107,9 +101,8 @@ public class Ticket {
                 for (int j = i+1; j<NumProductInTicket;j++){
                     productList[j-1] = productList[j];
                 }
-
-                productList[NumProductInTicket] = null;NumProductInTicket--;
-
+                productList[NumProductInTicket] = null;
+                NumProductInTicket--;
             }
 
         }
@@ -203,6 +196,8 @@ public class Ticket {
         totaldiscount = Math.floor(totaldiscount * 100) / 100;
         return totaldiscount;
     }
+    public Product getProducto(int index){return productList[index];}
+    public int getNumProductInTicket(){return NumProductInTicket;}
     public double getFinalPrice(){
         return getTotalPrice() - getTotaldiscount();
     }
@@ -219,6 +214,12 @@ public class Ticket {
     @Override
     public String toString() {
         String message = "";
+        Arrays.sort(productList, Comparator.nullsLast(
+                Comparator.comparing(
+                        lp -> lp.getName(),
+                        String.CASE_INSENSITIVE_ORDER
+                )
+        ));
         for (int i =0;i<NumProductInTicket;i++){
             if (discount[i]>0) {
                 message += productList[i].toString() + "**discount -" + discount[i] + "\n";

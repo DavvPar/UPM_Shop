@@ -121,9 +121,9 @@ public TicketList(){
      * Method for changing the ticket ID at the time of completion
      * @param ticket
      */
-    public void CloseTicket(Ticket ticket){
+    public void CloseTicket(Ticket ticket,String date){
         if (ticket.getState() != stateTicket.closed){
-        String NewId = ticket.getTicketId() +"-"+Utils.getTime("GMT+1");
+        String NewId = ticket.getTicketId() +"-"+date;
         ticket.setTicketId(NewId);
         ticket.setState(stateTicket.closed);}
 

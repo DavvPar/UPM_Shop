@@ -580,7 +580,17 @@ private void optionsCash(String[] message) {
                 try {currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                        ticketList.CloseTicket(currentTicket);
+                        String date = Utils.getTime("GMT+1");
+                        for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
+                            Product p = currentTicket.getProducto(i);
+                            if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                            if (p.getProductType() == ProductType.Meeting && !validatePlanningTime(ProductType.Meeting,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                        }
+                        ticketList.CloseTicket(currentTicket,date);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket print: ok");
                     }else {
