@@ -428,12 +428,17 @@ private void optionsCash(String[] message) {
     }
 
     private void cashRemove(String[] message) {
+        boolean removed = false;
         if (message.length < 3) {
             System.out.println("cash remove: error");
             return;
         }
         String id = message[2];
-        boolean removed = userList.removeUser(id);
+        Cash cash  = (Cash) userList.getUserByID(id);
+        if (cash != null){
+        ticketList.removeTicket(cash.getIdentifier());
+        removed = userList.removeUser(id);
+        }
         if (removed) System.out.println("cash remove: ok");
         else System.out.println("cash remove: error");
     }
@@ -479,7 +484,6 @@ private void optionsCash(String[] message) {
         LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),
                 0,0);
         long HourD = ChronoUnit.HOURS.between(now,Date);
-        System.out.println(HourD +" estoy aqui");
         boolean isValid = true;
         if (typeProduct == ProductType.Food) {
             if (HourD < 72) {isValid = false;}
@@ -576,6 +580,17 @@ private void optionsCash(String[] message) {
                 try {currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
+                        String date = Utils.getTime("GMT+1");
+                        for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
+                            Product p = currentTicket.getProducto(i);
+                            if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                            if (p.getProductType() == ProductType.Meeting && !validatePlanningTime(ProductType.Meeting,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                        }
+                        ticketList.CloseTicket(currentTicket,date);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket print: ok");
                     }else {

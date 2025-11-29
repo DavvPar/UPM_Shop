@@ -85,17 +85,19 @@ public TicketList(){
     }
 
     /**
-     *method that deletes the ticket from the list
-     * @param id
+     *method that deletes the ticket from the list whit cashId
+     * @param cashid
      * @return returns whether it was deleted or not;
      * if false, the ticket searched for is not found in the list
      */
-    public boolean removeTicket(String id) {
+    public boolean removeTicket(String cashid) {
         boolean removed = false;
-        Ticket ticket = getTicket(id);
-        if (ticketList.contains(ticket)){
-            ticketList.remove(ticket);
-            removed = true;
+        for (Ticket ticket: ticketList) {
+            String CashId= ticket.getCashId();
+            if (CashId.equals(cashid)) {
+                ticketList.remove(ticket);
+                removed = true;
+            }
         }
         return removed;
     }
@@ -119,10 +121,12 @@ public TicketList(){
      * Method for changing the ticket ID at the time of completion
      * @param ticket
      */
-    public void CloseTicket(Ticket ticket){
-        String NewId = ticket.getTicketId() +"-"+Utils.getTime("GMT+1");
+    public void CloseTicket(Ticket ticket,String date){
+        if (ticket.getState() != stateTicket.closed){
+        String NewId = ticket.getTicketId() +"-"+date;
         ticket.setTicketId(NewId);
-        ticket.setState(stateTicket.closed);
+        ticket.setState(stateTicket.closed);}
+
     }
 
     /**
