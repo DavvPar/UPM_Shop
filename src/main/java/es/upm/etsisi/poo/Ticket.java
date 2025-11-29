@@ -177,7 +177,7 @@ public class Ticket {
     
     /**
      * Returns the total price of the whole product list.
-     * getter TotalPrice
+     * Getter TotalPrice
      * @return TotalPrice
      */
     public double getTotalPrice(){
@@ -188,7 +188,13 @@ public class Ticket {
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
-    public double getTotaldiscount(){
+
+    /**
+     * Returns the total discount made in the whole product list
+     * Getter TotalDiscount
+     * @return TotalDiscount
+     */
+    public double getTotalDiscount(){
         totaldiscount =0 ;
         for (int i =0; i < NumProductInTicket; i++){
             totaldiscount += discount[i];
@@ -196,17 +202,55 @@ public class Ticket {
         totaldiscount = Math.floor(totaldiscount * 100) / 100;
         return totaldiscount;
     }
-    public Product getProducto(int index){return productList[index];}
+    /**
+     * Getter for a product by its id
+     * @param index product id
+     * @return product with said id
+     */
+    public Product getProduct(int index){return productList[index];}
+    /**
+     * Getter for number of products in ticket
+     * @return number of products
+     */
     public int getNumProductInTicket(){return NumProductInTicket;}
+    /**
+     * Getter for price, taking into account the discount
+     * @return final price with applied discount
+     */
     public double getFinalPrice(){
-        return getTotalPrice() - getTotaldiscount();
+        return getTotalPrice() - getTotalDiscount();
     }
-    public String  getClienteId(){return clienteId;}
+    /**
+     * Getter for clientId
+     * @return client identification
+     */
+    public String getClientId(){return clienteId;}
+    /**
+     * Getter for cashId
+     * @return cashier identification
+     */
     public String getCashId(){return cashId;}
+    /**
+     * Getter for ticket id
+     * @return ticket identification
+     */
     public String getTicketId(){return ticketId;}
+    /**
+     * Getter for ticket state
+     * @return current ticket state
+     */
     public stateTicket getState (){return state;}
+    /**
+     * Setter for ticket id
+     * @param id id for the ticket
+     */
     public void setTicketId(String id){ticketId = id;}
+    /**
+     * Setter for state
+     * @param state new ticket state
+     */
     public void setState(stateTicket state) {this.state= state;}
+
     /**
      * Ticket toString, showing all the
      * @return Ticket
@@ -229,7 +273,7 @@ public class Ticket {
             }
         }
         return "Ticket : "+ticketId+"\n"+message +"Total price: "+getTotalPrice() +"\n"
-                + "Total discount: "+getTotaldiscount() +"\n"
+                + "Total discount: "+getTotalDiscount() +"\n"
                 + "Final Price: " +getFinalPrice() ;
 
     }

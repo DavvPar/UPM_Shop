@@ -1,5 +1,9 @@
 package es.upm.etsisi.poo;
 
+/**
+ * User is an abstract class created to then declare new types
+ * of user such as clients and cashiers, that extend from User
+ */
 public abstract class User {
     /**
      * Name of the user
@@ -42,16 +46,15 @@ public abstract class User {
     public void setEmail(String email){this.email = email;}
 
     /**
-     * Abstract method to get the identifier of the user.
-     * Each extension from user will define this method.
+     * Abstract method to get the identifier of the user
+     * Each extension from user will define this method
      * @return user identifier
      */
     public abstract String getIdentifier();
 
     /**
-     * Abstract method toString for users.
-     * Each extension from user will define this method.
+     * Abstract method toString for users
+     * Each extension from user will define this method
      */
-    @Override
     public abstract String toString();
 }

@@ -15,37 +15,42 @@ import java.util.Scanner;
 /**
  * App is the main class where the program is executed. It uses the methods from other classes
  * and executes a Command Line Interface for the user to interact with and introduce commands
- * to operate with the data.
+ * to operate with the data
  */
 public class App {
     /**
-     * Declares all the possible categories on
-     * the program with their discount included.
+     * Declares all the possible categories on the program with
+     * their discount included
      */
     static Scanner sc = new Scanner(System.in);
     /**
-     * Maximum number of products that the product list
-     * can have.
+     * Maximum number of products that the product list can have
      */
     static int MaxNumProduct = 200;
     /**
-     * Maximum number of products that the ticket
-     * can have.
+     * Maximum number of products that the ticket can have
      */
     Utils utils = new Utils();
     /**
-     * Initialize the ticket with 200 as the
-     * maximum amount of products.
+     * Current ticket being used
      */
     static Ticket currentTicket;
+    /**
+     * Current ist of products
+     */
     static ProductList productlist = new ProductList(MaxNumProduct);
+    /**
+     * Current list of users
+     */
     static UserList userList = new UserList();
+    /**
+     * Current list of tickets
+     */
     static TicketList ticketList = new TicketList();
 
     /**
-     * Main structure for executing the app.
-     *
-     * @param args
+     * Main structure for executing the app
+     * @param args arguments
      */
     public static void main(String[] args) {
         try {
@@ -67,7 +72,7 @@ public class App {
     /**
      * This method is the core of the main program and
      * determines how the application runs, it executes
-     * the introduced commands.
+     * the introduced commands
      */
     private void run(Scanner scanner) {
         boolean cont = true;
@@ -109,7 +114,7 @@ public class App {
     }
 
     /**
-     * Switch to operate all the possible commands for a product,
+     * Switch to operate all the possible commands for a product
      * and its list, including add, list, update and remove, calling
      * for methods in the Product and ProductList to implement the commands.
      *
@@ -278,7 +283,13 @@ public class App {
         }
     }
 
-    
+    /**
+     * Switch to operate all the possible commands for a client
+     * and some for user list, including add, remove and list, calling
+     * for methods in Client and UserList to implement the commands.
+     *
+     * @param message array of Strings with parameters of the command
+     */
     private void optionsClient(String[] message) {
         if (message.length < 2) {
             System.out.println("Usage: client add/remove/list");
@@ -300,6 +311,11 @@ public class App {
         }
     }
 
+    /**
+     * Tries to add the client to the User list, checking every possible
+     * error before trying to add
+     * @param message parameters for client
+     */
     private void clientAdd(String[] message) {
         try {
             String fullLine = String.join(" ", message);
@@ -343,6 +359,10 @@ public class App {
         }
     }
 
+    /**
+     * Tries to remove the client from the user list
+     * @param message identification of the client
+     */
     private void clientRemove(String[] message) {
         if (message.length < 3) {
             System.out.println("client remove: error");
@@ -357,18 +377,24 @@ public class App {
         }
     }
 
+    /**
+     * Lists the clients from the user list, calling from
+     * the method in UserList class
+     */
     private void clientList() {
-        ArrayList<Client> clients = userList.getClients();
-        clients.sort(Comparator.comparing(Client::getName, String.CASE_INSENSITIVE_ORDER));
-        System.out.println("Client:");
-        for (Client c : clients) {
-            System.out.println("  " + c.toString());
-        }
+        userList.printClients();
         System.out.println("client list: ok");
     }
 
-
-private void optionsCash(String[] message) {
+    /**
+     * Switch to operate all the possible commands for a cashier
+     * and some for user list, including add, remove, list, and list
+     * all cashier tickets, calling for methods in Cash and UserList
+     * to implement the commands
+     *
+     * @param message array of Strings with parameters of the command
+     */
+    private void optionsCash(String[] message) {
         if (message.length < 2) {
             System.out.println("Usage: cash add/remove/list/tickets");
             return;
@@ -392,6 +418,11 @@ private void optionsCash(String[] message) {
         }
     }
 
+    /**
+     * Tries to add the cash to the user list, checking every possible
+     * error before trying to add
+     * @param message parameters for cashier
+     */
     private void cashAdd(String[] message) {
         try {
             String fullLine = String.join(" ", message);
@@ -427,6 +458,10 @@ private void optionsCash(String[] message) {
         }
     }
 
+    /**
+     * Tries to remove the cashier from the user list
+     * @param message cashier identification
+     */
     private void cashRemove(String[] message) {
         boolean removed = false;
         if (message.length < 3) {
@@ -443,16 +478,20 @@ private void optionsCash(String[] message) {
         else System.out.println("cash remove: error");
     }
 
+    /**
+     * Lists the cashiers from the user list, calling from
+     * the method in UserList class
+     */
     private void cashList() {
-        ArrayList<Cash> cashiers = userList.getCashiers();
-        cashiers.sort(Comparator.comparing(Cash::getName, String.CASE_INSENSITIVE_ORDER));
-        System.out.println("Cash:");
-        for (Cash c : cashiers) {
-            System.out.println("  " + c.toString());
-        }
+        userList.printCashiers();
         System.out.println("cash list: ok");
     }
 
+    /**
+     * Lists all the tickets from the cashier, checking in the
+     * ticket list and printing if they are from said cashier
+     * @param message cashier identification
+     */
     private void cashTickets(String[] message) {
         if (message.length < 3) {
             System.out.println("cash tickets: error");
@@ -496,7 +535,7 @@ private void optionsCash(String[] message) {
     /**
      * Switch to operate all the possible commands for a ticket,
      * including new, add, remove and print, calling for
-     * methods in the Ticket class that implement the commands.
+     * methods in the Ticket class that implement the commands
      *
      * @param message array of Strings with parameters of the command
      */
@@ -582,7 +621,7 @@ private void optionsCash(String[] message) {
                     if (userList.containsId(CashId)&& currentTicket !=null){
                         String date = Utils.getTime("GMT+1");
                         for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
-                            Product p = currentTicket.getProducto(i);
+                            Product p = currentTicket.getProduct(i);
                             if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
                                 currentTicket.removeProduct(p.getID());
                             }
@@ -605,7 +644,7 @@ private void optionsCash(String[] message) {
 
     /**
      * Boolean to check if a field introduced by the user is
-     * valid or not.
+     * valid or not
      *
      * @param field field to check its validity
      * @return true or false (valid or not)
@@ -627,7 +666,7 @@ private void optionsCash(String[] message) {
     }
 
     /**
-     * Welcomes the user to the program and suggests the use of the help command.
+     * Welcomes the user to the program and suggests the use of the help command
      */
     private void init() {
         System.out.println("Welcome to the ticket module App.");
@@ -636,7 +675,7 @@ private void optionsCash(String[] message) {
     }
 
     /**
-     * Shows in screen all the possible commands for the user to choose.
+     * Shows in screen all the possible commands for the user to choose
      */
     private void helpCommand() {
         String[] commands = {
@@ -682,7 +721,7 @@ private void optionsCash(String[] message) {
     }
 
     /**
-     * Shows in screen the farewell message to the user.
+     * Shows in screen the farewell message to the user
      */
     private void exitProgram() {
         System.out.println("Closing application.");
@@ -690,7 +729,7 @@ private void optionsCash(String[] message) {
     }
 
     /**
-     * Shows in screen that the command introduced is unknown.
+     * Shows in screen that the command introduced is unknown
      */
     private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");

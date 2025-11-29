@@ -6,6 +6,10 @@ import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+/**
+ * Utils is a class created for storing useful methods for the program
+ * that do not belong in any created class
+ */
 public class Utils {
     /**
      *method that returns the date of a time zone

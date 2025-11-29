@@ -3,12 +3,31 @@ package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * CustomProduct is a class for instancing simple products that can be customized
+ * They have basic attributes and sometimes can be personalized by the user, adding
+ * a new layer to them
+ */
 public class CustomProduct extends Product{
+    /**
+     * List of personalizations
+     */
     private List<String> personalization;
+    /**
+     * Maximum number of personalizations
+     */
     private int maxPers;
+    /**
+     * Type of product
+     */
     private ProductType type;
+    /**
+     * Category of product
+     */
     private Category category;
+    /**
+     * Current personalizations
+     */
     private int N_Pers;
 
     /**
@@ -17,7 +36,7 @@ public class CustomProduct extends Product{
      * @param name product name
      * @param category product category
      * @param price product price
-     * @param maxPers maximum customisation
+     * @param maxPers maximum personalizations for product
      */
     public CustomProduct(int ID, String name, Category category, double price, int maxPers) {
         super(ID, name, price);
@@ -34,6 +53,11 @@ public class CustomProduct extends Product{
 
     }
 
+    /**
+     * Boolean to check if the text on the personalization is valid
+     * @param text text to check
+     * @return true if valid, false if invalid
+     */
     public boolean allowedText(String[] text){
         if(text.length <= maxPers) {
             System.out.println("No more custom text can be added.");
@@ -42,6 +66,14 @@ public class CustomProduct extends Product{
         return true;
 
     }
+
+    /**
+     * Tries to add String personalized to the personalizations
+     * of the product, checking if there are personalizations left to do
+     * on it and if the text is valid
+     * @param personalized text to add if valid
+     * @return true if added, false if not
+     */
     public boolean addPersonalized(String personalized){
         boolean add = false;
         String[] r = personalized.trim().split("--p");
@@ -57,17 +89,38 @@ public class CustomProduct extends Product{
         return add;
     }
 
+    /**
+     * Getter for product type
+     * @return product type
+     */
     @Override
     public ProductType getProductType() {
         return type;
     }
+    /**
+     * Getter for category
+     * @return category
+     */
     public Category getCategory(){return category;}
+    /**
+     * Setter for category
+     * @param category category
+     */
     public void setCategory(Category category){this.category = category;}
+    /**
+     * Getter for the price
+     * @return price
+     */
     @Override
     public double getPrice() {
         return super.getPrice();
     }
 
+    /**
+     * toString of the object CustomProduct, showing its id,
+     * name, category, price and personalizations
+     * @return String containing product info
+     */
     @Override
     public String toString() {
         String r = "";
@@ -85,7 +138,12 @@ public class CustomProduct extends Product{
                     }
                 }
         }
-        return "{class:"+getProductType()+", id:"+super.getID()+", name:'"+super.getName()+"', category:"+
-                getCategory()+", price:"+super.getPrice()+r+"}";
+        return "{class:"+getProductType() +
+                ", id:"+super.getID() +
+                ", name:'"+super.getName() +
+                "', category:"+ getCategory() +
+                ", price:"+super.getPrice() +
+                r +
+                "}";
     }
 }

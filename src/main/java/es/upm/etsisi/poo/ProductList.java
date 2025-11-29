@@ -3,23 +3,27 @@ package es.upm.etsisi.poo;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * ProductList is a class created to manage all types of products in a list,
+ * adding them, removing them and basically operating with products
+ */
 public class ProductList {
     /**
-     * Array of products to create the list of products.
+     * Array of products to create the list of products
      */
     private ArrayList<Product> products;
     /**
-     * Maximum number of products in the list.
+     * Maximum number of products in the list
      */
     private int maxNumProduct;
     /**
-     * Current number of products in the list.
+     * Current number of products in the list
      */
     private int numProduct;
 
     /**
-     * Constructor of the class.
-     * Creates an empty product list.
+     * Constructor of the class
+     * Creates an empty product list
      *
      * @param MaxNumProduct maximum number of products that can be added
      */
@@ -29,10 +33,9 @@ public class ProductList {
         products = new ArrayList<>();
     }
     /**
-     * add list product.
-     *
+     * Adds a passed product to the product list
      * @param product product will add
-     * @return true or false
+     * @return true if added, false if failed
      */
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
@@ -59,8 +62,8 @@ public class ProductList {
 
 
     /**
-     * Lists the produc
-     * @return
+     * Lists all the products from the list
+     * @return true if successful, false if not
      */
     public boolean listProducts() {
         if (numProduct == 0) {
@@ -76,11 +79,11 @@ public class ProductList {
 
     /**
      * Updates the NAME, CATEGORY or PRICE of the product with
-     * passed ID.
-     * @param idToUpdate ID of the product to update.
+     * passed ID
+     * @param idToUpdate ID of the product to update
      * @param field The field that will be changed on the product
      * @param value New value to set the field to
-     * @return
+     * @return true if updated, false if not
      */
     public boolean updateProduct(int idToUpdate, String field, String value) {
         boolean updated = false;
@@ -116,8 +119,7 @@ public class ProductList {
 
     /**
      * Removes the selected product from the list, checking
-     * if it is in the list and removing all its instances.
-     *
+     * if it is in the list and removing all its instances
      * @param selected product will remove
      */
     public boolean removeProduct(Product selected) {
@@ -133,8 +135,7 @@ public class ProductList {
     }
 
     /**
-     * Getter for a Product using its ID to identify.
-     *
+     * Getter for a Product using its ID to identify
      * @param Id product ID
      * @return Product with said ID
      */
@@ -149,16 +150,17 @@ public class ProductList {
     }
 
     /**
-     * getter numProduct
+     * Getter of number of products
      * @return numProduct
      */
     public int getNumProduct(){
         return numProduct;
     }
+
     /**
-     * toString
-     *
-     * @return ProductList
+     * toString for the list of products, showing all
+     * the products in the list
+     * @return ProductList string
      */
     @Override
     public String toString() {

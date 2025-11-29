@@ -4,35 +4,43 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class TicketList {
-private ArrayList<Ticket> ticketList;
-
-public TicketList(){
-    ticketList = new ArrayList<>();
-}
+    /**
+     * Array of tickets to create the list of tickets
+     */
+    private ArrayList<Ticket> ticketList;
 
     /**
-     * method that checks if the ID is valid
-     * @param id
-     * @return true if id is valid and false if not
+     * Constructor of the class
+     * No parameters
+     */
+    public TicketList(){
+        ticketList = new ArrayList<>();
+    }
+
+    /**
+     * Checks if passed ID is valid
+     * @param id ticket id to check validness
+     * @return true if valid id, false if not
      */
     private boolean ValidId(String id){
-    boolean ok = true;
-    if (!ticketList.isEmpty()){
-        for (Ticket ticket : ticketList) {
-            if (ticket.getTicketId().contains(id) || !id.matches("[0-9]+") || id.length()<5) {
-                ok = false;
-                break;
+        boolean ok = true;
+        if (!ticketList.isEmpty()){
+            for (Ticket ticket : ticketList) {
+                if (ticket.getTicketId().contains(id) || !id.matches("[0-9]+") || id.length()<5) {
+                    ok = false;
+                    break;
+                }
             }
         }
+        return ok;
     }
-    return ok;
-}
 
     /**
-     * method that returns a created ticket
-     * @param TicketId
-     * @param clientId
-     * @param CashId
+     * A way to create tickets, similar to a ticket constructor
+     * @param TicketId id for the new ticket, can be either null (creates new)
+     *                 or a valid one, already created
+     * @param clientId client that buys the ticket
+     * @param CashId cashier that operates the ticket
      * @return ticket
      */
     public Ticket createTicket(String TicketId,String CashId,String clientId){
@@ -51,9 +59,10 @@ public TicketList(){
         }
         return t ;
     }
+
     /**
-     * method that creates an ID to assign
-     * @return return a valid id to assign
+     * Creates a ticketId (for tickets with null id) with valid format
+     * @return valid id to assign
      */
     private String createId(){
     String id = Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
@@ -61,12 +70,12 @@ public TicketList(){
         id =Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
     }
     return id;
-}
+    }
 
     /**
-     * method that adds a ticket to the ticket list
-      * @param ticket
-     * @return success or failure
+     * Adds a new ticket to the ticket list
+     * @param ticket ticked added
+     * @return true if success, false if failed
      */
     public boolean addTicket(Ticket ticket) {
         boolean added = false, exists = false;
@@ -85,10 +94,9 @@ public TicketList(){
     }
 
     /**
-     *method that deletes the ticket from the list whit cashId
-     * @param cashid
-     * @return returns whether it was deleted or not;
-     * if false, the ticket searched for is not found in the list
+     * Deletes all the tickets created with passed cashId
+     * @param cashid cashId that will have its tickets removed
+     * @return returns true if deleted, false if not found ticket/cashId
      */
     public boolean removeTicket(String cashid) {
         boolean removed = false;

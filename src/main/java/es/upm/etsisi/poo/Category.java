@@ -5,6 +5,7 @@ package es.upm.etsisi.poo;
  * a discount, it is used to give a operate with products
  * and calculate the discount for each type in a ticket.
  */
+
 enum CategoryType {
     MERCH,
     STATIONERY,
@@ -14,11 +15,11 @@ enum CategoryType {
 }
 public class Category {
     /**
-     * Defines the concrete type of Category.
+     * Defines the concrete type of Category
      */
     private CategoryType type;
     /**
-     * Percentage of discount for each specific category.
+     * Percentage of discount for each specific category
      */
     private double discountMerch = 0;
     private double discountStationery= 0.05;
@@ -27,7 +28,7 @@ public class Category {
     private double discountElectronic=0.03;
 
     /**
-     * Constructor of the Class Category.
+     * Constructor of the Class Category
      * @param type;
      */
     public Category(CategoryType type) {
@@ -35,7 +36,7 @@ public class Category {
     }
 
     /**
-     * Getter for the type.
+     * Getter for the type
      * @return Type of the category
      */
     public CategoryType getType() {
@@ -48,8 +49,9 @@ public class Category {
     public void setType(CategoryType type) {
         this.type = type;
     }
+
     /**
-     * Getter for the discount.
+     * Getter for the discount
      * @return Discount of the category
      */
     public double getDiscount() {
@@ -65,8 +67,9 @@ public class Category {
     }
 
     /**
-     * Setter for the discount
-     * @param discount
+     * Setter for the discount to the passed value, overriding
+     * its base value
+     * @param discount discount to set
      */
     public void setDiscount(double discount) {
         switch (getType()){
@@ -79,7 +82,7 @@ public class Category {
     }
 
     /**
-     * toString for the object Category, showing its type.
+     * toString for the object Category, showing its type
      * @return String with category data
      */
     @Override

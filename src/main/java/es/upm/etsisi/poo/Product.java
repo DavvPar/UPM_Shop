@@ -5,6 +5,7 @@ package es.upm.etsisi.poo;
  * that define a unique product, it is used to process
  * them and show its data.
  */
+
 enum ProductType{
     ProductPersonalized,
     Product,
@@ -14,26 +15,26 @@ enum ProductType{
 
 public abstract class  Product {
     /**
-     * ID for unique identification of the product.
+     * ID for unique identification of the product
      */
     private final int ID;
     /**
-     * Indicates the type of product.
+     * Indicates the type of product
      */
     private Category category;
     /**
-     * Name of the product.
+     * Name of the product
      */
     private String name;
     /**
-     * Price of the product with no discounts.
+     * Price of the product with no discounts
      */
     private double price;
 
 
     /**
-     * Constructor of the Class Product.
-     * Checks if the entering values are valid for a Product.
+     * Constructor of the Class Product
+     * Checks if the entering values are valid for a Product
      * @param ID product ID
      * @param name product name
      * @param price product price
@@ -53,19 +54,19 @@ public abstract class  Product {
     }
 
     /**
-     * getter for the productType
+     * Getter for the productType
      * @return productType
      */
     public abstract ProductType getProductType();
     /**
-     * Getter for the ID.
+     * Getter for the ID
      * @return ID of the product
      */
     public int getID() {
         return ID;
     }
     /**
-     * Getter for the name.
+     * Getter for the name
      * @return Name of the product
      */
     public String getName() {
@@ -74,7 +75,7 @@ public abstract class  Product {
 
     /**
      * Setter for the name
-     * @param name
+     * @param name name
      */
     public void setName(String name) {
         if (name == null || name.length() >= 100)
@@ -83,7 +84,7 @@ public abstract class  Product {
     }
 
     /**
-     * Getter for the price.
+     * Getter for the price
      * @return Price of the product
      */
     public double getPrice() {
@@ -91,8 +92,8 @@ public abstract class  Product {
     }
 
     /**
-     * Setter for the price.
-     * @param price
+     * Setter for the price
+     * @param price quantity
      */
     public void setPrice(double price) {
         if (price <= 0)
@@ -102,7 +103,7 @@ public abstract class  Product {
 
     /**
      * toString for the object Product, showing its ID, name,
-     * category and price, also tied to Category class toString method.
+     * category and price, also tied to Category class toString method
      * @return String with product data
      */
     @Override

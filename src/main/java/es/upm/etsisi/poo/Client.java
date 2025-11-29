@@ -1,5 +1,9 @@
 package es.upm.etsisi.poo;
 
+/**
+ * Cash is an extension of Users that needs a Cashier to be created
+ * Has unique identification and creates tickets to purchase products
+ */
 public class Client extends User {
     /**
      * Identification of the client, consisting on 8 numbers and a letter
@@ -11,7 +15,6 @@ public class Client extends User {
     private String cashId;
 
     /**
-     *
      * Constructor of the class Client
      * @param name name of the Client
      * @param DNI unique identification of the Client
@@ -25,8 +28,8 @@ public class Client extends User {
     }
 
     /**
-     * Getter for DNI
-     * @return DNI
+     * Getter for identifier
+     * @return identifier
      */
     public String getIdentifier(){return DNI;}
 
@@ -52,10 +55,11 @@ public class Client extends User {
      */
     @Override
     public String toString() {
-        return "{class:Client" +
-                ", name:" + getName() +
-                ", email:" + getEmail() +
-                ", DNI:" + getIdentifier() +
-                "}";
+        return "Client{" +
+                ", identifier=" + getIdentifier() +
+                ", name=" + getName() +
+                ", email=" + getEmail() +
+                ", cash=" + getCashId() +
+        "}";
     }
 }

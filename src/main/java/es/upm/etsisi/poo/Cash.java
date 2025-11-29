@@ -1,25 +1,33 @@
 package es.upm.etsisi.poo;
 
+/**
+ * Cash is an extension of Users that is necessary for declaring
+ * new Clients, they have unique identification and tickets are
+ * tied to a Cashier
+ */
 public class Cash extends User{
-
-
     /**
      * Cashier id, consisting in letters "UW" and 7 random numbers
      */
     private String cashId;
     /**
      * Constructor of the class Cash
-     * @param nombre name of the Cash
+     * @param name name of the Cash
      * @param email email of the Cash
      * @param cashId unique identification of the Cash
      */
-    public Cash(String nombre, String email, String cashId){
-        super(nombre, email);
+    public Cash(String name, String email, String cashId){
+        super(name, email);
         this.cashId = cashId;
     }
 
-    public Cash(String nombre, String email){
-        super(nombre, email);
+    /**
+     * Constructor of the class Cash
+     * @param name name of the Cash
+     * @param email email of the Cash
+     */
+    public Cash(String name, String email){
+        super(name, email);
         this.cashId = null;
     }
 
@@ -45,10 +53,10 @@ public class Cash extends User{
      */
     @Override
     public String toString() {
-        return "{class:Cash" +
-                ", name:" + getName() +
-                ", email:" + getEmail() +
-                ", cashId:" + getIdentifier() +
+        return "Cash{" +
+                ", identifier=" + getIdentifier() +
+                ", name=" + getName() +
+                ", email=" + getEmail() +
                 "}";
     }
 }

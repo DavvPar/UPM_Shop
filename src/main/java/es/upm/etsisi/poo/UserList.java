@@ -3,6 +3,11 @@ package es.upm.etsisi.poo;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * UserList is a class created to manage all types of users in a list,
+ * adding them, removing them and with some control methods for cashiers
+ * and clients
+ */
 public class UserList {
     /**
      * List of users
@@ -26,17 +31,18 @@ public class UserList {
     public boolean addClient(Client client) {
         boolean canAdd = true;
         boolean added = false;
-        // Comprueba si existe el id en la lista
+        // Checks if id is in userlist
         if (containsId(client.getIdentifier())) {
             System.out.println("Already exists a client with DNI: " + client.getIdentifier());
             canAdd = false;
         }
-        // Comprueba si existe el email en la lista
+        // Checks if email is in userlist
         if (containsEmail(client.getEmail())){
             System.out.println("Already exists a user with email: " + client.getEmail());
+            canAdd = false;
         }
         User cashier = getUserByID(client.getCashId());
-        // Comprueba si existe el cajero que le esta creando
+        // Checks if cashier exists in userlist
         if (!(cashier instanceof Cash)) {
             System.out.println("No existing cashier with cashId: " + client.getCashId());
             canAdd = false;
@@ -53,8 +59,6 @@ public class UserList {
         return added;
     }
 
-
-
     /**
      * Adds a cash to the List
      * Name and email format validations must be done in main
@@ -64,15 +68,15 @@ public class UserList {
     public boolean addCash(Cash cash) {
         boolean canAdd = true;
         boolean added = false;
-        // Comprueba si se le dio un id al crearlo, si no tiene uno, se lo da antes de crearlo
+        // Checks if id was given on creation, if not, gives it one
         if (cash.getIdentifier() == null) {
             cash.setCashId(generateUniqueCashId());
-        // Comprueba si existe el id en la lista
+        // If it had id, checks if id is in userlist
         } else if (containsId(cash.getIdentifier())) {
             System.out.println("Already exists a cash with cashId: " + cash.getIdentifier());
             canAdd = false;
         }
-        // Comprueba si existe el email en la lista
+        // Checks if email is in userlist
         if (containsEmail(cash.getEmail())){
             System.out.println("Already exists a user with email: " + cash.getEmail());
             canAdd = false;
@@ -80,6 +84,10 @@ public class UserList {
         if(canAdd){
             users.add(cash);
             added = true;
+            users.sort(Comparator.nullsLast(
+                    Comparator.comparing(
+                            User::getName,
+                            String.CASE_INSENSITIVE_ORDER)));
             System.out.println(cash.toString());
         }
         return added;
@@ -118,9 +126,9 @@ public class UserList {
     }
 
     /**
-     * Getter for a certain user, searching for its identifier
+     * Getter for a certain User, searching for its identifier
      * @param identifier DNI for Client, CashId for Cashiers
-     * @return User with said identifier
+     * @return User with passed identifier
      */
     public User getUserByID(String identifier) {
         identifier = identifier.toUpperCase();
@@ -132,6 +140,11 @@ public class UserList {
         return null; //If not found
     }
 
+    /**
+     * Getter for a certain User, searching for its email
+     * @param email email for all types of User
+     * @return User with passed email
+     */
     private User getUserByEmail(String email) {
         email = email.toUpperCase();
         for (User user : users) {
@@ -141,8 +154,6 @@ public class UserList {
         }
         return null;
     }
-
-
 
     /**
      * Getter for all clients
