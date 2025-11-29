@@ -525,9 +525,15 @@ public class App {
         long HourD = ChronoUnit.HOURS.between(now,Date);
         boolean isValid = true;
         if (typeProduct == ProductType.Food) {
-            if (HourD < 72) {isValid = false;}
+            if (HourD < 72) {
+                System.out.println("Error adding product");
+                isValid = false;
+            }
         }else{
-            if (HourD< 12){isValid=false;}
+            if (HourD< 12){
+                System.out.println("Error adding meeting");
+                isValid=false;
+            }
         }
         return isValid;
     }
@@ -735,3 +741,4 @@ public class App {
         System.out.println("Command unknown. Type \"help\" to see commands:");
     }
 }
+
