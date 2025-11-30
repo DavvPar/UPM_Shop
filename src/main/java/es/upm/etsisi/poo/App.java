@@ -77,7 +77,7 @@ public class App {
     private void run(Scanner scanner) {
         boolean cont = true;
         while (cont) {
-            System.out.print("tUPM> ");
+            System.out.print("\ntUPM> ");
             String line = scanner.nextLine();
             String[] lineSepSpace = line.split(" ");
 
@@ -281,7 +281,130 @@ public class App {
                             "<id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people >");
                 }
                 break;
+            default:
+                unknownCommand();
+                break;
+        }
+    }
 
+    /**
+     * Switch to operate all the possible commands for a ticket,
+     * including new, add, remove and print, calling for
+     * methods in the Ticket class that implement the commands
+     *
+     * @param message array of Strings with parameters of the command
+     */
+    private void optionsOfTicket(String[] message) {
+        if (message.length < 2) {
+            System.out.println("Usage: ticket with new, add, remove or print");
+            return;
+        }
+        String command = message[1].toLowerCase();
+
+
+        switch (command) {
+            case "new":
+                if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
+                    if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
+                        currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
+                        currentTicket.setState(stateTicket.empty);
+                        System.out.println(currentTicket.toString());
+                        System.out.println("ticket new: ok");
+                    } else {
+                        currentTicket = ticketList.createTicket(null, message[2], message[3]);
+                        currentTicket.setState(stateTicket.empty);
+                        System.out.println(currentTicket.toString());
+                        System.out.println("ticket new: ok");
+                    }
+                }
+                else{
+                    System.out.println("Incorrect format or IDs, use: \n"+
+                            "ticket new <ticketId> <CashId> <ClientID> or \n" +
+                            "ticket new <CashId> <ClientId>");
+                }
+                break;
+            case "add":
+                try {
+                    int id, quantity;
+                    currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                        id = Integer.parseInt(message[4]);
+                        quantity = Integer.parseInt(message[5]);
+                        String Custom = "";
+                        for (int i =6;i<message.length;i++){
+                            Custom += (message[i]);
+                        }
+                        if (!Custom.isEmpty()){
+                            CustomProduct product = (CustomProduct) productlist.getProduct(id);
+                            product.addPersonalized(Custom);
+                        }
+                        try {
+                            currentTicket.addProductToTicket(productlist, id, quantity);
+                            System.out.println(currentTicket.toString());
+                            currentTicket.setState(stateTicket.active);
+                            System.out.println("ticket add: ok");
+                        } catch (Exception e) {
+                            System.out.println("Error adding product");
+                        }
+                    }else {
+                        System.out.println("ticket or cashID not found");
+                    }
+                } catch (Exception e) {
+                    System.out.println("inappropriate format");
+                    System.out.println("ticket add <ticketID> <CashId> <id> <quantity>");
+                }
+                break;
+            case "remove":
+                if (message.length != 5) {
+                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
+                    return;
+                }
+                try {
+                    currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                        int id = Integer.parseInt(message[4]);
+                        currentTicket.removeProduct(id);
+                        System.out.println(currentTicket.toString());
+                        System.out.println("ticket remove: ok");
+                    }else {
+                        System.out.println("ticket or cashID not found");
+                    }
+                } catch (Exception e) {
+                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
+                }
+                break;
+            case "print":
+                try {currentTicket = ticketList.getTicket(message[2]);
+                    String CashId = message[3];
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                        String date = Utils.getTime("GMT+1");
+                        for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
+                            Product p = currentTicket.getProduct(i);
+                            if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                            if (p.getProductType() == ProductType.Meeting && !validatePlanningTime(ProductType.Meeting,date) ){
+                                currentTicket.removeProduct(p.getID());
+                            }
+                        }
+                        ticketList.CloseTicket(currentTicket,date);
+                        System.out.println(currentTicket.toString());
+                        System.out.println("ticket print: ok");
+                    }else {
+                        throw new IllegalArgumentException("ticket or cashID not found");
+                    }
+                } catch (Exception e) {
+                    System.out.println("ticket print: fail");
+                }
+                break;
+            case "list":
+                System.out.println(ticketList.toString());
+                break;
+            default:
+                unknownCommand();
+                break;
         }
     }
 
@@ -309,7 +432,7 @@ public class App {
                 clientList();
                 break;
             default:
-                System.out.println("Usage: client add/remove/list");
+                unknownCommand();
         }
     }
 
@@ -416,7 +539,7 @@ public class App {
                 cashTickets(message);
                 break;
             default:
-                System.out.println("Usage: cash add/remove/list/tickets");
+                unknownCommand();
         }
     }
 
@@ -538,118 +661,6 @@ public class App {
             }
         }
         return isValid;
-    }
-
-    /**
-     * Switch to operate all the possible commands for a ticket,
-     * including new, add, remove and print, calling for
-     * methods in the Ticket class that implement the commands
-     *
-     * @param message array of Strings with parameters of the command
-     */
-    private void optionsOfTicket(String[] message) {
-        if (message.length < 2) {
-            System.out.println("Usage: ticket with new, add, remove or print");
-            return;
-        }
-        String command = message[1].toLowerCase();
-
-
-        switch (command) {
-            case "new":
-                if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
-                    if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
-                        currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
-                        System.out.println(currentTicket.toString());
-                        System.out.println("ticket new: ok");
-                    } else {
-                        currentTicket = ticketList.createTicket(null, message[2], message[3]);
-                        System.out.println(currentTicket.toString());
-                        System.out.println("ticket new: ok");
-                    }
-                }
-                else{
-                    System.out.println("Incorrect format or IDs, use: \n"+
-                            "ticket new <ticketId> <CashId> <ClientID> or \n" +
-                            "ticket new <CashId> <ClientId>");
-                }
-                break;
-            case "add":
-                try {
-                    int id, quantity;
-                    currentTicket = ticketList.getTicket(message[2]);
-                    String CashId = message[3];
-                    if (userList.containsId(CashId)&& currentTicket !=null){
-                    id = Integer.parseInt(message[4]);
-                    quantity = Integer.parseInt(message[5]);
-                    String Custom = "";
-                    for (int i =6;i<message.length;i++){
-                        Custom += (message[i]);
-                    }
-                    if (!Custom.isEmpty()){
-                        CustomProduct product = (CustomProduct) productlist.getProduct(id);
-                        product.addPersonalized(Custom);
-                    }
-                    try {
-                        currentTicket.addProductToTicket(productlist, id, quantity);
-                        System.out.println(currentTicket.toString());
-                        System.out.println("ticket add: ok");
-                    } catch (Exception e) {
-                        System.out.println("Error adding product");
-                    }
-                    }else {
-                        System.out.println("ticket or cashID not found");
-                    }
-                } catch (Exception e) {
-                    System.out.println("inappropriate format");
-                    System.out.println("ticket add <ticketID> <CashId> <id> <quantity>");
-                }
-                break;
-            case "remove":
-                if (message.length != 5) {
-                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
-                    return;
-                }
-                try {
-                    currentTicket = ticketList.getTicket(message[2]);
-                    String CashId = message[3];
-                    if (userList.containsId(CashId)&& currentTicket !=null){
-                    int id = Integer.parseInt(message[4]);
-                    currentTicket.removeProduct(id);
-                    System.out.println(currentTicket.toString());
-                    System.out.println("ticket remove: ok");
-                    }else {
-                        System.out.println("ticket or cashID not found");
-                    }
-                } catch (Exception e) {
-                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
-                }
-                break;
-            case "print":
-                try {currentTicket = ticketList.getTicket(message[2]);
-                    String CashId = message[3];
-                    if (userList.containsId(CashId)&& currentTicket !=null){
-                        String date = Utils.getTime("GMT+1");
-                        for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
-                            Product p = currentTicket.getProduct(i);
-                            if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
-                                currentTicket.removeProduct(p.getID());
-                            }
-                            if (p.getProductType() == ProductType.Meeting && !validatePlanningTime(ProductType.Meeting,date) ){
-                                currentTicket.removeProduct(p.getID());
-                            }
-                        }
-                        ticketList.CloseTicket(currentTicket,date);
-                    System.out.println(currentTicket.toString());
-                    System.out.println("ticket print: ok");
-                    }else {
-                        throw new IllegalArgumentException("ticket or cashID not found");
-                    }
-                } catch (Exception e) {
-                    System.out.println("ticket print: fail");
-                }
-                break;
-        }
     }
 
     /**

@@ -126,22 +126,23 @@ public class CustomProduct extends Product{
         String r = "";
         if (type == ProductType.ProductPersonalized){
             r = ", maxPersonal:"+maxPers;
-            if (!personalization.isEmpty()){
-                r+= "\n, personalizationList:[";
-                for (int i =0;i<personalization.size();i++){
-                    if(i<personalization.size()-1){
-                        r+= personalization.get(i)+", ";
-                    }
-                    else {
-                        r+= personalization.get(i)+"]";
-                    }
+            if (!personalization.isEmpty()) {
+                r += ", personalizationList:[";
+                if (personalization.size() > 1) {
+                    for (int i = 1; i < personalization.size(); i++) {
+                        if (i < personalization.size() - 1) {
+                            r += personalization.get(i) + ", ";
+                        } else {
+                            r += personalization.get(i) + "]";
+                        }
                     }
                 }
+            }
         }
         return "{Class:"+getProductType() +
                 ", id:"+super.getID() +
                 ", name:'"+super.getName() +
-                "', category:"+ getCategory() +
+                "', "+ getCategory().toString() +
                 ", price:"+super.getPrice() +
                 r +
                 "}";

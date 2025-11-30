@@ -26,7 +26,7 @@ public class TicketList {
         boolean ok = true;
         if (!ticketList.isEmpty()){
             for (Ticket ticket : ticketList) {
-                if (ticket.getTicketId().contains(id) || !id.matches("[0-9]+") || id.length()<5) {
+                if (ticket.getTicketId().substring(ticket.getTicketId().length()).equals(id) || !id.matches("[0-9]+") || id.length()<5) {
                     ok = false;
                 }
             }
@@ -164,7 +164,7 @@ public class TicketList {
         String text = "Ticket list:\n";
         for (int i = 0; i < ticketList.size()-1; i++){
             Ticket t = ticketList.get(i);
-            text += t.getTicketId() + " - " + t.getState();
+            text += t.getTicketId() + " - " + t.getState() + "\n";
         }
         return text;
     }
