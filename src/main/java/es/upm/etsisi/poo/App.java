@@ -96,7 +96,8 @@ public class App {
                     break;
                 case "echo":
                     String[] echoSepSpace = line.split("\"");
-                    System.out.println("echo \"" + echoSepSpace[1] + "\"");
+                    System.out.println("\"" + echoSepSpace[1] + "\"");
+
                     break;
                 case "help":
                     helpCommand();
@@ -152,7 +153,7 @@ public class App {
                         product = new CustomProduct(id, name, category, price,-1);
                     }
                     if (productlist.addProduct(product)) {
-                        String addProduct = productlist.toString();
+                        String addProduct = product.toString();
                         System.out.println(addProduct);
                         System.out.println("prod add: ok");
                     } else {
@@ -685,7 +686,7 @@ public class App {
      */
     private void helpCommand() {
         String[] commands = {
-                "◦ Client/Cash commands:",
+                "◦ Client/Cash:",
                 "   client add \"<name>\" <DNI> <email> <cashId>",
                 "   client remove <DNI>",
                 "   client list",
@@ -694,14 +695,14 @@ public class App {
                 "   cash list",
                 "   cash tickets <id>",
 
-                "◦ Ticket commands:",
+                "◦ Ticket:",
                 "   ticket new [<id>] <cashId> <userId>",
                 "   ticket add <ticketId> <cashId> <prodId> <amount> [--p<txt> --p<txt>]",
                 "   ticket remove <ticketId> <cashId> <prodId>",
                 "   ticket print <ticketId> <cashId>",
                 "   ticket list",
 
-                "◦ Product commands:",
+                "◦ Product:",
                 "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>]",
                 "   prod update <id> NAME|CATEGORY|PRICE <value>",
                 "   prod addFood [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
@@ -709,7 +710,7 @@ public class App {
                 "   prod list",
                 "   prod remove <id>",
 
-                "◦ General commands:",
+                "◦ General:",
                 "   echo \"<texto>\"",
                 "   help",
                 "   exit"
@@ -720,7 +721,7 @@ public class App {
         }
 
         System.out.println("\n" + "Categories: " +
-                "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS, FOOD, MEETING" +
+                "MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS" +
                 "\nDiscounts if there are ≥2 units in the category: " +
                 "MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%"
         );

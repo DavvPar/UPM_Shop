@@ -54,9 +54,9 @@ public class Cash extends User{
     @Override
     public String toString() {
         return "Cash{" +
-                ", identifier=" + getIdentifier() +
-                ", name=" + getName() +
-                ", email=" + getEmail() +
-                "}";
+                "identifier='" + getIdentifier() +
+                "', name='" + getName() +
+                "', email='" + getEmail() +
+                "'}";
     }
 }

@@ -37,8 +37,8 @@ public class UserList {
             canAdd = false;
         }
         // Checks if email is in userlist
-        if (containsEmail(client.getEmail())){
-            System.out.println("Already exists a user with email: " + client.getEmail());
+        if (containsEmail(client.getEmail()) && getUserByEmail(client.getEmail()) instanceof Cash){
+            System.out.println("Already exists a cashier with email: " + client.getEmail());
             canAdd = false;
         }
         User cashier = getUserByID(client.getCashId());
@@ -77,8 +77,8 @@ public class UserList {
             canAdd = false;
         }
         // Checks if email is in userlist
-        if (containsEmail(cash.getEmail())){
-            System.out.println("Already exists a user with email: " + cash.getEmail());
+        if (containsEmail(cash.getEmail()) && getUserByEmail(cash.getEmail()) instanceof Client){
+            System.out.println("Already exists a client with email: " + cash.getEmail());
             canAdd = false;
         }
         if(canAdd){

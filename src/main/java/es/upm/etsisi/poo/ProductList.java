@@ -50,9 +50,8 @@ public class ProductList {
                 numProduct++;
                 added = true;
                 products.sort(Comparator.nullsLast(
-                        Comparator.comparing(
-                                Product::getName,
-                                String.CASE_INSENSITIVE_ORDER)));
+                        Comparator.comparing(Product::getID)
+                        ));
             } else
                 System.out.println("The product already exists");
         } else
