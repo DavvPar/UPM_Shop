@@ -98,13 +98,12 @@ public class ComplexProduct extends Product{
      */
     @Override
     public String toString(){
-        return "{Product" +
+        return "{Class:" + getProductType() +
                 ", id:" + getID() +
                 ", name:'" + getName() + '\'' +
                 ", price:" + String.format("%.2f", getPrice()) +
                 ", date of Event:" + expirationDate +
-                ", max of people allowed:" + MAX_PEOPLE +
-                ", actual people in event:"+people+
+                ", max of people allowed:" + people +
                 '}';
     }
 }

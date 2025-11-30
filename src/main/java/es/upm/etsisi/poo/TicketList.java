@@ -22,7 +22,7 @@ public class TicketList {
      * @param id ticket id to check validness
      * @return true if valid id, false if not
      */
-    private boolean ValidId(String id){
+    private boolean validId(String id){
         boolean ok = true;
         if (!ticketList.isEmpty()){
             for (Ticket ticket : ticketList) {
@@ -49,12 +49,13 @@ public class TicketList {
             t = new Ticket(createId(),CashId,clientId,stateTicket.empty);
             addTicket(t);
         }else {
-            if (ValidId(TicketId)){
+            if (validId(TicketId)){
             t = new Ticket(Utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId,stateTicket.empty);
             addTicket(t);
             }
             else{
-                throw new IllegalArgumentException("invalid TicketId");
+                System.out.println("Invalid TicketId");
+                return null;
             }
         }
         return t ;
@@ -66,7 +67,7 @@ public class TicketList {
      */
     private String createId(){
     String id = Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
-    while(!ValidId(id)){
+    while(!validId(id)){
         id =Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
     }
     return id;
