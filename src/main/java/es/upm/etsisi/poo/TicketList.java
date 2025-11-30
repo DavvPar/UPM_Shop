@@ -28,7 +28,6 @@ public class TicketList {
             for (Ticket ticket : ticketList) {
                 if (ticket.getTicketId().contains(id) || !id.matches("[0-9]+") || id.length()<5) {
                     ok = false;
-                    break;
                 }
             }
         }
@@ -46,7 +45,8 @@ public class TicketList {
     public Ticket createTicket(String TicketId,String CashId,String clientId){
         Ticket t = null;
         if (TicketId == null){
-            t = new Ticket(createId(),CashId,clientId,stateTicket.empty);
+            String newId = createId();
+            t = new Ticket(newId,CashId,clientId,stateTicket.empty);
             addTicket(t);
         }else {
             if (validId(TicketId)){
@@ -66,11 +66,12 @@ public class TicketList {
      * @return valid id to assign
      */
     private String createId(){
-    String id = Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
-    while(!validId(id)){
-        id =Utils.getTime("GMT+1") + "-"+Utils.getRandomNumber(5);
-    }
-    return id;
+        String id;
+        do {
+            id =  String.valueOf(Utils.getRandomNumber(5));
+        } while (!validId(id));
+        String finalId = Utils.getTime("GMT+1") + "-" + id;
+        return finalId;
     }
 
     /**
@@ -157,5 +158,14 @@ public class TicketList {
                                     )
                 );
         return t;
+    }
+
+    public String toString(){
+        String text = "Ticket list:\n";
+        for (int i = 0; i < ticketList.size()-1; i++){
+            Ticket t = ticketList.get(i);
+            text += t.getTicketId() + " - " + t.getState();
+        }
+        return text;
     }
 }

@@ -34,6 +34,7 @@ public class Utils {
         }
         return Integer.parseInt(resul.toString());
     }
+
     /**
      * Takes the name from between ""
      * @param message

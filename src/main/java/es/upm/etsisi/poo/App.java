@@ -246,6 +246,7 @@ public class App {
                     System.out.println("Error: wrong format. Use prod addMeeting " +
                             "<id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people >");
                 }
+                break;
             case "addfood":
                 String in = String.join(" ", message);
                 if (rightParts.length != 3) {
@@ -597,7 +598,7 @@ public class App {
                         System.out.println("Error adding product");
                     }
                     }else {
-                        throw new IllegalArgumentException("ticket or cashID not found");
+                        System.out.println("ticket or cashID not found");
                     }
                 } catch (Exception e) {
                     System.out.println("inappropriate format");
@@ -605,23 +606,23 @@ public class App {
                 }
                 break;
             case "remove":
-                if (message.length != 3) {
-                    System.out.println("inappropriate format" + "\n" + "ticket remove<id>");
+                if (message.length != 5) {
+                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
                     return;
                 }
                 try {
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                    int id = Integer.parseInt(message[message.length-1]);
+                    int id = Integer.parseInt(message[4]);
                     currentTicket.removeProduct(id);
                     System.out.println(currentTicket.toString());
                     System.out.println("ticket remove: ok");
                     }else {
-                        throw new IllegalArgumentException("ticket or cashID not found");
+                        System.out.println("ticket or cashID not found");
                     }
                 } catch (Exception e) {
-                    System.out.println("inappropriate format" + "\n" + "ticket remove<id>");
+                    System.out.println("inappropriate format" + "\n" + "ticket remove <ticketId> <cashId> <prodId>");
                 }
                 break;
             case "print":

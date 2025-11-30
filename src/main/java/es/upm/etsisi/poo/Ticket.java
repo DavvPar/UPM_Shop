@@ -96,13 +96,13 @@ public class Ticket {
      * @param Id product id will remove
      */
     public void removeProduct(int Id) {
-        for(int i =0;i<NumProductInTicket;i++) {
-            if (productList[i].getID() == Id &&state !=stateTicket.closed){
-                for (int j = i+1; j<NumProductInTicket;j++){
+        for(int i=0; i <= NumProductInTicket; i++) {
+            if (productList[i].getID() == Id && state != stateTicket.closed){
+                for (int j = i+1; j <= NumProductInTicket; j++){
                     productList[j-1] = productList[j];
+                    NumProductInTicket--;
                 }
                 productList[NumProductInTicket] = null;
-                NumProductInTicket--;
             }
 
         }
