@@ -164,7 +164,8 @@ public class TicketList {
         String text = "Ticket list:\n";
         for (int i = 0; i < ticketList.size()-1; i++){
             Ticket t = ticketList.get(i);
-            text += t.getTicketId() + " - " + t.getState() + "\n";
+            String state = String.valueOf(t.getState());
+            text += t.getTicketId() + " - " + state.toUpperCase() + "\n";
         }
         return text;
     }
