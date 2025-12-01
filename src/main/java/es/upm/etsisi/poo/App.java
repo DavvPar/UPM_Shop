@@ -227,6 +227,10 @@ public class App {
                     if (!Utils.ValidDate(rightParts[1])){return;}
                     String expirationStrg = rightParts[1];
                     int maxPeople = Integer.parseInt(rightParts[2]);
+                    if (maxPeople>100){
+                        System.out.println("have exceeded the maximum number of people allowed(100)");
+                        break;
+                    }
                     if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){
                         return;
                     }
@@ -260,6 +264,10 @@ public class App {
                     double price = Double.parseDouble(rightParts[0]);
                     String expirationStrg = rightParts[1];
                     int maxPeople = Integer.parseInt(rightParts[2]);
+                    if (maxPeople>100){
+                        System.out.println("have exceeded the maximum number of people allowed(100)");
+                        break;
+                    }
                     if(!validatePlanningTime(ProductType.Food, expirationStrg)){
                         return;
                     }
@@ -328,9 +336,11 @@ public class App {
                     int id, quantity;
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
+                    id = Integer.parseInt(message[4]);
+                    Product p = productlist.getProduct(id);
+                    quantity = Integer.parseInt(message[5]);
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                        id = Integer.parseInt(message[4]);
-                        quantity = Integer.parseInt(message[5]);
+                        if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){
                         String Custom = "";
                         for (int i =6;i<message.length;i++){
                             Custom += (message[i]);
@@ -339,10 +349,18 @@ public class App {
                             CustomProduct product = (CustomProduct) productlist.getProduct(id);
                             product.addPersonalized(Custom);
                         }
+                        }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
+                            ComplexProduct product =(ComplexProduct) p;
+                            product.setPeople(quantity);
+                            if(!(quantity <= product.getMAX_PEOPLE())){
+                                System.out.println("have exceeded the maximum number of people allowed");
+                                break;
+                            }
+                            quantity = 1;
+                        }
                         try {
                             currentTicket.addProductToTicket(productlist, id, quantity);
                             System.out.println(currentTicket.toString());
-                            currentTicket.setState(stateTicket.active);
                             System.out.println("ticket add: ok");
                         } catch (Exception e) {
                             System.out.println("Error adding product");
@@ -352,7 +370,8 @@ public class App {
                     }
                 } catch (Exception e) {
                     System.out.println("inappropriate format");
-                    System.out.println("ticket add <ticketID> <CashId> <id> <quantity>");
+                    System.out.println("ticket add <ticketID> <CashId> <id> <quantity>" +"\n"+
+                            "ticket add <ticketID> <CashId> <id> <people>");
                 }
                 break;
             case "remove":
@@ -378,22 +397,24 @@ public class App {
             case "print":
                 try {currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
+                    String date ="";
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                        String date = Utils.getTime("GMT+1");
                         for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
                             Product p = currentTicket.getProduct(i);
-                            if (p.getProductType() == ProductType.Food && !validatePlanningTime(ProductType.Food,date) ){
-                                currentTicket.removeProduct(p.getID());
+                            if (p.getProductType() == ProductType.Food || p.getProductType() == ProductType.Meeting){
+                                ComplexProduct product= (ComplexProduct) p;
+                                date = ((ComplexProduct) p).getExpirationDate();
+                                if (!validatePlanningTime(p.getProductType(),date)){
+                                    currentTicket.removeProduct(p.getID());
+                                }
                             }
-                            if (p.getProductType() == ProductType.Meeting && !validatePlanningTime(ProductType.Meeting,date) ){
-                                currentTicket.removeProduct(p.getID());
-                            }
+
                         }
-                        ticketList.CloseTicket(currentTicket,date);
+                        ticketList.CloseTicket(currentTicket,Utils.getTime("GMT+1"));
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket print: ok");
                     }else {
-                        throw new IllegalArgumentException("ticket or cashID not found");
+                        System.out.println("ticket or cashID not found");
                     }
                 } catch (Exception e) {
                     System.out.println("ticket print: fail");
@@ -401,6 +422,7 @@ public class App {
                 break;
             case "list":
                 System.out.println(ticketList.toString());
+                System.out.println("list: ok");
                 break;
             default:
                 unknownCommand();

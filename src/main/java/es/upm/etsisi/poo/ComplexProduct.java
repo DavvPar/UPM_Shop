@@ -10,14 +10,15 @@ public class ComplexProduct extends Product{
      * Date of expiration (no longer valid)
      */
     private String expirationDate;
+    private Double priceP;
     /**
      * Number of people permitted in the product
      */
     private int people;
     /**
-     * Maximum possible number of people is 100
+     * Maximum possible number of people
      */
-    private final int MAX_PEOPLE = 100;
+    private int MAX_PEOPLE;
     /**
      * Type of product (Food/Meeting)
      */
@@ -37,12 +38,13 @@ public class ComplexProduct extends Product{
     public ComplexProduct(int ID, String name, double price, String expirationDate, int people,ProductType type) {
         super(ID, name, price);
         this.type = type;
-        if(people <= 0 || people > MAX_PEOPLE){
-            throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
-           // throw new IllegalArgumentException("The expiration date cannot be earlier than today.");
-        }
+        MAX_PEOPLE = people;
         this.expirationDate = expirationDate;
-        this.people = people;
+        people =0;
+        this.priceP = price;
+        if(people < 0 || people > MAX_PEOPLE){
+            throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
+        }
     }
 
     /**
@@ -74,6 +76,8 @@ public class ComplexProduct extends Product{
         if(people <= 0 || people > MAX_PEOPLE)
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
         this.people = people;
+        super.setPrice((people*priceP*100)/100);
+
     }
     /**
      * Getter for the maximum number of people
@@ -103,7 +107,8 @@ public class ComplexProduct extends Product{
                 ", name:'" + getName() + '\'' +
                 ", price:" + String.format("%.2f", getPrice()) +
                 ", date of Event:" + expirationDate +
-                ", max of people allowed:" + people +
+                ", max of people allowed:" + MAX_PEOPLE +
+                ", actual people in event:"+people+
                 '}';
     }
 }

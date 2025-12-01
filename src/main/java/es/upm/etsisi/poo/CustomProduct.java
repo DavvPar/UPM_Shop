@@ -83,9 +83,9 @@ public class CustomProduct extends Product{
                 personalization.add(r[i]);
                 N_Pers++;
                 }
+                    super.setPrice(super.getPrice()*(1+(0.1*N_Pers)));
                 }
             }
-            super.setPrice(super.getPrice()*(1+(0.1*N_Pers)));
         return add;
     }
 

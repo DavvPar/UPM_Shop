@@ -74,9 +74,11 @@ public class Ticket {
      */
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
+        Product p = lista.getProduct(Id);
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100 && state !=stateTicket.closed){
-                    productList[NumProductInTicket] = lista.getProduct(Id);
+
+                    productList[NumProductInTicket] = p;
                     NumProductInTicket++;
                     add = true;
                     if (state == stateTicket.empty){
@@ -87,7 +89,6 @@ public class Ticket {
                 System.out.println("No further products can be added.");
             }
         }
-        applyDiscunt();
         return add;
     }
 
@@ -96,6 +97,7 @@ public class Ticket {
      * @param Id product id will remove
      */
     public void removeProduct(int Id) {
+        Product p = null;
         for(int i=0; i <= NumProductInTicket; i++) {
             if (productList[i].getID() == Id && state != stateTicket.closed){
                 for (int j = i+1; j <= NumProductInTicket; j++){
@@ -109,7 +111,6 @@ public class Ticket {
         if (NumProductInTicket == 0){
             state = stateTicket.empty;
         }
-        applyDiscunt();
     }
 
     /**
@@ -120,6 +121,7 @@ public class Ticket {
         int[] categorytype = new int[5];
         discount = new double[MaxNumProduct];
         for (int i =0;i<NumProductInTicket;i++){
+            if (productList[i].getProductType()== ProductType.Product||productList[i].getProductType()== ProductType.ProductPersonalized){
             CustomProduct product = (CustomProduct)productList[i];
             switch (product.getCategory().getType()){
                 case MERCH:
@@ -140,8 +142,10 @@ public class Ticket {
                 default:
                     break;
             }
+            }
         }
         for (int i =0;i<NumProductInTicket;i++){
+            if (productList[i].getProductType()== ProductType.Product||productList[i].getProductType()== ProductType.ProductPersonalized){
             CustomProduct product = (CustomProduct)productList[i];
             switch (product.getCategory().getType()){
                 case MERCH:
@@ -171,6 +175,7 @@ public class Ticket {
                     break;
                 default:
                     break;
+            }
             }
         }
     }
@@ -264,6 +269,7 @@ public class Ticket {
                         String.CASE_INSENSITIVE_ORDER
                 )
         ));
+        applyDiscunt();
         for (int i =0;i<NumProductInTicket;i++){
             if (discount[i]>0) {
                 message += productList[i].toString() + "**discount -" + discount[i] + "\n";

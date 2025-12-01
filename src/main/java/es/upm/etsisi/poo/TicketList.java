@@ -162,7 +162,7 @@ public class TicketList {
 
     public String toString(){
         String text = "Ticket list:\n";
-        for (int i = 0; i < ticketList.size()-1; i++){
+        for (int i = 0; i < ticketList.size(); i++){
             Ticket t = ticketList.get(i);
             String state = String.valueOf(t.getState());
             text += t.getTicketId() + " - " + state.toUpperCase() + "\n";
