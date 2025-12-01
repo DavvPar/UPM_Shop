@@ -77,7 +77,6 @@ public class Ticket {
         Product p = lista.getProduct(Id);
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
-
                     productList[NumProductInTicket] = p;
                     NumProductInTicket++;
                     add = true;
@@ -97,13 +96,16 @@ public class Ticket {
      * @param Id product id will remove
      */
     public void removeProduct(int Id) {
-        for(int i =0;i<NumProductInTicket;i++) {
-            if (productList[i].getID() == Id){
-                for (int j = i+1; j<NumProductInTicket;j++){
-                    productList[j-1] = productList[j];
+        int i = 0;
+        while (i < NumProductInTicket) {
+            if (productList[i].getID() == Id) {
+                for (int j = i + 1; j < NumProductInTicket; j++) {
+                    productList[j - 1] = productList[j];
                 }
                 NumProductInTicket--;
                 productList[NumProductInTicket] = null;
+            } else {
+                i++;
             }
         }
         if (NumProductInTicket == 0){
