@@ -139,7 +139,7 @@ public class CustomProduct extends Product{
                 }
             }
         }
-        return "{Class:"+getProductType() +
+        return "{class:"+getProductType() +
                 ", id:"+super.getID() +
                 ", name:'"+super.getName() +
                 "', "+ getCategory().toString() +

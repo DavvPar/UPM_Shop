@@ -207,6 +207,21 @@ public class Ticket {
         totaldiscount = Math.floor(totaldiscount * 100) / 100;
         return totaldiscount;
     }
+
+    /**
+     * Get the short unique part of the id
+     * @return shortId
+     */
+    String getShortId(){
+        String shortId;
+        if(!(this.getState().equals(stateTicket.closed))){
+            shortId = this.getTicketId().substring(this.getTicketId().length()-5);
+        }else{
+            shortId = this.getTicketId().substring(this.getTicketId().length()-21, this.getTicketId().length()-16);
+        }
+        return shortId;
+    }
+
     /**
      * Getter for a product by its id
      * @param index product id
@@ -272,15 +287,15 @@ public class Ticket {
         applyDiscunt();
         for (int i =0;i<NumProductInTicket;i++){
             if (discount[i]>0) {
-                message += productList[i].toString() + "**discount -" + discount[i] + "\n";
+                message += "  "  + productList[i].toString() + "**discount -" + discount[i] + "\n";
             }
             else{
                 message += productList[i].toString() + "\n";
             }
         }
-        return "Ticket : "+ticketId+"\n"+message +"Total price: "+getTotalPrice() +"\n"
-                + "Total discount: "+getTotalDiscount() +"\n"
-                + "Final Price: " +getFinalPrice() ;
+        return "Ticket : "+ ticketId + "\n" +message +"  Total price: "+getTotalPrice() +"\n"
+                + "  Total discount: "+ getTotalDiscount() +"\n"
+                + "  Final Price: " + getFinalPrice();
 
     }
 }

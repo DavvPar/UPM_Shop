@@ -102,7 +102,7 @@ public class ComplexProduct extends Product{
      */
     @Override
     public String toString(){
-        return "{Class:" + getProductType() +
+        return "{class:" + getProductType() +
                 ", id:" + getID() +
                 ", name:'" + getName() + '\'' +
                 ", price:" + String.format("%.2f", getPrice()) +

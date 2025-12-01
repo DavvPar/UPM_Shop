@@ -24,11 +24,16 @@ public class TicketList {
      */
     private boolean validId(String id){
         boolean ok = true;
-        if (!ticketList.isEmpty()){
-            for (Ticket ticket : ticketList) {
-                if (ticket.getTicketId().substring(ticket.getTicketId().length()).equals(id) || !id.matches("[0-9]+") || id.length()<5) {
+        ArrayList<Ticket> tickets = ticketList;
+        if (!tickets.isEmpty()){
+            int i = 0;
+            while (!tickets.isEmpty() && ok){
+                Ticket current = tickets.get(i);
+                tickets.remove(current);
+                if (current.getShortId().equals(id) || !id.matches("[0-9]+") || id.length()<5){
                     ok = false;
                 }
+                i++;
             }
         }
         return ok;
@@ -136,7 +141,6 @@ public class TicketList {
         String NewId = ticket.getTicketId() +"-"+date;
         ticket.setTicketId(NewId);
         ticket.setState(stateTicket.closed);}
-
     }
 
     /**

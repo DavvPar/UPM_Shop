@@ -320,9 +320,13 @@ public class App {
                 if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
                     if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
                         currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
-                        currentTicket.setState(stateTicket.empty);
-                        System.out.println(currentTicket.toString());
-                        System.out.println("ticket new: ok");
+                        if(currentTicket == null){
+                            System.out.println("ticket new: error");
+                        }else{
+                            currentTicket.setState(stateTicket.empty);
+                            System.out.println(currentTicket.toString());
+                            System.out.println("ticket new: ok");
+                        }
                     } else {
                         currentTicket = ticketList.createTicket(null, message[2], message[3]);
                         currentTicket.setState(stateTicket.empty);

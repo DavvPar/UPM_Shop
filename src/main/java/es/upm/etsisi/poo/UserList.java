@@ -206,7 +206,7 @@ public class UserList {
         System.out.println("Clients:");
         for (User user : users) {
             if (user instanceof Client) {
-                System.out.println(user);
+                System.out.println("  " + user);
             }
         }
     }
@@ -218,7 +218,7 @@ public class UserList {
         System.out.println("Cashiers:");
         for (User user : users) {
             if (user instanceof Cash) {
-                System.out.println(user);
+                System.out.println("  " + user);
             }
         }
     }
