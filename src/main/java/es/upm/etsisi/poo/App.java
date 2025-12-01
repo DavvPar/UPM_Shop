@@ -421,8 +421,8 @@ public class App {
                 }
                 break;
             case "list":
-                System.out.println(ticketList.toString());
-                System.out.println("list: ok");
+                System.out.print(ticketList.toString());
+                System.out.println("ticket list: ok");
                 break;
             default:
                 unknownCommand();
