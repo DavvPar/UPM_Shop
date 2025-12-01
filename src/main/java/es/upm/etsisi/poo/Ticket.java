@@ -97,7 +97,6 @@ public class Ticket {
      * @param Id product id will remove
      */
     public void removeProduct(int Id) {
-        Product p = null;
         for(int i =0;i<NumProductInTicket;i++) {
             if (productList[i].getID() == Id){
                 for (int j = i+1; j<NumProductInTicket;j++){
