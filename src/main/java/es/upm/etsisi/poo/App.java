@@ -434,6 +434,7 @@ public class App {
                 }
                 break;
             case "list":
+                System.out.println("Ticket list:");
                 System.out.print(ticketList.toString());
                 System.out.println("ticket list: ok");
                 break;
@@ -657,11 +658,15 @@ public class App {
             System.out.println("cash tickets: error");
             return;
         }
-        ArrayList<Ticket> tickets = new ArrayList<>();
-        tickets = ticketList.getTicketofCashId(message[2]);
-        for (int i =0;i<tickets.size();i++){
-        System.out.println(tickets.get(i).toString());}
-        //FALTA POR HACERLO
+        String cashier = message[2];
+        if (Utils.validCashId(cashier) && userList.containsId(cashier)) {
+            TicketList ticketsOfCash = ticketList.getTicketsOfCash(cashier);
+            System.out.println("Tickets:");
+            System.out.println(ticketsOfCash.toString());
+            System.out.println("cash tickets: ok");
+        }else{
+            System.out.println("cash tickets:error");
+        }
     }
     
     

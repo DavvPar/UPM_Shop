@@ -160,8 +160,18 @@ public class TicketList {
         return t;
     }
 
+    public TicketList getTicketsOfCash(String cashId){
+        TicketList ticketsOfCash = new TicketList();
+        for(Ticket ticket : ticketList){
+            if(ticket.getCashId().equals(cashId)){
+                ticketsOfCash.addTicket(ticket);
+            }
+        }
+        return ticketsOfCash;
+    }
+
     public String toString(){
-        String text = "Ticket list:\n";
+        String text = "";
         for (int i = 0; i < ticketList.size(); i++){
             Ticket t = ticketList.get(i);
             String state = String.valueOf(t.getState());
