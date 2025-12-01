@@ -384,9 +384,13 @@ public class App {
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
                         int id = Integer.parseInt(message[4]);
+                        if (currentTicket.getState() != stateTicket.closed){
                         currentTicket.removeProduct(id);
                         System.out.println(currentTicket.toString());
-                        System.out.println("ticket remove: ok");
+                        System.out.println("ticket remove: ok");}
+                        else {
+                            System.out.println("ticket closed");
+                        }
                     }else {
                         System.out.println("ticket or cashID not found");
                     }
