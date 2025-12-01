@@ -359,9 +359,13 @@ public class App {
                             quantity = 1;
                         }
                         try {
+                            if (currentTicket.getState() != stateTicket.closed){
                             currentTicket.addProductToTicket(productlist, id, quantity);
                             System.out.println(currentTicket.toString());
-                            System.out.println("ticket add: ok");
+                            System.out.println("ticket add: ok");}
+                            else {
+                                System.out.println("ticket closed");
+                            }
                         } catch (Exception e) {
                             System.out.println("Error adding product");
                         }

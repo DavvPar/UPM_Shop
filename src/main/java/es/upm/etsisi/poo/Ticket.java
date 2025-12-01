@@ -76,7 +76,7 @@ public class Ticket {
         boolean add = false;
         Product p = lista.getProduct(Id);
         for (int i =0;i<quantity;i++){
-            if (NumProductInTicket < 100 && state !=stateTicket.closed){
+            if (NumProductInTicket < 100){
 
                     productList[NumProductInTicket] = p;
                     NumProductInTicket++;
