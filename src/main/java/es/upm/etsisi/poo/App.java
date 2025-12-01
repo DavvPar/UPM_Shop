@@ -53,8 +53,10 @@ public class App {
      * @param args arguments
      */
     public static void main(String[] args) {
+        boolean readingFromFile = false;
         try {
             if (args.length >= 1) {
+                readingFromFile = true;
                 String file_name = args[0];
                 sc = new Scanner(new FileReader(file_name));
             } else {
@@ -66,7 +68,7 @@ public class App {
         }
         App application = new App();
         application.init();
-        application.run(sc);
+        application.run(sc, readingFromFile);
     }
 
     /**
@@ -74,11 +76,14 @@ public class App {
      * determines how the application runs, it executes
      * the introduced commands
      */
-    private void run(Scanner scanner) {
+    private void run(Scanner scanner, boolean readingFromFile) {
         boolean cont = true;
         while (cont) {
             System.out.print("\ntUPM> ");
             String line = scanner.nextLine();
+            if (readingFromFile){
+                System.out.println(line);
+            }
             String[] lineSepSpace = line.split(" ");
 
             switch (lineSepSpace[0].toLowerCase()) {
