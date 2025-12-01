@@ -2,15 +2,18 @@ package es.upm.etsisi.poo;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Scanner;
+
+/*
+ * Possibly will need these imports:
+ * import java.time.LocalDate;
+ * import java.time.format.DateTimeFormatter;
+ * import java.time.format.DateTimeParseException;
+ * import java.util.ArrayList;
+ * import java.util.Comparator;
+ */
 
 /**
  * App is the main class where the program is executed. It uses the methods from other classes
@@ -27,10 +30,6 @@ public class App {
      * Maximum number of products that the product list can have
      */
     static int MaxNumProduct = 200;
-    /**
-     * Maximum number of products that the ticket can have
-     */
-    Utils utils = new Utils();
     /**
      * Current ticket being used
      */
@@ -144,7 +143,7 @@ public class App {
                 try {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
-                    String name = utils.getNameScanner(line); //cambio en get nombre de scanner
+                    String name = Utils.getNameScanner(line); //cambio en get nombre de scanner
                     int id = Integer.parseInt(message[2]);
 
                     CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
@@ -187,7 +186,7 @@ public class App {
 
                 int idToUpdate = Integer.parseInt(message[2]);
                 String field = message[3].toLowerCase();
-                String value = "";
+                String value;
                 if (field.equalsIgnoreCase("name")) {
                     value = Utils.getNameScanner(String.join(" ", message));
                 }
@@ -226,7 +225,7 @@ public class App {
                 }
                 try {
                     String line = String.join(" ", message);
-                    String name = utils.getNameScanner(line);
+                    String name = Utils.getNameScanner(line);
                     int id = Integer.parseInt(message[2]);
                     double price = Double.parseDouble(rightParts[0]);
                     if (!Utils.ValidDate(rightParts[1])){return;}
@@ -257,7 +256,7 @@ public class App {
                 }
                 break;
             case "addfood":
-                String in = String.join(" ", message);
+                // Never used: String in = String.join(" ", message);
                 if (rightParts.length != 3) {
                     System.out.println("Usage: prod "+command+" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>");
                     return;
@@ -335,9 +334,9 @@ public class App {
                     }
                 }
                 else{
-                    System.out.println("Incorrect format or IDs, use: \n"+
-                            "ticket new <ticketId> <CashId> <ClientID> or \n" +
-                            "ticket new <CashId> <ClientId>");
+                    System.out.println("Incorrect format or IDs, use:");
+                    System.out.println("ticket new <ticketId> <CashId> <ClientID>");
+                    System.out.println("ticket new <CashId> <ClientId>");
                 }
                 break;
             case "add":
@@ -414,13 +413,13 @@ public class App {
             case "print":
                 try {currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
-                    String date ="";
+                    String date;
                     if (userList.containsId(CashId)&& currentTicket !=null){
                         for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
                             Product p = currentTicket.getProduct(i);
                             if (p.getProductType() == ProductType.Food || p.getProductType() == ProductType.Meeting){
-                                ComplexProduct product= (ComplexProduct) p;
-                                date = ((ComplexProduct) p).getExpirationDate();
+                                ComplexProduct product = (ComplexProduct) p;
+                                date = (product).getExpirationDate();
                                 if (!validatePlanningTime(p.getProductType(),date)){
                                     currentTicket.removeProduct(p.getID());
                                 }
@@ -484,7 +483,7 @@ public class App {
     private void clientAdd(String[] message) {
         try {
             String fullLine = String.join(" ", message);
-            String name = utils.getNameScanner(fullLine);
+            String name = Utils.getNameScanner(fullLine);
             String[] rightParts = secondPartArray(fullLine);
             
             if (rightParts.length < 3) {
@@ -591,8 +590,8 @@ public class App {
     private void cashAdd(String[] message) {
         try {
             String fullLine = String.join(" ", message);
-            String name = utils.getNameScanner(fullLine);
-            String[] rightParts = secondPartArray(fullLine);
+            String name = Utils.getNameScanner(fullLine);
+            //Never used: String[] rightParts = secondPartArray(fullLine);
             String email;
             String id = null;
 
@@ -679,8 +678,7 @@ public class App {
         int secondQuote = input.indexOf('"', firstQuote + 1);
 
         String right = input.substring(secondQuote + 1).trim();
-        String[] rightParts = right.split(" ");
-        return rightParts;
+        return right.split(" ");
     }
 
     private boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {

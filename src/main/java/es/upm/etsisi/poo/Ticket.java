@@ -9,7 +9,7 @@ import java.util.Comparator;
  */
 enum stateTicket{
     empty,
-    active,
+    open,
     closed
 }
 
@@ -17,7 +17,7 @@ public class Ticket {
     /**
      * Maximum number of products in a list
      */
-    private int MaxNumProduct;
+    private final int MaxNumProduct;
     /**
      * The list of products on the ticket.
      */
@@ -41,24 +41,26 @@ public class Ticket {
     /**
      * DNI of the client that is buying
      */
-    private String clienteId;
+    private final String clientId;
     /**
      * cashId of the cashier that is selling
      */
-    private String cashId;
+    private final String cashId;
     private String ticketId;
-    private Utils utils;
+    /**
+     * State of the ticket, empty, open or closed
+     */
     private stateTicket state;
     /**
      * Constructor of the Class Ticket.
      @param idTicket TicketId
      @param cashId id to cash
-     @param clienteId id to clienteId
+     @param clientId id to clientId
      */
-    public Ticket(String idTicket,String cashId,String clienteId,stateTicket state) {
+    public Ticket(String idTicket,String cashId,String clientId,stateTicket state) {
         this.ticketId = idTicket;
         this.cashId = cashId;
-        this.clienteId = clienteId;
+        this.clientId = clientId;
         this.NumProductInTicket = 0;
         this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
@@ -81,7 +83,7 @@ public class Ticket {
                     NumProductInTicket++;
                     add = true;
                     if (state == stateTicket.empty){
-                        state = stateTicket.active;
+                        state = stateTicket.open;
                     }
             }
             else {
@@ -244,7 +246,7 @@ public class Ticket {
      * Getter for clientId
      * @return client identification
      */
-    public String getClientId(){return clienteId;}
+    public String getClientId(){return clientId;}
     /**
      * Getter for cashId
      * @return cashier identification

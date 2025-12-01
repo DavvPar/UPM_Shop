@@ -23,20 +23,15 @@ public class TicketList {
      * @return true if valid id, false if not
      */
     private boolean validId(String id){
-        boolean ok = true;
-        ArrayList<Ticket> tickets = ticketList;
-        if (!tickets.isEmpty()){
-            int i = 0;
-            while (!tickets.isEmpty() && ok){
-                Ticket current = tickets.get(i);
-                tickets.remove(current);
-                if (current.getShortId().equals(id) || !id.matches("[0-9]+") || id.length()<5){
-                    ok = false;
-                }
-                i++;
+        if (id == null) return false;
+        // must be numeric and at least 5 digits
+        if (!id.matches("[0-9]+") || id.length() < 5) return false;
+        for (Ticket current : ticketList) {
+            if (current.getShortId().equals(id)) {
+                return false;
             }
         }
-        return ok;
+        return true;
     }
 
     /**
