@@ -32,8 +32,8 @@ public class UserList {
         boolean canAdd = true;
         boolean added = false;
         // Checks if id is in userlist
-        if (containsId(client.getIdentifier())) {
-            System.out.println("Already exists a client with DNI: " + client.getIdentifier());
+        if (containsId(client.getId())) {
+            System.out.println("Already exists a client with id: " + client.getId());
             canAdd = false;
         }
         // Checks if email is in userlist
@@ -69,11 +69,11 @@ public class UserList {
         boolean canAdd = true;
         boolean added = false;
         // Checks if id was given on creation, if not, gives it one
-        if (cash.getIdentifier() == null) {
-            cash.setCashId(generateUniqueCashId());
+        if (cash.getId() == null) {
+            cash.setId(generateUniqueCashId());
         // If it had id, checks if id is in userlist
-        } else if (containsId(cash.getIdentifier())) {
-            System.out.println("Already exists a cash with cashId: " + cash.getIdentifier());
+        } else if (containsId(cash.getId())) {
+            System.out.println("Already exists a cash with cashId: " + cash.getId());
             canAdd = false;
         }
         // Checks if email is in userlist
@@ -133,7 +133,7 @@ public class UserList {
     public User getUserByID(String identifier) {
         identifier = identifier.toUpperCase();
         for (User user : users) {
-            if (user.getIdentifier().equals(identifier)) {
+            if (user.getId().equals(identifier)) {
                 return user;
             }
         }

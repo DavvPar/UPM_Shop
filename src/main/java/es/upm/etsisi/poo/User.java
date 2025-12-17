@@ -13,15 +13,20 @@ public abstract class User {
      * Email of the user
      */
     private String email;
+    /**
+     *
+     */
+    private String id;
 
     /**
      * Constructor of the class
      * @param name name of the user
      * @param email email of the user with a certain format
      */
-    public User(String name, String email) {
+    public User(String name, String email, String id) {
         this.name = name;
         this.email = email;
+        this.id = id;
     }
 
     /**
@@ -50,7 +55,13 @@ public abstract class User {
      * Each extension from user will define this method
      * @return user identifier
      */
-    public abstract String getIdentifier();
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Abstract method toString for users

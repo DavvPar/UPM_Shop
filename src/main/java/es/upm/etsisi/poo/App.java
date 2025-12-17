@@ -608,9 +608,7 @@ public class App {
                 return;
             }
 
-            Cash cash;
-            if (id == null) cash = new Cash(name, email);
-            else cash = new Cash(name, email, id);
+            Cash cash = new Cash(name, email, id);
 
             boolean added = userList.addCash(cash);
             if (added) {
@@ -636,7 +634,7 @@ public class App {
         String id = message[2];
         Cash cash  = (Cash) userList.getUserByID(id);
         if (cash != null){
-        ticketList.removeTicket(cash.getIdentifier());
+        ticketList.removeTicket(cash.getId());
         removed = userList.removeUser(id);
         }
         if (removed) System.out.println("cash remove: ok");
