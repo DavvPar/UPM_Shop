@@ -21,6 +21,7 @@ import java.util.Scanner;
  * to operate with the data
  */
 public class App {
+
     /**
      * Declares all the possible categories on the program with
      * their discount included
@@ -358,7 +359,7 @@ public class App {
                             product.addPersonalized(Custom);
                         }
                         }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
-                            ComplexProduct product =(ComplexProduct) p;
+                            ComplexProduct product = (ComplexProduct) p;
                             product.setPeople(quantity);
                             if(!(quantity <= product.getMAX_PEOPLE())){
                                 System.out.println("have exceeded the maximum number of people allowed");

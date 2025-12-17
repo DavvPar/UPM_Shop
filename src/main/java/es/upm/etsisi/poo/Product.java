@@ -39,7 +39,6 @@ public abstract class  Product {
      * @param name product name
      * @param price product price
      */
-
     public Product(int ID, String name, double price) {
         if(ID <= 0)
             throw new IllegalArgumentException("ID must be positive.");
