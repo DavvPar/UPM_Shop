@@ -8,6 +8,7 @@ public class TicketList {
      * Array of tickets to create the list of tickets
      */
     private ArrayList<Ticket> ticketList;
+    private ArrayList<String> id ;// "clientId CashId"
 
     /**
      * Constructor of the class
@@ -15,6 +16,7 @@ public class TicketList {
      */
     public TicketList(){
         ticketList = new ArrayList<>();
+        id = new ArrayList<>();
     }
 
     /**
@@ -46,11 +48,13 @@ public class TicketList {
         Ticket t = null;
         if (TicketId == null){
             String newId = createId();
-            t = new Ticket(newId,CashId,clientId,stateTicket.empty);
+            t = new Ticket(newId,stateTicket.empty);
+            id.add(clientId+" "+CashId);
             addTicket(t);
         }else {
             if (validId(TicketId)){
-            t = new Ticket(Utils.getTime("GMT+1") + "-" + TicketId, clientId, CashId,stateTicket.empty);
+            t = new Ticket(Utils.getTime() + "-" + TicketId,stateTicket.empty);
+                id.add(clientId+" "+CashId);
             addTicket(t);
             }
             else{
@@ -70,7 +74,7 @@ public class TicketList {
         do {
             id =  String.valueOf(Utils.getRandomNumber(5));
         } while (!validId(id));
-        String finalId = Utils.getTime("GMT+1") + "-" + id;
+        String finalId = Utils.getTime() + "-" + id;
         return finalId;
     }
 
@@ -102,11 +106,14 @@ public class TicketList {
      */
     public boolean removeTicket(String cashid) {
         boolean removed = false;
-        for (Ticket ticket: ticketList) {
-            String CashId= ticket.getCashId();
-            if (CashId.equals(cashid)) {
-                ticketList.remove(ticket);
+        int i =0;
+        while (i<ticketList.size()) {
+            String[] Id= id.get(i).split(" ");// clientId CashId
+            if (Id[1].equals(cashid)) {
+                ticketList.remove(i);
                 removed = true;
+            }else{
+                i++;
             }
         }
         return removed;
@@ -138,32 +145,12 @@ public class TicketList {
         ticket.setState(stateTicket.closed);}
     }
 
-    /**
-     * method that returns all tickets according to the cashId
-     * @param cashId
-     * @return tickets according to be cashId
-     */
-    public ArrayList<Ticket> getTicketofCashId(String cashId){
-        ArrayList<Ticket> t = new ArrayList<>();
-        for (Ticket ticket: ticketList){
-            if (ticket.getCashId().equals(cashId)){
-                t.add(ticket);
-            }
-        }
-        t.sort(Comparator.nullsLast(
-                Comparator.comparing(
-                        Ticket::getCashId,
-                        String.CASE_INSENSITIVE_ORDER)
-                                    )
-                );
-        return t;
-    }
-
     public TicketList getTicketsOfCash(String cashId){
         TicketList ticketsOfCash = new TicketList();
-        for(Ticket ticket : ticketList){
-            if(ticket.getCashId().equals(cashId)){
-                ticketsOfCash.addTicket(ticket);
+        for(int i =0;i<ticketList.size();i++){
+            String[] IDs = id.get(i).split(" ");
+            if(IDs[1].equals(cashId)){
+                ticketsOfCash.addTicket(ticketList.get(i));
             }
         }
         return ticketsOfCash;

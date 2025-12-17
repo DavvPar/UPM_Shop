@@ -115,7 +115,7 @@ public class CustomProduct extends Product{
     public double getPrice() {
         return super.getPrice();
     }
-
+    public int getMaxPers(){return maxPers;}
     /**
      * toString of the object CustomProduct, showing its id,
      * name, category, price and personalizations

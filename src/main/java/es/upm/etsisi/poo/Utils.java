@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
@@ -12,15 +13,12 @@ import java.util.TimeZone;
  */
 public class Utils {
     /**
-     *method that returns the date of a time zone
-     * @param timezone time Zone.For example, Spain is in the GMT+1 time zone.
+     *method that returns the date of now
      * @return YYYY-MM-DD-HH:MM
      */
-    public static String getTime(String timezone){
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone));
-        return calendar.get(Calendar.YEAR) + "-"+(calendar.get(Calendar.MONTH)+1)+"-"+
-                calendar.get(Calendar.DAY_OF_MONTH) + "-"+ calendar.get(Calendar.HOUR_OF_DAY)+":"+
-                calendar.get(Calendar.MINUTE);
+    public static String getTime(){
+        LocalDateTime date = LocalDateTime.now();
+        return date.getYear() +"-"+date.getMonthValue()+"-"+date.getDayOfMonth()+"-"+date.getHour()+":"+date.getMinute();
     }
     /**
      * method that returns n random numbers
