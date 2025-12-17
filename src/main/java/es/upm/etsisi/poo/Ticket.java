@@ -38,15 +38,10 @@ public class Ticket {
      * Number of products currently in the ticket.
      */
     private int NumProductInTicket;
-    /**
-     * DNI of the client that is buying
-     */
-    private final String clientId;
+    private String ticketId;
     /**
      * cashId of the cashier that is selling
      */
-    private final String cashId;
-    private String ticketId;
     /**
      * State of the ticket, empty, open or closed
      */
@@ -54,17 +49,14 @@ public class Ticket {
     /**
      * Constructor of the Class Ticket.
      @param idTicket TicketId
-     @param cashId id to cash
-     @param clientId id to clientId
      */
-    public Ticket(String idTicket,String cashId,String clientId,stateTicket state) {
+    public Ticket(String idTicket,stateTicket state) {
         this.ticketId = idTicket;
-        this.cashId = cashId;
-        this.clientId = clientId;
         this.NumProductInTicket = 0;
         this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
         this.totalPrice = 0;
+        state = state;
         discount = new double[MaxNumProduct];
     }
 
@@ -76,7 +68,12 @@ public class Ticket {
      */
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
-        Product p = lista.getProduct(Id);
+        Product p =lista.getProduct(Id);
+        if (p.getProductType() == ProductType.ProductPersonalized){
+        CustomProduct c = (CustomProduct) p;
+        p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers());
+        }
+
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
                     productList[NumProductInTicket] = p;
@@ -92,7 +89,30 @@ public class Ticket {
         }
         return add;
     }
+    public boolean addProductP(ProductList lista,int Id, int quantity,String message){
+        boolean add = false;
+        Product p =lista.getProduct(Id);
+        if (p.getProductType() == ProductType.ProductPersonalized){
+            CustomProduct c = (CustomProduct) p;
+            p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers());
+            ((CustomProduct) p).addPersonalized(message);
+        }
 
+        for (int i =0;i<quantity;i++){
+            if (NumProductInTicket < 100){
+                productList[NumProductInTicket] = p;
+                NumProductInTicket++;
+                add = true;
+                if (state == stateTicket.empty){
+                    state = stateTicket.open;
+                }
+            }
+            else {
+                System.out.println("No further products can be added.");
+            }
+        }
+        return add;
+    }
     /**
      * Remove ticket product
      * @param Id product id will remove
@@ -243,30 +263,17 @@ public class Ticket {
         return getTotalPrice() - getTotalDiscount();
     }
     /**
-     * Getter for clientId
-     * @return client identification
-     */
-    public String getClientId(){return clientId;}
-    /**
-     * Getter for cashId
-     * @return cashier identification
-     */
-    public String getCashId(){return cashId;}
-    /**
      * Getter for ticket id
      * @return ticket identification
      */
     public String getTicketId(){return ticketId;}
+    public void setTicketId(String id){ticketId = id;}
     /**
      * Getter for ticket state
      * @return current ticket state
      */
     public stateTicket getState (){return state;}
-    /**
-     * Setter for ticket id
-     * @param id id for the ticket
-     */
-    public void setTicketId(String id){ticketId = id;}
+
     /**
      * Setter for state
      * @param state new ticket state

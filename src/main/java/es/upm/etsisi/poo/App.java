@@ -341,6 +341,7 @@ public class App {
                 break;
             case "add":
                 try {
+                    String Custom = "";
                     int id, quantity;
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
@@ -349,13 +350,8 @@ public class App {
                     quantity = Integer.parseInt(message[5]);
                     if (userList.containsId(CashId)&& currentTicket !=null){
                         if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){
-                        String Custom = "";
                         for (int i =6;i<message.length;i++){
                             Custom += (message[i]);
-                        }
-                        if (!Custom.isEmpty()){
-                            CustomProduct product = (CustomProduct) productlist.getProduct(id);
-                            product.addPersonalized(Custom);
                         }
                         }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
                             ComplexProduct product =(ComplexProduct) p;
@@ -368,7 +364,11 @@ public class App {
                         }
                         try {
                             if (currentTicket.getState() != stateTicket.closed){
-                            currentTicket.addProductToTicket(productlist, id, quantity);
+                                if (p.getProductType()== ProductType.ProductPersonalized){
+                                    currentTicket.addProductP(productlist,id,quantity,Custom);
+                                }else {
+                                    currentTicket.addProductToTicket(productlist, id, quantity);
+                                }
                             System.out.println(currentTicket.toString());
                             System.out.println("ticket add: ok");}
                             else {
@@ -426,7 +426,7 @@ public class App {
                             }
 
                         }
-                        ticketList.CloseTicket(currentTicket,Utils.getTime("GMT+1"));
+                        ticketList.CloseTicket(currentTicket,Utils.getTime());
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket print: ok");
                     }else {
@@ -683,7 +683,7 @@ public class App {
 
     private boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
         //YYYY-MM-DD-HH:MM
-        String[] currentTimeString = Utils.getTime("GMT+1").trim().split("[:-]");
+        String[] currentTimeString = Utils.getTime().trim().split("[:-]");
         String[] time = expirationDate.trim().split("[:-]");
         LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),
                 Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));
