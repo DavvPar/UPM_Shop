@@ -12,7 +12,7 @@ public class CustomProduct extends Product{
     /**
      * List of personalizations
      */
-    private List<String> personalization;
+    private ArrayList<String> personalization;
     /**
      * Maximum number of personalizations
      */
@@ -48,8 +48,8 @@ public class CustomProduct extends Product{
      * @param text text to check
      * @return true if valid, false if invalid
      */
-    public boolean allowedText(String[] text){
-        if(text.length <= maxPers) {
+    public boolean allowedText(ArrayList<String> text){
+        if(text.size() > maxPers ) {
             System.out.println("No more custom text can be added.");
             return false;
         }
@@ -67,15 +67,13 @@ public class CustomProduct extends Product{
     public boolean addPersonalized(String personalized){
         boolean add = false;
         String[] r = personalized.trim().split("--p");
-            if(allowedText(r)){
-                if (r.length>0){
                 for (int i=0;i<r.length;i++){
+                    if (!r[i].isEmpty() || (allowedText(personalization))){
                 personalization.add(r[i]);
                 N_Pers++;
+                    }
                 }
                     super.setPrice(super.getPrice()*(1+(0.1*N_Pers)));
-                }
-            }
         return add;
     }
 
@@ -111,8 +109,8 @@ public class CustomProduct extends Product{
             if (!personalization.isEmpty()) {
                 r += ", personalizationList:[";
                 if (personalization.size() > 1) {
-                    for (int i = 1; i < personalization.size(); i++) {
-                        if (i < personalization.size() - 1) {
+                    for (int i = 0; i < personalization.size(); i++) {
+                        if (i < personalization.size()-1) {
                             r += personalization.get(i) + ", ";
                         } else {
                             r += personalization.get(i) + "]";

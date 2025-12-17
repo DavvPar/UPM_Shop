@@ -89,8 +89,9 @@ public class Ticket {
         Product p =lista.getProduct(Id);
         if (p.getProductType() == ProductType.ProductPersonalized){
             CustomProduct c = (CustomProduct) p;
-            p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers(),c.getProductType());
-            ((CustomProduct) p).addPersonalized(message);
+            c = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers(),p.getProductType());
+            c.addPersonalized(message);
+            p = c;
         }
 
         for (int i =0;i<quantity;i++){

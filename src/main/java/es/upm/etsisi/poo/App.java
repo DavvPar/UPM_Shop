@@ -364,7 +364,7 @@ public class App {
                         }
                         try {
                             if (currentTicket.getState() != stateTicket.closed){
-                                if (p.getProductType()== ProductType.ProductPersonalized){
+                                if (p.getProductType()== ProductType.ProductPersonalized && !Custom.isEmpty()){
                                     currentTicket.addProductP(productlist,id,quantity,Custom);
                                 }else {
                                     currentTicket.addProductToTicket(productlist, id, quantity);
