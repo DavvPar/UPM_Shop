@@ -6,10 +6,6 @@ package es.upm.etsisi.poo;
  */
 public class Client extends User {
     /**
-     * Identification of the client, consisting on 8 numbers and a letter
-     */
-    private final String DNI;
-    /**
      * Identification of the cashier that registered the client
      */
     private String cashId;
@@ -17,21 +13,14 @@ public class Client extends User {
     /**
      * Constructor of the class Client
      * @param name name of the Client
-     * @param DNI unique identification of the Client
+     * @param id unique identification of the Client
      * @param email email of the Client
      * @param cashId Cash that created the Client
      */
-    public Client(String name, String DNI, String email, String cashId){
-        super(name, email);
-        this.DNI = DNI;
+    public Client(String name, String id, String email, String cashId){
+        super(name, email, id);
         this.cashId = cashId;
     }
-
-    /**
-     * Getter for identifier
-     * @return identifier
-     */
-    public String getIdentifier(){return DNI;}
 
     /**
      * Getter for cashId
@@ -56,7 +45,7 @@ public class Client extends User {
     @Override
     public String toString() {
         return "Client{" +
-                "identifier='" + getIdentifier() +
+                "identifier='" + getId() +
                 "', name='" + getName() +
                 "', email'=" + getEmail() +
                 "', cash='" + getCashId() +
