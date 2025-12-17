@@ -69,11 +69,6 @@ public class Ticket {
     public boolean addProductToTicket(ProductList lista,int Id, int quantity){
         boolean add = false;
         Product p =lista.getProduct(Id);
-        if (p.getProductType() == ProductType.ProductPersonalized){
-        CustomProduct c = (CustomProduct) p;
-        p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers());
-        }
-
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
                     productList[NumProductInTicket] = p;
@@ -94,7 +89,7 @@ public class Ticket {
         Product p =lista.getProduct(Id);
         if (p.getProductType() == ProductType.ProductPersonalized){
             CustomProduct c = (CustomProduct) p;
-            p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers());
+            p = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers(),c.getProductType());
             ((CustomProduct) p).addPersonalized(message);
         }
 

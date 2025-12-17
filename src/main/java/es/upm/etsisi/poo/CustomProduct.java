@@ -18,10 +18,6 @@ public class CustomProduct extends Product{
      */
     private int maxPers;
     /**
-     * Type of product
-     */
-    private ProductType type;
-    /**
      * Category of product
      */
     private Category category;
@@ -38,14 +34,8 @@ public class CustomProduct extends Product{
      * @param price product price
      * @param maxPers maximum personalizations for product
      */
-    public CustomProduct(int ID, String name, Category category, double price, int maxPers) {
-        super(ID, name, price);
-        if (maxPers == -1){
-            type = ProductType.Product;
-        }
-        else {
-            type = ProductType.ProductPersonalized;
-        }
+    public CustomProduct(int ID, String name, Category category, double price, int maxPers,ProductType type) {
+        super(ID, name, price, type);
         this.category = category;
         this.maxPers = maxPers;
         this.personalization = new ArrayList<>();
@@ -90,14 +80,6 @@ public class CustomProduct extends Product{
     }
 
     /**
-     * Getter for product type
-     * @return product type
-     */
-    @Override
-    public ProductType getProductType() {
-        return type;
-    }
-    /**
      * Getter for category
      * @return category
      */
@@ -124,7 +106,7 @@ public class CustomProduct extends Product{
     @Override
     public String toString() {
         String r = "";
-        if (type == ProductType.ProductPersonalized){
+        if (super.getProductType() == ProductType.ProductPersonalized){
             r = ", maxPersonal:"+maxPers;
             if (!personalization.isEmpty()) {
                 r += ", personalizationList:[";

@@ -22,7 +22,6 @@ public class ComplexProduct extends Product{
     /**
      * Type of product (Food/Meeting)
      */
-    private ProductType type;
 
     /**
      * Constructor of the Class ComplexProduct.
@@ -36,8 +35,7 @@ public class ComplexProduct extends Product{
      * @param type food/meeting type
      */
     public ComplexProduct(int ID, String name, double price, String expirationDate, int people,ProductType type) {
-        super(ID, name, price);
-        this.type = type;
+        super(ID, name, price, type);
         MAX_PEOPLE = people;
         this.expirationDate = expirationDate;
         people =0;
@@ -85,14 +83,6 @@ public class ComplexProduct extends Product{
      */
     public int getMAX_PEOPLE() {
         return MAX_PEOPLE;
-    }
-    /**
-     * Getter for product type
-     * @return product type
-     */
-    @Override
-    public ProductType getProductType() {
-        return type;
     }
 
     /**

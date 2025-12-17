@@ -19,9 +19,6 @@ public abstract class  Product {
      */
     private final int ID;
     /**
-     * Indicates the type of product
-     */
-    private Category category;
     /**
      * Name of the product
      */
@@ -30,6 +27,7 @@ public abstract class  Product {
      * Price of the product with no discounts
      */
     private double price;
+    private ProductType type;
 
 
     /**
@@ -40,7 +38,7 @@ public abstract class  Product {
      * @param price product price
      */
 
-    public Product(int ID, String name, double price) {
+    public Product(int ID, String name, double price,ProductType types) {
         if(ID <= 0)
             throw new IllegalArgumentException("ID must be positive.");
         if(name == null || name.length() >= 100 || name.trim().isEmpty()) //name.trim().isEmpty() -> para que no acepte que entre comillas este vacio
@@ -50,6 +48,7 @@ public abstract class  Product {
         this.ID = ID;
         this.name = name;
         this.price = price;
+        this.type = types;
 
     }
 
@@ -57,7 +56,7 @@ public abstract class  Product {
      * Getter for the productType
      * @return productType
      */
-    public abstract ProductType getProductType();
+    public  ProductType getProductType(){return type;}
     /**
      * Getter for the ID
      * @return ID of the product

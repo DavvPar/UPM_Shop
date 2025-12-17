@@ -152,9 +152,9 @@ public class App {
                     Product product;
                     if (rightParts.length == 3) {
                         int maxPers = Integer.parseInt(message[message.length-1]);
-                        product = new CustomProduct(id, name, category, price, maxPers);
+                        product = new CustomProduct(id, name, category, price, maxPers,ProductType.ProductPersonalized);
                     } else {
-                        product = new CustomProduct(id, name, category, price,-1);
+                        product = new CustomProduct(id, name, category, price,0,ProductType.Product);
                     }
                     if (productlist.addProduct(product)) {
                         String addProduct = product.toString();
