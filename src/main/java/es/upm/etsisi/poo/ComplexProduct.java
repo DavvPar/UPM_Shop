@@ -85,6 +85,11 @@ public class ComplexProduct extends Product{
         return MAX_PEOPLE;
     }
 
+    @Override
+    public Product CloneProduct() {
+        return new ComplexProduct(getID(),getName(),getPrice(),getExpirationDate(),getPeople(),getProductType());
+    }
+
     /**
      * toString of the object ComplexProduct, showing its id,
      * name, price and date, maximum people and actual people.

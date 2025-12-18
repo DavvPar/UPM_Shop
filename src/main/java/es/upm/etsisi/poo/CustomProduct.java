@@ -108,6 +108,18 @@ public class CustomProduct extends Product{
         }
         return resul;
     }
+
+    @Override
+    public Product CloneProduct() {
+        CustomProduct New;
+        New = new CustomProduct(getID(),getName(),getCategory(),getPrice(),getMaxPers(),getProductType());
+        if (!personalization.isEmpty()){
+        String message = getPersonalization();
+            New.addPersonalized(message);
+        }
+        return New;
+    }
+
     /**
      * toString of the object CustomProduct, showing its id,
      * name, category, price and personalizations
@@ -132,11 +144,11 @@ public class CustomProduct extends Product{
                 }
             }
         }
-        return "{class:"+super.getProductType() +
-                ", id:"+super.getID() +
-                ", name:'"+super.getName() +
+        return "{class:"+getProductType() +
+                ", id:"+getID() +
+                ", name:'"+getName() +
                 "', "+ getCategory().toString() +
-                ", price:"+super.getPrice() +
+                ", price:"+ String.format("%.2f", getPrice()) +
                 r +
                 "}";
     }

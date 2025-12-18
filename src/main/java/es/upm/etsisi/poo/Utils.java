@@ -12,26 +12,7 @@ import java.util.TimeZone;
  * that do not belong in any created class
  */
 public class Utils {
-    /**
-     *
-     * @param p
-     * @return
-     */
-    public Product CloneProduct(Product p){
-        Product New = null;
-        ComplexProduct  C= (ComplexProduct)p;
-        CustomProduct c = (CustomProduct)p;
 
-        switch (p.getProductType()){
-            case Food, Meeting ->  New = new ComplexProduct(p.getID(),p.getName(),p.getPrice(),C.getExpirationDate(),C.getPeople(),p.getProductType());
-            case Product,ProductPersonalized -> New = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers(),p.getProductType());
-        }
-        if (p.getProductType()== ProductType.ProductPersonalized){
-            String message = ((CustomProduct)p).getPersonalization();
-            ((CustomProduct)New).addPersonalized(message);
-        }
-        return New;
-    }
     /**
      *method that returns the date of now
      * @return YYYY-MM-DD-HH:MM

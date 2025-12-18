@@ -71,7 +71,7 @@ public class Ticket {
         Product p =lista.getProduct(Id);
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
-                    p =utils.CloneProduct(p);
+                    p =p.CloneProduct();
                     productList[NumProductInTicket] = p;
                     NumProductInTicket++;
                     add = true;
@@ -105,7 +105,7 @@ public class Ticket {
 
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
-                p =utils.CloneProduct(p);
+                p =p.CloneProduct();
                 productList[NumProductInTicket] = p;
                 NumProductInTicket++;
                 add = true;

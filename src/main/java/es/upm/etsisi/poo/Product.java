@@ -87,7 +87,7 @@ public abstract class  Product {
      * @return Price of the product
      */
     public double getPrice() {
-        return (this.price*100)/100;
+        return price;
     }
 
     /**
@@ -99,6 +99,10 @@ public abstract class  Product {
             throw new IllegalArgumentException("Price must be positive.");
         this.price = price;
     }
+    /**
+     * @return
+     */
+    public abstract Product CloneProduct();
 
     /**
      * toString for the object Product, showing its ID, name,
@@ -108,4 +112,4 @@ public abstract class  Product {
     @Override
     public abstract String toString();
 }
-    
+
