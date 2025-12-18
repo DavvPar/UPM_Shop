@@ -46,6 +46,7 @@ public class Ticket {
      * State of the ticket, empty, open or closed
      */
     private stateTicket state;
+    private Utils utils;
     /**
      * Constructor of the Class Ticket.
      @param idTicket TicketId
@@ -56,10 +57,9 @@ public class Ticket {
         this.MaxNumProduct = 100;
         this.productList = new Product[MaxNumProduct];
         this.totalPrice = 0;
-        state = state;
+        this.state = state;
         discount = new double[MaxNumProduct];
     }
-
     /**
      * Method for adding products to a ticket
      * @param Id   Product id to be added
@@ -71,6 +71,7 @@ public class Ticket {
         Product p =lista.getProduct(Id);
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
+                    p =utils.CloneProduct(p);
                     productList[NumProductInTicket] = p;
                     NumProductInTicket++;
                     add = true;
@@ -84,6 +85,14 @@ public class Ticket {
         }
         return add;
     }
+
+    /**
+     * Exclusive method for personalised products
+     * @param Id ProductId
+     * @param quantity quantity
+     * @param message   Personalised
+     * @return true o false
+     */
     public boolean addProductP(ProductList lista,int Id, int quantity,String message){
         boolean add = false;
         Product p =lista.getProduct(Id);
@@ -96,6 +105,7 @@ public class Ticket {
 
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
+                p =utils.CloneProduct(p);
                 productList[NumProductInTicket] = p;
                 NumProductInTicket++;
                 add = true;

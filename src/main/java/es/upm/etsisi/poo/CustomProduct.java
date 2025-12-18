@@ -101,6 +101,13 @@ public class CustomProduct extends Product{
         return super.getPrice();
     }
     public int getMaxPers(){return maxPers;}
+    public String getPersonalization(){
+        String resul ="";
+        for (int i=0;i<personalization.size();i++){
+                resul += "--p"+personalization.get(i);
+        }
+        return resul;
+    }
     /**
      * toString of the object CustomProduct, showing its id,
      * name, category, price and personalizations
