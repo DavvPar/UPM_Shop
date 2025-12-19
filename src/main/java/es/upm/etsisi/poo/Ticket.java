@@ -85,40 +85,6 @@ public class Ticket {
         }
         return add;
     }
-
-    /**
-     * Exclusive method for personalised products
-     * @param Id ProductId
-     * @param quantity quantity
-     * @param message   Personalised
-     * @return true o false
-     */
-    public boolean addProductP(ProductList lista,int Id, int quantity,String message){
-        boolean add = false;
-        Product p =lista.getProduct(Id);
-        if (p.getProductType() == ProductType.ProductPersonalized){
-            CustomProduct c = (CustomProduct) p;
-            c = new CustomProduct(p.getID(),p.getName(),c.getCategory(),p.getPrice(),c.getMaxPers(),p.getProductType());
-            c.addPersonalized(message);
-            p = c;
-        }
-
-        for (int i =0;i<quantity;i++){
-            if (NumProductInTicket < 100){
-                p =p.CloneProduct();
-                productList[NumProductInTicket] = p;
-                NumProductInTicket++;
-                add = true;
-                if (state == stateTicket.empty){
-                    state = stateTicket.open;
-                }
-            }
-            else {
-                System.out.println("No further products can be added.");
-            }
-        }
-        return add;
-    }
     /**
      * Remove ticket product
      * @param Id product id will remove

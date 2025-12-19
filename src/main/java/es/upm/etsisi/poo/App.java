@@ -342,7 +342,7 @@ public class App {
                 break;
             case "add":
                 try {
-                    String Custom = "";
+
                     int id, quantity;
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
@@ -350,10 +350,15 @@ public class App {
                     Product p = productlist.getProduct(id);
                     quantity = Integer.parseInt(message[5]);
                     if (userList.containsId(CashId)&& currentTicket !=null){
+                        String Custom = "";
                         if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){
                         for (int i =6;i<message.length;i++){
                             Custom += (message[i]);
                         }
+                        if (p.getProductType() == ProductType.ProductPersonalized){
+                            p = p.CloneProduct();
+                            ((CustomProduct)p).addPersonalized(Custom);
+                            }
                         }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
                             ComplexProduct product = (ComplexProduct) p;
                             product.setPeople(quantity);
@@ -365,13 +370,9 @@ public class App {
                         }
                         try {
                             if (currentTicket.getState() != stateTicket.closed){
-                                if (p.getProductType()== ProductType.ProductPersonalized && !Custom.isEmpty()){
-                                    currentTicket.addProductP(productlist,id,quantity,Custom);
-                                }else {
-                                    currentTicket.addProductToTicket(productlist, id, quantity);
-                                }
-                            System.out.println(currentTicket.toString());
-                            System.out.println("ticket add: ok");}
+                                currentTicket.addProductToTicket(productlist, id, quantity);
+                                System.out.println(currentTicket.toString());
+                                System.out.println("ticket add: ok");}
                             else {
                                 System.out.println("ticket closed");
                             }
