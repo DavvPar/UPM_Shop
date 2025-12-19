@@ -66,12 +66,14 @@ public class Ticket {
      * @param quantity to be added
      * @return true or false (successful or failed)
      */
-    public boolean addProductToTicket(ProductList lista,int Id, int quantity){
+    public boolean addProductToTicket(ProductList lista,int Id, int quantity, String message){
         boolean add = false;
-        Product p =lista.getProduct(Id);
+        Product p =lista.getProduct(Id).CloneProduct();
+        if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
+            ((CustomProduct)p).addPersonalized(message);
+        }
         for (int i =0;i<quantity;i++){
             if (NumProductInTicket < 100){
-                    p =p.CloneProduct();
                     productList[NumProductInTicket] = p;
                     NumProductInTicket++;
                     add = true;
