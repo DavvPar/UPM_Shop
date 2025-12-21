@@ -328,6 +328,7 @@ public class App {
                             System.out.println("ticket new: ok");
                         }
                     } else {
+                        if ()
                         currentTicket = ticketList.createTicket(null, message[2], message[3]);
                         currentTicket.setState(stateTicket.empty);
                         System.out.println(currentTicket.toString());

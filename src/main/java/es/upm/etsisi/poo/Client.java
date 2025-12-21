@@ -4,7 +4,7 @@ package es.upm.etsisi.poo;
  * Cash is an extension of Users that needs a Cashier to be created
  * Has unique identification and creates tickets to purchase products
  */
-public class Client extends User {
+public class  Client extends User {
     /**
      * Identification of the cashier that registered the client
      */

@@ -10,7 +10,7 @@ enum ProductType{
     ProductPersonalized,
     Product,
     Meeting,
-    Food
+    Food,
 }
 
 public abstract class  Product {

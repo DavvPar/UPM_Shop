@@ -1,5 +1,9 @@
 package es.upm.etsisi.poo;
-
+enum UserType{
+    Client,
+    Business,
+    Cash
+        }
 /**
  * User is an abstract class created to then declare new types
  * of user such as clients and cashiers, that extend from User
