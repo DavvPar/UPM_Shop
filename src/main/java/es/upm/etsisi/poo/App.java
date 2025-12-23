@@ -145,7 +145,7 @@ public class App {
                     //line: prod add id \name con espacios\ category price
                     String line = String.join(" ", message);
                     String name = Utils.getNameScanner(line); //cambio en get nombre de scanner
-                    int id = Integer.parseInt(message[2]);
+                    String id = message[2];
 
                     CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
                     Category category = new Category(type);
@@ -185,7 +185,7 @@ public class App {
                     return;
                 }
 
-                int idToUpdate = Integer.parseInt(message[2]);
+                String idToUpdate = message[2];
                 String field = message[3].toLowerCase();
                 String value;
                 if (field.equalsIgnoreCase("name")) {
@@ -208,7 +208,7 @@ public class App {
                 break;
 
             case "remove":
-                int idRemove = Integer.parseInt(message[2]);
+                String idRemove = message[2];
                 Product productRemove = productlist.getProduct(idRemove);
                 String stringProd = productRemove.toString();
                 System.out.println(stringProd);
@@ -227,7 +227,7 @@ public class App {
                 try {
                     String line = String.join(" ", message);
                     String name = Utils.getNameScanner(line);
-                    int id = Integer.parseInt(message[2]);
+                    String id = message[2];
                     double price = Double.parseDouble(rightParts[0]);
                     if (!Utils.ValidDate(rightParts[1])){return;}
                     String expirationStrg = rightParts[1];
@@ -265,7 +265,7 @@ public class App {
                 try {
                     String line = String.join(" ", message);
                     String name = Utils.getNameScanner(line);
-                    int id = Integer.parseInt(message[2]);
+                    String id = message[2];
                     double price = Double.parseDouble(rightParts[0]);
                     String expirationStrg = rightParts[1];
                     int maxPeople = Integer.parseInt(rightParts[2]);
@@ -328,7 +328,7 @@ public class App {
                             System.out.println("ticket new: ok");
                         }
                     } else {
-                        if ()
+
                         currentTicket = ticketList.createTicket(null, message[2], message[3]);
                         currentTicket.setState(stateTicket.empty);
                         System.out.println(currentTicket.toString());
@@ -344,10 +344,10 @@ public class App {
             case "add":
                 try {
                     String Custom = "";
-                    int id, quantity;
+                    int quantity;
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
-                    id = Integer.parseInt(message[4]);
+                    String id = message[4];
                     Product p = productlist.getProduct(id);
                     quantity = Integer.parseInt(message[5]);
                     if (userList.containsId(CashId)&& currentTicket !=null){
@@ -394,7 +394,7 @@ public class App {
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                        int id = Integer.parseInt(message[4]);
+                        String id = message[4];
                         if (currentTicket.getState() != stateTicket.closed){
                         currentTicket.removeProduct(id);
                         System.out.println(currentTicket.toString());

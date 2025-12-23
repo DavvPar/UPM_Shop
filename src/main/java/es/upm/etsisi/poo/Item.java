@@ -1,46 +1,40 @@
 package es.upm.etsisi.poo;
 
 /**
- * Product is a class that encapsules all the attributes
- * that define a unique product, it is used to process
+ * Item is a class that encapsules all the attributes
+ * that define a unique Item, it is used to process
  * them and show its data.
  */
 
-enum ProductType{
-    ProductPersonalized,
-    Product,
-    Meeting,
-    Food,
-    Service
-}
 
-public abstract class  Product {
+public abstract class  Item extends Product{
     /**
      * ID for unique identification of the product
      */
-    private final int ID;
+    private final String ID;
     /**
     /**
-     * Name of the product
+     * Name of the Item
      */
     private String name;
     /**
-     * Price of the product with no discounts
+     * Price of the Item with no discounts
      */
     private double price;
-    private ProductType type;
+
 
 
     /**
-     * Constructor of the Class Product
+     * Constructor of the Class Item
      * Checks if the entering values are valid for a Product
      * @param ID product ID
      * @param name product name
      * @param price product price
      */
 
-    public Product(int ID, String name, double price,ProductType types) {
-        if(ID <= 0)
+    public Item(String ID, String name, double price,ProductType types) {
+        super(ID,types);
+        if(Integer.parseInt(ID) <= 0)
             throw new IllegalArgumentException("ID must be positive.");
         if(name == null || name.length() >= 100 || name.trim().isEmpty()) //name.trim().isEmpty() -> para que no acepte que entre comillas este vacio
             throw new IllegalArgumentException("Invalid name.");
@@ -49,22 +43,10 @@ public abstract class  Product {
         this.ID = ID;
         this.name = name;
         this.price = price;
-        this.type = types;
 
     }
 
-    /**
-     * Getter for the productType
-     * @return productType
-     */
-    public  ProductType getProductType(){return type;}
-    /**
-     * Getter for the ID
-     * @return ID of the product
-     */
-    public int getID() {
-        return ID;
-    }
+
     /**
      * Getter for the name
      * @return Name of the product

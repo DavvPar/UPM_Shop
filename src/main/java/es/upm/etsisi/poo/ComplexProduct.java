@@ -5,7 +5,7 @@ package es.upm.etsisi.poo;
  * requirements such as foods and meetings
  * They have new attributes, such as time limits, people quantity and type
  */
-public class ComplexProduct extends Product{
+public class ComplexProduct extends Item{
     /**
      * Date of expiration (no longer valid)
      */
@@ -34,7 +34,7 @@ public class ComplexProduct extends Product{
      * @param people permitted people
      * @param type food/meeting type
      */
-    public ComplexProduct(int ID, String name, double price, String expirationDate, int people,ProductType type) {
+    public ComplexProduct(String ID, String name, double price, String expirationDate, int people,ProductType type) {
         super(ID, name, price, type);
         MAX_PEOPLE = people;
         this.expirationDate = expirationDate;

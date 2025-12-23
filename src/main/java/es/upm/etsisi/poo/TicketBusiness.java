@@ -16,7 +16,7 @@ public class TicketBusiness extends Ticket{
         super(idTicket, state, type);
         service =new ArrayList<>();
     }
-    public boolean addProductToTicket(ProductList lista,int Id, int quantity, String message){
+    public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
         boolean add = false;
         Product p =lista.getProduct(Id).CloneProduct();
         if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){

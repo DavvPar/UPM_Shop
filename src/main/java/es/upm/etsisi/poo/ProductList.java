@@ -84,17 +84,17 @@ public class ProductList {
      * @param value New value to set the field to
      * @return true if updated, false if not
      */
-    public boolean updateProduct(int idToUpdate, String field, String value) {
+    public boolean updateProduct(String idToUpdate, String field, String value) {
         boolean updated = false;
         if (numProduct == 0)
             System.out.println("Empty List");
         else {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
-                
                 if (productToUpdate != null) {
+                    if (productToUpdate.getProductType() != ProductType.Service){
                     if (field.equalsIgnoreCase("NAME")) {
-                        productToUpdate.setName(value);
+                        ((Item)productToUpdate).setName(value);
                         updated = true;
                     } else if (field.equalsIgnoreCase("CATEGORY")) {
                         CategoryType type = CategoryType.valueOf(value.toUpperCase());
@@ -103,8 +103,9 @@ public class ProductList {
                         updated = true;
                     } else if (field.equalsIgnoreCase("PRICE")) {
                         double newPrice = Double.parseDouble(value);
-                        productToUpdate.setPrice(newPrice);
+                        ((Item)productToUpdate).setPrice(newPrice);
                         updated = true;
+                    }
                     }
                 } else {
                     System.out.println("The product doesn't exist");
@@ -138,10 +139,10 @@ public class ProductList {
      * @param Id product ID
      * @return Product with said ID
      */
-    public Product getProduct(int Id) {
+    public Product getProduct(String Id) {
         Product find = null;
         for (int i = 0; i < numProduct; i++) {
-            if (products.get(i).getID() == Id) {
+            if (products.get(i).getID().equals(Id)) {
                 find = products.get(i);
             }
         }

@@ -80,7 +80,7 @@ public abstract class Ticket {
      * Method for adding products to a ticket
      * @return true or false (successful or failed)
      */
-    public abstract boolean addProductToTicket(ProductList lista,int Id, int quantity, String message);
+    public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
     private void SetupDiscount(){
         discount = new ArrayList<>();
         for (int i =0;i<NumProductInTicket;i++){
@@ -111,27 +111,27 @@ public abstract class Ticket {
                 switch (c.getCategory().getType()){
                     case MERCH:
                         if (categorytype[0]>=2){
-                            discount.set(i,Math.floor(productList.get(i).getPrice()*c.getCategory().getDiscount()*100)/100);
+                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
                     case BOOK:
                         if (categorytype[1]>=2){
-                            discount.set(i,Math.floor(productList.get(i).getPrice()*c.getCategory().getDiscount()*100)/100);
+                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
                     case CLOTHES:
                         if (categorytype[2]>=2){
-                            discount.set(i,Math.floor(productList.get(i).getPrice()*c.getCategory().getDiscount()*100)/100);
+                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
                     case STATIONERY:
                         if (categorytype[3]>=2){
-                            discount.set(i,Math.floor(productList.get(i).getPrice()*c.getCategory().getDiscount()*100)/100);
+                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
                     case ELECTRONICS:
                         if (categorytype[4]>=2){
-                            discount.set(i,Math.floor(productList.get(i).getPrice()*c.getCategory().getDiscount()*100)/100);
+                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
                 }
@@ -153,10 +153,10 @@ public abstract class Ticket {
      * Remove ticket product
      * @param Id product id will remove
      */
-    public void removeProduct(int Id) {
+    public void removeProduct(String Id) {
         int i = 0;
         while (i < NumProductInTicket) {
-            if (productList.get(i).getID() == Id) {
+            if (productList.get(i).getID().equals(Id)) {
                 productList.remove(productList.get(i));
                 NumProductInTicket--;
             } else {
@@ -175,7 +175,9 @@ public abstract class Ticket {
     public double getTotalPrice(){
         totalPrice =0;
         for (int i =0; i < NumProductInTicket; i++){
-            totalPrice += productList.get(i).getPrice();
+            if (productList.get(i).getProductType() !=ProductType.Service){
+            totalPrice += ((Item)productList.get(i)).getPrice();
+            }
         }
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;

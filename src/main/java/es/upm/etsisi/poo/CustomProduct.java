@@ -8,7 +8,7 @@ import java.util.List;
  * They have basic attributes and sometimes can be personalized by the user, adding
  * a new layer to them
  */
-public class CustomProduct extends Product{
+public class CustomProduct extends Item{
     /**
      * List of personalizations
      */
@@ -34,7 +34,7 @@ public class CustomProduct extends Product{
      * @param price product price
      * @param maxPers maximum personalizations for product
      */
-    public CustomProduct(int ID, String name, Category category, double price, int maxPers,ProductType type) {
+    public CustomProduct(String ID, String name, Category category, double price, int maxPers,ProductType type) {
         super(ID, name, price, type);
         this.category = category;
         this.maxPers = maxPers;
