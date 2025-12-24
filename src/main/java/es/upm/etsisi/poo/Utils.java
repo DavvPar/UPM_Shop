@@ -14,7 +14,7 @@ import java.util.TimeZone;
 public class Utils {
 
     public static boolean validNIF(String nif) {
-        if (nif == null || nif.length() != 9 || !nif.matches("^[A-HJNPQRSUVW][0-9]{7}[0-9A-J]$")) {
+        if (nif == null || nif.length() != 9 || !nif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$")) {
             return false;
         }else{
             return true;

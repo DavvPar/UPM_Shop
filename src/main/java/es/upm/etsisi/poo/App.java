@@ -148,7 +148,7 @@ public class App {
                     if (message.length==4){
                       String expireDate = message[2];
                       ServiceType Stype = ServiceType.valueOf(message[3].toUpperCase());
-                      product =new Service(productlist.getNumservice()+"S",Stype,expireDate,ProductType.Service);
+                      product =new Service((productlist.getNumservice()+1)+"S",Stype,expireDate,ProductType.Service);
                     }else{
                         String line = String.join(" ", message);
                         String name = Utils.getNameScanner(line); //cambio en get nombre de scanner
@@ -325,13 +325,19 @@ public class App {
 
         switch (command) {
             case "new":
-                TicketType type;
-                if (Utils.validNIF(message[3])){
-                    type =TicketType.business;
+                TicketType type = null;
+                String[] input = String.join(" ", message).split("-");
+                String[] Firspart = input[0].split(" ");
+                if (Utils.validNIF(Firspart[Firspart.length-1])){
+                    switch (input[1].toUpperCase()){
+                        case "C"-> type = TicketType.businessC;
+                        case "S"-> type = TicketType.businessS;
+                        default -> type = TicketType.businessP;
+                    }
                 }else type = TicketType.Client;
-                if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
-                    if (message[2].matches("[0-9]+") && message[2].length() >= 5 && message.length ==5) {
-                        currentTicket = ticketList.createTicket(message[2], message[3], message[4],type);
+                if (userList.containsId(Firspart[Firspart.length-1])&& userList.containsId(Firspart[Firspart.length-2])) {
+                    if (Firspart[2].matches("[0-9]+") && Firspart[2].length() >= 5) {
+                        currentTicket = ticketList.createTicket(Firspart[2], Firspart[3], Firspart[4],type);
                         if(currentTicket == null){
                             System.out.println("ticket new: error");
                         }else{
@@ -341,7 +347,7 @@ public class App {
                         }
                     } else {
 
-                        currentTicket = ticketList.createTicket(null, message[2], message[3],type);
+                        currentTicket = ticketList.createTicket(null, Firspart[2], Firspart[3],type);
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket new: ok");
                     }
@@ -360,9 +366,10 @@ public class App {
                     String CashId = message[3];
                     String id = message[4];
                     Product p = productlist.getProduct(id);
-                    quantity = Integer.parseInt(message[5]);
-                    if (userList.containsId(CashId)&& currentTicket !=null){
 
+                    if (userList.containsId(CashId)&& currentTicket !=null){
+                        if (p.getProductType() != ProductType.Service){
+                        quantity = Integer.parseInt(message[5]);
                         if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){
                         for (int i =6;i<message.length;i++){
                             Custom += (message[i]);
@@ -374,6 +381,9 @@ public class App {
                                 System.out.println("have exceeded the maximum number of people allowed");
                                 break;
                             }
+                            quantity = 1;
+                        }
+                        }else{
                             quantity = 1;
                         }
                         try {
@@ -765,20 +775,19 @@ public class App {
                 "   cash tickets <id>",
 
                 "◦ Ticket:",
-                "   ticket new [<id>] <cashId> <userId>",
+                "   ticket new [<id>] <cashId> <userId> -[c|p|s] (default -p option)",
                 "   ticket add <ticketId> <cashId> <prodId> <amount> [--p<txt> --p<txt>]",
                 "   ticket remove <ticketId> <cashId> <prodId>",
                 "   ticket print <ticketId> <cashId>",
                 "   ticket list",
 
                 "◦ Product:",
-                "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>]",
+                "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>] || (\"<name>\" <category> )",
                 "   prod update <id> NAME|CATEGORY|PRICE <value>",
                 "   prod addFood [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                 "   prod addMeeting [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                 "   prod list",
                 "   prod remove <id>",
-
                 "◦ General:",
                 "   echo \"<texto>\"",
                 "   help",

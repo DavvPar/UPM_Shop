@@ -15,7 +15,9 @@ enum stateTicket{
 }
 enum TicketType{
     Client,
-    business
+    businessC,
+    businessP,
+    businessS
 }
 
 public abstract class Ticket {
@@ -73,10 +75,11 @@ public abstract class Ticket {
         this.state = state;
         this.type =type;
         discount = new ArrayList<>();
-        categorytype= new int[5];
+        categorytype= new int[6];
     }
+    public TicketType getType(){return type;}
     /**
-     * Method for adding products to a ticket
+     * Method for adding p6roducts to a ticket
      * @return true or false (successful or failed)
      */
     public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
@@ -93,6 +96,7 @@ public abstract class Ticket {
      */
     private void SetupDiscount(){
         discount = new ArrayList<>();
+        categorytype = new int[6];
         for (int i =0;i<productList.size();i++){
             Product p =productList.get(i);
             if (p.getProductType() == ProductType.Service){
@@ -128,7 +132,7 @@ public abstract class Ticket {
                         }
                         break;
                     case BOOK:
-                        if (categorytype[1]>=2){
+                        if (categorytype[3]>=2){
                             discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;
@@ -138,7 +142,7 @@ public abstract class Ticket {
                         }
                         break;
                     case STATIONERY:
-                        if (categorytype[3]>=2){
+                        if (categorytype[1]>=2){
                             discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);
                         }
                         break;

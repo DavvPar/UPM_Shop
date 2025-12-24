@@ -38,7 +38,7 @@ public class ComplexProduct extends Item{
         super(ID, name, price, type);
         MAX_PEOPLE = people;
         this.expirationDate = expirationDate;
-        people =0;
+        this.people =0;
         this.priceP = price;
         if(people < 0 || people > MAX_PEOPLE){
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
@@ -87,7 +87,9 @@ public class ComplexProduct extends Item{
 
     @Override
     public Product CloneProduct() {
-        return new ComplexProduct(getID(),getName(),getPrice(),getExpirationDate(),getPeople(),getProductType());
+        ComplexProduct c =new ComplexProduct(getID(),getName(),getPrice(),expirationDate,MAX_PEOPLE,getProductType());
+        c.setPeople(people);
+     return c;
     }
 
     /**

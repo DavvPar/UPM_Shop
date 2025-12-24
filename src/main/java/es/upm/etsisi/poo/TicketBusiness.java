@@ -16,14 +16,26 @@ public class TicketBusiness extends Ticket{
     }
     public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
         boolean add = false;
+        boolean allow = false;
         Product p =lista.getProduct(Id).CloneProduct();
         if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
             ((CustomProduct)p).addPersonalized(message);
         }
         for (int i =0;i<quantity;i++){
             if (getNumProductInTicket() < 100){
-                 add(p);
-                add = true;
+                switch (getType()){
+                    case businessC -> allow = true;
+                    case businessP -> {
+                        if (p.getProductType() != ProductType.Service) allow = true;
+                    }
+                    case businessS -> {
+                        if (p.getProductType() == ProductType.Service)allow = true;
+                    }
+                }
+                if (allow){
+                    add(p);
+                    add = true;
+                }
                 if (getState() == stateTicket.empty){
                     setState(stateTicket.open);
                 }
@@ -54,7 +66,7 @@ public class TicketBusiness extends Ticket{
         return totaldiscount;
     }
     private double getDiscountServece(){
-        return Math.min(getTotalPrice()*(0.15*getTotalPrice()),getTotalPrice()-getDiscountProduct());
+        return Math.min(getTotalPrice()*(0.15*NumService()),getTotalPrice()-getDiscountProduct());
     }
 
     @Override
@@ -90,7 +102,7 @@ public class TicketBusiness extends Ticket{
                     "Total price: "+ String.format("%.2f",getTotalPrice()) +"\n"
                     + "Total discount: "+ String.format("%.2f",getTotalDiscount()) +"\n"
                     +DiscountM
-                    + "Final Price: " + String.format("%.2f",getFinalPrice());
+                    + "\nFinal Price: " + String.format("%.2f",getFinalPrice());
         }
 
         return "Ticket : "+ getTicketId() + "\n" +Mservice;
