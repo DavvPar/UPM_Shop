@@ -17,8 +17,8 @@ public class  Client extends User {
      * @param email email of the Client
      * @param cashId Cash that created the Client
      */
-    public Client(String name, String id, String email, String cashId){
-        super(name, email, id);
+    public Client(String name, String id, String email, String cashId,UserType type){
+        super(name, email, id,type);
         this.cashId = cashId;
     }
 

@@ -42,7 +42,6 @@ public abstract class Ticket {
     /**
      * Number of products currently in the ticket.
      */
-    private int NumProductInTicket;
     private  String ticketId;
     /**
      *number of product types
@@ -51,6 +50,7 @@ public abstract class Ticket {
      * [2]CLOTHES,
      * [3]BOOK,
      * [4]ELECTRONICS
+     * [5]Service
      */
     private int[] categorytype;
     /**
@@ -66,10 +66,9 @@ public abstract class Ticket {
      @param idTicket TicketId
      */
     public Ticket(String idTicket, stateTicket state, TicketType type) {
-        this.ticketId = idTicket;
-        this.NumProductInTicket = 0;
-        this.MaxNumProduct = 100;
         this.productList = new ArrayList<>();
+        this.ticketId = idTicket;
+        this.MaxNumProduct = 100;
         this.totalPrice = 0;
         this.state = state;
         this.type =type;
@@ -81,10 +80,24 @@ public abstract class Ticket {
      * @return true or false (successful or failed)
      */
     public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
+
+    /**
+     * private method to perform the necessary counting
+     *number of types/product categories affecting the discount
+     * [0] MERCH,
+     * [1]STATIONERY,
+     * [2]CLOTHES,
+     * [3]BOOK,
+     * [4]ELECTRONICS
+     * [5]Service
+     */
     private void SetupDiscount(){
         discount = new ArrayList<>();
-        for (int i =0;i<NumProductInTicket;i++){
+        for (int i =0;i<productList.size();i++){
             Product p =productList.get(i);
+            if (p.getProductType() == ProductType.Service){
+                categorytype[5]++;
+            }
             if (p.getProductType() == ProductType.Product || p.getProductType() == ProductType.ProductPersonalized){
                 CustomProduct c = (CustomProduct)p;
                 switch (c.getCategory().getType()){
@@ -104,7 +117,7 @@ public abstract class Ticket {
      */
     public void applyDiscunt(){
         SetupDiscount();
-        for(int i =0; i<NumProductInTicket;i++){
+        for(int i =0; i<productList.size();i++){
             Product p = productList.get(i);
             if (p.getProductType() == ProductType.Product || p.getProductType() == ProductType.ProductPersonalized){
                 CustomProduct c = (CustomProduct)p;
@@ -141,13 +154,13 @@ public abstract class Ticket {
     public double getDiscount(int index){
         return discount.get(index);
     }
+    public int NumService(){
+        return categorytype[5];
+    }
     public void add(Product p){
         productList.add(p);
     }
 
-    public void setNumProductInTicket(int numProductInTicket) {
-        NumProductInTicket = numProductInTicket;
-    }
 
     /**
      * Remove ticket product
@@ -155,15 +168,14 @@ public abstract class Ticket {
      */
     public void removeProduct(String Id) {
         int i = 0;
-        while (i < NumProductInTicket) {
+        while (i < productList.size()) {
             if (productList.get(i).getID().equals(Id)) {
                 productList.remove(productList.get(i));
-                NumProductInTicket--;
             } else {
                 i++;
             }
         }
-        if (NumProductInTicket == 0){
+        if (productList.size() == 0){
             state = stateTicket.empty;
         }
     }
@@ -174,7 +186,7 @@ public abstract class Ticket {
      */
     public double getTotalPrice(){
         totalPrice =0;
-        for (int i =0; i < NumProductInTicket; i++){
+        for (int i =0; i < productList.size(); i++){
             if (productList.get(i).getProductType() !=ProductType.Service){
             totalPrice += ((Item)productList.get(i)).getPrice();
             }
@@ -195,11 +207,14 @@ public abstract class Ticket {
      * @return shortId
      */
     String getShortId(){
-        String shortId;
+        String shortId ="";
         if(!(this.getState().equals(stateTicket.closed))){
-            shortId = this.getTicketId().substring(this.getTicketId().length()-5);
-        }else{
-            shortId = this.getTicketId().substring(this.getTicketId().length()-21, this.getTicketId().length()-16);
+            String[] message =ticketId.trim().split("-:");
+            for (int i =0;i<message.length;i++){
+                if(message[i].length()>=5){
+                    shortId = message[i];
+                }
+            }
         }
         return shortId;
     }
@@ -239,7 +254,31 @@ public abstract class Ticket {
      * @param state new ticket state
      */
     public void setState(stateTicket state) {this.state= state;}
-
+    public void Sort(){
+        int servicesCount = 0;
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getProductType() == ProductType.Service) {
+                Product temp = productList.get(i);
+                productList.set(i, productList.get(servicesCount));
+                productList.set(servicesCount, temp);
+                servicesCount++;
+            }
+        }
+        if (servicesCount > 1) {
+            productList.subList(0, servicesCount)
+                    .sort(Comparator.comparing(
+                            p -> p.getID(),
+                            String.CASE_INSENSITIVE_ORDER
+                    ));
+        }
+        if (servicesCount < (productList.size() - 1)) {
+            productList.subList(servicesCount, productList.size())
+                    .sort(Comparator.comparing(
+                            p ->((Item)p).getName(),
+                            String.CASE_INSENSITIVE_ORDER
+                    ));
+        }
+    }
     /**
      * Ticket toString, showing all the
      * @return Ticket

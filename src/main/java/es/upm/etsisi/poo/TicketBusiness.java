@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class TicketBusiness extends Ticket{
 
-    private ArrayList<Product> service;
     /**
      * Constructor of the Class Ticket.
      *
@@ -14,7 +13,6 @@ public class TicketBusiness extends Ticket{
      */
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
-        service =new ArrayList<>();
     }
     public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
         boolean add = false;
@@ -25,7 +23,6 @@ public class TicketBusiness extends Ticket{
         for (int i =0;i<quantity;i++){
             if (getNumProductInTicket() < 100){
                  add(p);
-                setNumProductInTicket(getNumProductInTicket());
                 add = true;
                 if (getState() == stateTicket.empty){
                     setState(stateTicket.open);
@@ -37,23 +34,65 @@ public class TicketBusiness extends Ticket{
         }
         return add;
     }
-
-    @Override
-    public double getTotalDiscount(){
+    private double getDiscountProduct(){
         double totaldiscount =0 ;
         for (int i =0; i < getNumProductInTicket(); i++){
             totaldiscount += getDiscount(i);
-        }if (service.isEmpty()){
+
+        }
+        return totaldiscount;
+    }
+    @Override
+    public double getTotalDiscount(){
+        double totaldiscount =getDiscountProduct() ;
+        if (NumService() ==0){
         totaldiscount = Math.floor((totaldiscount) * 100) / 100;
         }
         else {
-            totaldiscount = Math.floor((totaldiscount*(1-(service.size()*0.15)))* 100) / 100;
+            totaldiscount = Math.floor((Math.min(totaldiscount+getDiscountServece(),getTotalPrice()))* 100) / 100;
         }
         return totaldiscount;
+    }
+    private double getDiscountServece(){
+        return Math.min(getTotalPrice()*(0.15*getTotalPrice()),getTotalPrice()-getDiscountProduct());
     }
 
     @Override
     public String toString() {
-        return "";
+        boolean exitS=false,exitP =false;
+        String Mservice="Services Included: \n",Mproduct="Product Included: \n";
+        String DiscountM ="";
+        Sort();
+        applyDiscunt();
+        for (int i=0;i<getNumProductInTicket();i++){
+            Product p = getProduct(i);
+            if (p.getProductType() == ProductType.Service){
+                Mservice += p +"\n";
+                exitS = true;
+            }else {
+                if (getDiscount(i)>0) {
+                    Mproduct += "  "  + p + "**discount -" + String.format("%.2f",getDiscount(i)) + "\n";
+                }
+                else{
+                    Mproduct += p+ "\n";
+                }
+                exitP = true;
+            }
+        }
+        if (!exitS) Mservice ="";
+        else{
+            DiscountM +="Extra Discount from services:"+String.format("%.2f",getDiscountServece())+"**discount -"+String.format("%.2f",getDiscountServece());
+        }
+        if (!exitP) Mproduct ="";
+        else {
+
+            return "Ticket : "+ getTicketId() + "\n" +Mservice+Mproduct +
+                    "Total price: "+ String.format("%.2f",getTotalPrice()) +"\n"
+                    + "Total discount: "+ String.format("%.2f",getTotalDiscount()) +"\n"
+                    +DiscountM
+                    + "Final Price: " + String.format("%.2f",getFinalPrice());
+        }
+
+        return "Ticket : "+ getTicketId() + "\n" +Mservice;
     }
 }

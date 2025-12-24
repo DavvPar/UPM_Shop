@@ -20,7 +20,7 @@ public class ProductList {
      * Current number of products in the list
      */
     private int numProduct;
-
+    private int Numservice;
     /**
      * Constructor of the class
      * Creates an empty product list
@@ -31,6 +31,7 @@ public class ProductList {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
         products = new ArrayList<>();
+        Numservice = 0;
     }
     /**
      * Adds a passed product to the product list
@@ -47,6 +48,9 @@ public class ProductList {
             }
             if (!exists) {
                 products.add(product);
+                if (product.getProductType()==ProductType.Service){
+                    Numservice++;
+                }
                 numProduct++;
                 added = true;
                 products.sort(Comparator.nullsLast(
@@ -91,8 +95,7 @@ public class ProductList {
         else {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
-                if (productToUpdate != null) {
-                    if (productToUpdate.getProductType() != ProductType.Service){
+                if (productToUpdate != null && productToUpdate.getProductType() != ProductType.Service) {
                     if (field.equalsIgnoreCase("NAME")) {
                         ((Item)productToUpdate).setName(value);
                         updated = true;
@@ -106,9 +109,9 @@ public class ProductList {
                         ((Item)productToUpdate).setPrice(newPrice);
                         updated = true;
                     }
-                    }
+
                 } else {
-                    System.out.println("The product doesn't exist");
+                    System.out.println("The product doesn't exist or is service");
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -156,6 +159,7 @@ public class ProductList {
     public int getNumProduct(){
         return numProduct;
     }
+    public int getNumservice(){return Numservice;}
 
     /**
      * toString for the list of products, showing all

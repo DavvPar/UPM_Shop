@@ -21,17 +21,20 @@ public abstract class User {
      *
      */
     private String id;
-
+    private UserType type;
     /**
      * Constructor of the class
      * @param name name of the user
      * @param email email of the user with a certain format
      */
-    public User(String name, String email, String id) {
+    public User(String name, String email, String id,UserType type) {
         this.name = name;
         this.email = email;
         this.id = id;
+        this.type = type;
     }
+
+    public UserType getType() {return type;}
 
     /**
      * Getter for name
@@ -59,12 +62,12 @@ public abstract class User {
      * Each extension from user will define this method
      * @return user identifier
      */
-    public String getId(){
-        return id;
-    }
+
 
     public void setId(String id) {
         this.id = id;
+    }public String getId(){
+        return id;
     }
 
     /**

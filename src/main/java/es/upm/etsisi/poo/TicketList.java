@@ -44,16 +44,25 @@ public class TicketList {
      * @param CashId cashier that operates the ticket
      * @return ticket
      */
-    public Ticket createTicket(String TicketId,String CashId,String clientId){
+    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
         Ticket t = null;
+        String newId ="";
         if (TicketId == null){
-            String newId = createId();
-            t = new Ticket(newId,stateTicket.empty);
+            newId = createId();
+            if (type ==TicketType.Client) {
+                t = new TicketClient(newId, stateTicket.empty, type);
+            } else {
+                t= new TicketBusiness(newId,stateTicket.empty,type);
+            }
             id.add(clientId+" "+CashId);
             addTicket(t);
         }else {
             if (validId(TicketId)){
-            t = new Ticket(Utils.getTime() + "-" + TicketId,stateTicket.empty);
+                if (type ==TicketType.Client) {
+                    t = new TicketClient(TicketId, stateTicket.empty, type);
+                }else {
+                    t= new TicketBusiness(TicketId,stateTicket.empty,type);
+                }
                 id.add(clientId+" "+CashId);
             addTicket(t);
             }
