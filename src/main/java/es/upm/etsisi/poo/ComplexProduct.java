@@ -87,7 +87,7 @@ public class ComplexProduct extends Item{
 
     @Override
     public Product CloneProduct() {
-        ComplexProduct c =new ComplexProduct(getID(),getName(),getPrice(),expirationDate,MAX_PEOPLE,getProductType());
+        ComplexProduct c =new ComplexProduct(getID(),getName(),priceP,expirationDate,MAX_PEOPLE,getProductType());
         c.setPeople(people);
      return c;
     }
