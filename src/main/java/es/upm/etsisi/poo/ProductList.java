@@ -20,7 +20,7 @@ public class ProductList {
      * Current number of products in the list
      */
     private int numProduct;
-
+    private int Numservice;
     /**
      * Constructor of the class
      * Creates an empty product list
@@ -31,6 +31,7 @@ public class ProductList {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
         products = new ArrayList<>();
+        Numservice = 0;
     }
     /**
      * Adds a passed product to the product list
@@ -47,6 +48,9 @@ public class ProductList {
             }
             if (!exists) {
                 products.add(product);
+                if (product.getProductType()==ProductType.Service){
+                    Numservice++;
+                }
                 numProduct++;
                 added = true;
                 products.sort(Comparator.nullsLast(
@@ -84,17 +88,16 @@ public class ProductList {
      * @param value New value to set the field to
      * @return true if updated, false if not
      */
-    public boolean updateProduct(int idToUpdate, String field, String value) {
+    public boolean updateProduct(String idToUpdate, String field, String value) {
         boolean updated = false;
         if (numProduct == 0)
             System.out.println("Empty List");
         else {
             try {
                 Product productToUpdate = getProduct(idToUpdate);
-                
-                if (productToUpdate != null) {
+                if (productToUpdate != null && productToUpdate.getProductType() != ProductType.Service) {
                     if (field.equalsIgnoreCase("NAME")) {
-                        productToUpdate.setName(value);
+                        ((Item)productToUpdate).setName(value);
                         updated = true;
                     } else if (field.equalsIgnoreCase("CATEGORY")) {
                         CategoryType type = CategoryType.valueOf(value.toUpperCase());
@@ -103,11 +106,12 @@ public class ProductList {
                         updated = true;
                     } else if (field.equalsIgnoreCase("PRICE")) {
                         double newPrice = Double.parseDouble(value);
-                        productToUpdate.setPrice(newPrice);
+                        ((Item)productToUpdate).setPrice(newPrice);
                         updated = true;
                     }
+
                 } else {
-                    System.out.println("The product doesn't exist");
+                    System.out.println("The product doesn't exist or is service");
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -138,10 +142,10 @@ public class ProductList {
      * @param Id product ID
      * @return Product with said ID
      */
-    public Product getProduct(int Id) {
+    public Product getProduct(String Id) {
         Product find = null;
         for (int i = 0; i < numProduct; i++) {
-            if (products.get(i).getID() == Id) {
+            if (products.get(i).getID().equals(Id)) {
                 find = products.get(i);
             }
         }
@@ -155,6 +159,7 @@ public class ProductList {
     public int getNumProduct(){
         return numProduct;
     }
+    public int getNumservice(){return Numservice;}
 
     /**
      * toString for the list of products, showing all

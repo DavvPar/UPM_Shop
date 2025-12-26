@@ -8,19 +8,15 @@ import java.util.List;
  * They have basic attributes and sometimes can be personalized by the user, adding
  * a new layer to them
  */
-public class CustomProduct extends Product{
+public class CustomProduct extends Item{
     /**
      * List of personalizations
      */
-    private List<String> personalization;
+    private ArrayList<String> personalization;
     /**
      * Maximum number of personalizations
      */
     private int maxPers;
-    /**
-     * Type of product
-     */
-    private ProductType type;
     /**
      * Category of product
      */
@@ -38,14 +34,8 @@ public class CustomProduct extends Product{
      * @param price product price
      * @param maxPers maximum personalizations for product
      */
-    public CustomProduct(int ID, String name, Category category, double price, int maxPers) {
-        super(ID, name, price);
-        if (maxPers == -1){
-            type = ProductType.Product;
-        }
-        else {
-            type = ProductType.ProductPersonalized;
-        }
+    public CustomProduct(String ID, String name, Category category, double price, int maxPers,ProductType type) {
+        super(ID, name, price, type);
         this.category = category;
         this.maxPers = maxPers;
         this.personalization = new ArrayList<>();
@@ -59,8 +49,8 @@ public class CustomProduct extends Product{
      * @return true if valid, false if invalid
      */
     public boolean allowedText(String[] text){
-        if(text.length <= maxPers) {
-            System.out.println("No more custom text can be added.");
+        if(text.length > maxPers ) {
+            System.out.println("Too many customizations, the customization limit is"+maxPers);
             return false;
         }
         return true;
@@ -76,27 +66,22 @@ public class CustomProduct extends Product{
      */
     public boolean addPersonalized(String personalized){
         boolean add = false;
-        String[] r = personalized.trim().split("--p");
-            if(allowedText(r)){
-                if (r.length>0){
+        // eliminar el primer --p
+        // porque si no al hacer split deja r[0]="" haciendo que haya 4 elementos en r
+        String message = personalized.substring(3);
+        String[] r = message.trim().split("--p");
+            if (allowedText(r)){
                 for (int i=0;i<r.length;i++){
+                    if (!r[i].isEmpty()){
                 personalization.add(r[i]);
                 N_Pers++;
+                    }
                 }
                     super.setPrice(super.getPrice()*(1+(0.1*N_Pers)));
-                }
             }
         return add;
     }
 
-    /**
-     * Getter for product type
-     * @return product type
-     */
-    @Override
-    public ProductType getProductType() {
-        return type;
-    }
     /**
      * Getter for category
      * @return category
@@ -116,6 +101,25 @@ public class CustomProduct extends Product{
         return super.getPrice();
     }
     public int getMaxPers(){return maxPers;}
+    public String getPersonalization(){
+        String resul ="";
+        for (int i=0;i<personalization.size();i++){
+                resul += "--p"+personalization.get(i);
+        }
+        return resul;
+    }
+
+    @Override
+    public Product CloneProduct() {
+        CustomProduct New;
+        New = new CustomProduct(getID(),getName(),getCategory(),getPrice(),getMaxPers(),getProductType());
+        if (!personalization.isEmpty()){
+        String message = getPersonalization();
+            New.addPersonalized(message);
+        }
+        return New;
+    }
+
     /**
      * toString of the object CustomProduct, showing its id,
      * name, category, price and personalizations
@@ -124,26 +128,27 @@ public class CustomProduct extends Product{
     @Override
     public String toString() {
         String r = "";
-        if (type == ProductType.ProductPersonalized){
+        if (super.getProductType() == ProductType.ProductPersonalized){
             r = ", maxPersonal:"+maxPers;
             if (!personalization.isEmpty()) {
                 r += ", personalizationList:[";
                 if (personalization.size() > 1) {
-                    for (int i = 1; i < personalization.size(); i++) {
-                        if (i < personalization.size() - 1) {
+                    for (int i = 0; i < personalization.size(); i++) {
+                        if (i < personalization.size()-1) {
                             r += personalization.get(i) + ", ";
                         } else {
                             r += personalization.get(i) + "]";
                         }
+
                     }
                 }
             }
         }
         return "{class:"+getProductType() +
-                ", id:"+super.getID() +
-                ", name:'"+super.getName() +
+                ", id:"+getID() +
+                ", name:'"+getName() +
                 "', "+ getCategory().toString() +
-                ", price:"+super.getPrice() +
+                ", price:"+ String.format("%.2f", getPrice()) +
                 r +
                 "}";
     }

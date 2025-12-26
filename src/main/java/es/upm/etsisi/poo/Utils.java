@@ -12,6 +12,14 @@ import java.util.TimeZone;
  * that do not belong in any created class
  */
 public class Utils {
+
+    public static boolean validNIF(String nif) {
+        if (nif == null || nif.length() != 9 || !nif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$")) {
+            return false;
+        }else{
+            return true;
+        }
+    }
     /**
      *method that returns the date of now
      * @return YYYY-MM-DD-HH:MM

@@ -137,26 +137,34 @@ public class App {
         String[] rightParts = secondPartArray(input);
         switch (command) {
             case "add":
+
                 if (!input.toLowerCase().startsWith("prod add")) {
                     System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers]");
                     return;
                 }
                 try {
                     //line: prod add id \name con espacios\ category price
-                    String line = String.join(" ", message);
-                    String name = Utils.getNameScanner(line); //cambio en get nombre de scanner
-                    int id = Integer.parseInt(message[2]);
+                    Product product = null;
+                    if (message.length==4){
+                      String expireDate = message[2];
+                      ServiceType Stype = ServiceType.valueOf(message[3].toUpperCase());
+                      product =new Service((productlist.getNumservice()+1)+"S",Stype,expireDate,ProductType.Service);
+                    }else{
+                        String line = String.join(" ", message);
+                        String name = Utils.getNameScanner(line); //cambio en get nombre de scanner
+                        String id = message[2];
 
-                    CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
-                    Category category = new Category(type);
-                    double price = Double.parseDouble(rightParts[1]);
-                    Product product;
-                    if (rightParts.length == 3) {
-                        int maxPers = Integer.parseInt(message[message.length-1]);
-                        product = new CustomProduct(id, name, category, price, maxPers);
-                    } else {
-                        product = new CustomProduct(id, name, category, price,-1);
+                        CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
+                        Category category = new Category(type);
+                        double price = Double.parseDouble(rightParts[1]);
+                        if (rightParts.length == 3) {
+                            int maxPers = Integer.parseInt(message[message.length-1]);
+                            product = new CustomProduct(id, name, category, price, maxPers,ProductType.ProductPersonalized);
+                        } else {
+                            product = new CustomProduct(id, name, category, price,0,ProductType.Product);
+                        }
                     }
+
                     if (productlist.addProduct(product)) {
                         String addProduct = product.toString();
                         System.out.println(addProduct);
@@ -185,7 +193,7 @@ public class App {
                     return;
                 }
 
-                int idToUpdate = Integer.parseInt(message[2]);
+                String idToUpdate = message[2];
                 String field = message[3].toLowerCase();
                 String value;
                 if (field.equalsIgnoreCase("name")) {
@@ -208,7 +216,7 @@ public class App {
                 break;
 
             case "remove":
-                int idRemove = Integer.parseInt(message[2]);
+                String idRemove = message[2];
                 Product productRemove = productlist.getProduct(idRemove);
                 String stringProd = productRemove.toString();
                 System.out.println(stringProd);
@@ -227,7 +235,7 @@ public class App {
                 try {
                     String line = String.join(" ", message);
                     String name = Utils.getNameScanner(line);
-                    int id = Integer.parseInt(message[2]);
+                    String id = message[2];
                     double price = Double.parseDouble(rightParts[0]);
                     if (!Utils.ValidDate(rightParts[1])){return;}
                     String expirationStrg = rightParts[1];
@@ -265,7 +273,7 @@ public class App {
                 try {
                     String line = String.join(" ", message);
                     String name = Utils.getNameScanner(line);
-                    int id = Integer.parseInt(message[2]);
+                    String id = message[2];
                     double price = Double.parseDouble(rightParts[0]);
                     String expirationStrg = rightParts[1];
                     int maxPeople = Integer.parseInt(rightParts[2]);
@@ -317,9 +325,19 @@ public class App {
 
         switch (command) {
             case "new":
-                if (userList.containsId(message[message.length-1])&& userList.containsId(message[message.length-2])) {
-                    if (message[2].matches("[0-9]+") && message[2].length() >= 5) {
-                        currentTicket = ticketList.createTicket(message[2], message[3], message[4]);
+                TicketType type = null;
+                String[] input = String.join(" ", message).split("-");
+                String[] Firspart = input[0].split(" ");
+                if (Utils.validNIF(Firspart[Firspart.length-1])){
+                    switch (input[1].toUpperCase()){
+                        case "C"-> type = TicketType.businessC;
+                        case "S"-> type = TicketType.businessS;
+                        default -> type = TicketType.businessP;
+                    }
+                }else type = TicketType.Client;
+                if (userList.containsId(Firspart[Firspart.length-1])&& userList.containsId(Firspart[Firspart.length-2])) {
+                    if (Firspart[2].matches("[0-9]+") && Firspart[2].length() >= 5) {
+                        currentTicket = ticketList.createTicket(Firspart[2], Firspart[3], Firspart[4],type);
                         if(currentTicket == null){
                             System.out.println("ticket new: error");
                         }else{
@@ -328,8 +346,8 @@ public class App {
                             System.out.println("ticket new: ok");
                         }
                     } else {
-                        currentTicket = ticketList.createTicket(null, message[2], message[3]);
-                        currentTicket.setState(stateTicket.empty);
+
+                        currentTicket = ticketList.createTicket(null, Firspart[2], Firspart[3],type);
                         System.out.println(currentTicket.toString());
                         System.out.println("ticket new: ok");
                     }
@@ -343,13 +361,15 @@ public class App {
             case "add":
                 try {
                     String Custom = "";
-                    int id, quantity;
+                    int quantity;
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
-                    id = Integer.parseInt(message[4]);
+                    String id = message[4];
                     Product p = productlist.getProduct(id);
-                    quantity = Integer.parseInt(message[5]);
+
                     if (userList.containsId(CashId)&& currentTicket !=null){
+                        if (p.getProductType() != ProductType.Service){
+                        quantity = Integer.parseInt(message[5]);
                         if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){
                         for (int i =6;i<message.length;i++){
                             Custom += (message[i]);
@@ -363,15 +383,14 @@ public class App {
                             }
                             quantity = 1;
                         }
+                        }else{
+                            quantity = 1;
+                        }
                         try {
                             if (currentTicket.getState() != stateTicket.closed){
-                                if (p.getProductType()== ProductType.ProductPersonalized){
-                                    currentTicket.addProductP(productlist,id,quantity,Custom);
-                                }else {
-                                    currentTicket.addProductToTicket(productlist, id, quantity);
-                                }
-                            System.out.println(currentTicket.toString());
-                            System.out.println("ticket add: ok");}
+                                currentTicket.addProductToTicket(productlist, id, quantity,Custom);
+                                System.out.println(currentTicket.toString());
+                                System.out.println("ticket add: ok");}
                             else {
                                 System.out.println("ticket closed");
                             }
@@ -396,7 +415,7 @@ public class App {
                     currentTicket = ticketList.getTicket(message[2]);
                     String CashId = message[3];
                     if (userList.containsId(CashId)&& currentTicket !=null){
-                        int id = Integer.parseInt(message[4]);
+                        String id = message[4];
                         if (currentTicket.getState() != stateTicket.closed){
                         currentTicket.removeProduct(id);
                         System.out.println(currentTicket.toString());
@@ -496,28 +515,33 @@ public class App {
             String cashId = rightParts[2];
 
             if (!Utils.validName(name)) {
-                System.out.println("client add: error");
-                return;
-            }
-            if (!(Utils.validDNI(dni) || Utils.validNIE(dni))) {
-                System.out.println("client add: error");
+                System.out.println("client add: error name");
                 return;
             }
             if (!Utils.validEmail(email)) {
-                System.out.println("client add: error");
+                System.out.println("client add: error email");
                 return;
             }
             if (!Utils.validCashId(cashId)) {
-                System.out.println("client add: error");
+                System.out.println("client add: error CashId");
                 return;
             }
-
-            Client c = new Client(name, dni, email, cashId);
-            boolean added = userList.addClient(c);
-            if (added) {
-                System.out.println("client add: ok");
-            } else {
-                System.out.println("client add: error");
+            Client c = null;
+            if (Utils.validNIF(dni)){
+            c = new Client(name, dni, email, cashId,UserType.Business);
+            }
+            if (Utils.validDNI(dni) ||Utils.validNIE(dni)){
+            c = new Client(name,dni,email,cashId,UserType.Client);
+            }
+            if (c != null){
+                if (userList.addClient(c)) {
+                    System.out.println("client add: ok");
+                }
+                else {
+                    System.out.println("client add: error");
+                }
+            }else{
+                System.out.println("ClientID error,Incorrect clientID only accepts: DNI,NIE,NIF");
             }
         } catch (Exception e) {
             System.out.println("client add: error");
@@ -608,7 +632,7 @@ public class App {
                 return;
             }
 
-            Cash cash = new Cash(name, email, id);
+            Cash cash = new Cash(name, email, id,UserType.Cash);
 
             boolean added = userList.addCash(cash);
             if (added) {
@@ -751,20 +775,19 @@ public class App {
                 "   cash tickets <id>",
 
                 "◦ Ticket:",
-                "   ticket new [<id>] <cashId> <userId>",
+                "   ticket new [<id>] <cashId> <userId> -[c|p|s] (default -p option)",
                 "   ticket add <ticketId> <cashId> <prodId> <amount> [--p<txt> --p<txt>]",
                 "   ticket remove <ticketId> <cashId> <prodId>",
                 "   ticket print <ticketId> <cashId>",
                 "   ticket list",
 
                 "◦ Product:",
-                "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>]",
+                "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>] || (\"<name>\" <category> )",
                 "   prod update <id> NAME|CATEGORY|PRICE <value>",
                 "   prod addFood [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                 "   prod addMeeting [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                 "   prod list",
                 "   prod remove <id>",
-
                 "◦ General:",
                 "   echo \"<texto>\"",
                 "   help",

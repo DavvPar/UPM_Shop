@@ -4,7 +4,7 @@ package es.upm.etsisi.poo;
  * Cash is an extension of Users that needs a Cashier to be created
  * Has unique identification and creates tickets to purchase products
  */
-public class Client extends User {
+public class  Client extends User {
     /**
      * Identification of the cashier that registered the client
      */
@@ -17,8 +17,8 @@ public class Client extends User {
      * @param email email of the Client
      * @param cashId Cash that created the Client
      */
-    public Client(String name, String id, String email, String cashId){
-        super(name, email, id);
+    public Client(String name, String id, String email, String cashId,UserType type){
+        super(name, email, id,type);
         this.cashId = cashId;
     }
 

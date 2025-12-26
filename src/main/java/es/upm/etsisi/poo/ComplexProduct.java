@@ -5,7 +5,7 @@ package es.upm.etsisi.poo;
  * requirements such as foods and meetings
  * They have new attributes, such as time limits, people quantity and type
  */
-public class ComplexProduct extends Product{
+public class ComplexProduct extends Item{
     /**
      * Date of expiration (no longer valid)
      */
@@ -22,7 +22,6 @@ public class ComplexProduct extends Product{
     /**
      * Type of product (Food/Meeting)
      */
-    private ProductType type;
 
     /**
      * Constructor of the Class ComplexProduct.
@@ -35,12 +34,11 @@ public class ComplexProduct extends Product{
      * @param people permitted people
      * @param type food/meeting type
      */
-    public ComplexProduct(int ID, String name, double price, String expirationDate, int people,ProductType type) {
-        super(ID, name, price);
-        this.type = type;
+    public ComplexProduct(String ID, String name, double price, String expirationDate, int people,ProductType type) {
+        super(ID, name, price, type);
         MAX_PEOPLE = people;
         this.expirationDate = expirationDate;
-        people =0;
+        this.people =0;
         this.priceP = price;
         if(people < 0 || people > MAX_PEOPLE){
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
@@ -86,13 +84,12 @@ public class ComplexProduct extends Product{
     public int getMAX_PEOPLE() {
         return MAX_PEOPLE;
     }
-    /**
-     * Getter for product type
-     * @return product type
-     */
+
     @Override
-    public ProductType getProductType() {
-        return type;
+    public Product CloneProduct() {
+        ComplexProduct c =new ComplexProduct(getID(),getName(),priceP,expirationDate,MAX_PEOPLE,getProductType());
+        c.setPeople(people);
+     return c;
     }
 
     /**
