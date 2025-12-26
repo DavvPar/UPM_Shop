@@ -4,11 +4,20 @@ package es.upm.etsisi.poo;
  * Cash is an extension of Users that needs a Cashier to be created
  * Has unique identification and creates tickets to purchase products
  */
+enum ClientType{
+    Client,
+    Business,
+}
+
 public class  Client extends User {
     /**
      * Identification of the cashier that registered the client
      */
     private String cashId;
+    /**
+     * Type of Client
+     */
+    private ClientType type;
 
     /**
      * Constructor of the class Client
@@ -17,9 +26,10 @@ public class  Client extends User {
      * @param email email of the Client
      * @param cashId Cash that created the Client
      */
-    public Client(String name, String id, String email, String cashId,UserType type){
-        super(name, email, id,type);
+    public Client(String name, String id, String email, String cashId,ClientType type){
+        super(name, email, id);
         this.cashId = cashId;
+        this.type = type;
     }
 
     /**

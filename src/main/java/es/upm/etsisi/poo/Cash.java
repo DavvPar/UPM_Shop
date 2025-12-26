@@ -13,8 +13,8 @@ public class Cash extends User{
      * @param email email of the Cash
      * @param id unique identification of the Cash
      */
-    public Cash(String name, String email, String id,UserType type){
-        super(name, email, id,type);
+    public Cash(String name, String email, String id){
+        super(name, email, id);
     }
 
     /**

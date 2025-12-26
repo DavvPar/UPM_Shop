@@ -528,10 +528,10 @@ public class App {
             }
             Client c = null;
             if (Utils.validNIF(dni)){
-            c = new Client(name, dni, email, cashId,UserType.Business);
+            c = new Client(name, dni, email, cashId,ClientType.Business);
             }
             if (Utils.validDNI(dni) ||Utils.validNIE(dni)){
-            c = new Client(name,dni,email,cashId,UserType.Client);
+            c = new Client(name,dni,email,cashId,ClientType.Client);
             }
             if (c != null){
                 if (userList.addClient(c)) {
@@ -632,7 +632,7 @@ public class App {
                 return;
             }
 
-            Cash cash = new Cash(name, email, id,UserType.Cash);
+            Cash cash = new Cash(name, email, id);
 
             boolean added = userList.addCash(cash);
             if (added) {
