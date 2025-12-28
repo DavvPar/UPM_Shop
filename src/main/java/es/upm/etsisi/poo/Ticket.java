@@ -1,7 +1,6 @@
 package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -77,7 +76,9 @@ public abstract class Ticket {
         discount = new ArrayList<>();
         categorytype= new int[6];
     }
+
     public TicketType getType(){return type;}
+
     /**
      * Method for adding p6roducts to a ticket
      * @return true or false (successful or failed)
@@ -94,7 +95,7 @@ public abstract class Ticket {
      * [4]ELECTRONICS
      * [5]Service
      */
-    private void SetupDiscount(){
+    private void setupDiscount(){
         discount = new ArrayList<>();
         categorytype = new int[6];
         for (int i =0;i<productList.size();i++){
@@ -120,7 +121,7 @@ public abstract class Ticket {
      * the according discount to it.
      */
     public void applyDiscunt(){
-        SetupDiscount();
+        setupDiscount();
         for(int i =0; i<productList.size();i++){
             Product p = productList.get(i);
             if (p.getProductType() == ProductType.Product || p.getProductType() == ProductType.ProductPersonalized){

@@ -14,10 +14,12 @@ public class Service extends Product{
         this.types = typeS;
         this.expirationDate = expitationDate;
     }
+
     private String getIDNumber(String ID) {
         if (ID == null || ID.isEmpty()) return "";
         return ID.replaceAll("[^0-9]", "");
     }
+
     @Override
     public Product CloneProduct() {
         return new Service(getID(),types,expirationDate,ProductType.Service);
