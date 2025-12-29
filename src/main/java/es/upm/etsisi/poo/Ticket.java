@@ -259,6 +259,7 @@ public abstract class Ticket {
      * @param state new ticket state
      */
     public void setState(stateTicket state) {this.state= state;}
+
     public void Sort(){
         int servicesCount = 0;
         for (int i = 0; i < productList.size(); i++) {
@@ -272,7 +273,7 @@ public abstract class Ticket {
         if (servicesCount > 1) {
             productList.subList(0, servicesCount)
                     .sort(Comparator.comparing(
-                            p -> p.getID(),
+                            Product::getID,
                             String.CASE_INSENSITIVE_ORDER
                     ));
         }
@@ -284,6 +285,7 @@ public abstract class Ticket {
                     ));
         }
     }
+
     /**
      * Ticket toString, showing all the
      * @return Ticket

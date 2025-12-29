@@ -14,6 +14,7 @@ public class TicketBusiness extends Ticket{
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
     }
+
     public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
         boolean add = false;
         boolean allow = false;
@@ -46,6 +47,7 @@ public class TicketBusiness extends Ticket{
         }
         return add;
     }
+
     private double getDiscountProduct(){
         double totaldiscount =0 ;
         for (int i =0; i < getNumProductInTicket(); i++){
@@ -76,7 +78,7 @@ public class TicketBusiness extends Ticket{
         String DiscountM ="";
         Sort();
         applyDiscunt();
-        for (int i=0;i<getNumProductInTicket();i++){
+        for (int i = 0; i < getNumProductInTicket(); i++){
             Product p = getProduct(i);
             if (p.getProductType() == ProductType.Service){
                 Mservice += p +"\n";

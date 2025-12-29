@@ -131,7 +131,6 @@ public class App {
             System.out.println("Usage: prod with add, list, update or remove");
             return;
         }
-
         String command = message[1].toLowerCase();
         String input = String.join(" ", message);
         String[] rightParts = secondPartArray(input);
