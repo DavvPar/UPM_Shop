@@ -14,38 +14,20 @@ public class TicketBusiness extends Ticket{
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
     }
-    public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
-        boolean add = false;
+    public boolean allowed(ProductType productType){
         boolean allow = false;
-        Product p =lista.getProduct(Id).CloneProduct();
-        if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
-            ((CustomProduct)p).addPersonalized(message);
-        }
-        for (int i =0;i<quantity;i++){
-            if (getNumProductInTicket() < 100){
-                switch (getType()){
-                    case businessC -> allow = true;
-                    case businessP -> {
-                        if (p.getProductType() != ProductType.Service) allow = true;
-                    }
-                    case businessS -> {
-                        if (p.getProductType() == ProductType.Service)allow = true;
-                    }
-                }
-                if (allow){
-                    add(p);
-                    add = true;
-                }
-                if (getState() == stateTicket.empty){
-                    setState(stateTicket.open);
-                }
+        switch (getType()){
+            case businessC -> allow = true;
+            case businessP -> {
+                if (productType != ProductType.Service) allow = true;
             }
-            else {
-                System.out.println("No further products can be added.");
+            case businessS -> {
+                if (productType == ProductType.Service)allow = true;
             }
         }
-        return add;
+        return allow;
     }
+
     private double getDiscountProduct(){
         double totaldiscount =0 ;
         for (int i =0; i < getNumProductInTicket(); i++){

@@ -15,31 +15,11 @@ public class TicketClient extends Ticket{
         super(idTicket, state, type);
     }
 
-    public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
-        boolean add = false;
-        Product p =lista.getProduct(Id).CloneProduct();
-        if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
-            ((CustomProduct)p).addPersonalized(message);
-        }
-        for (int i =0;i<quantity;i++){
-            if (getNumProductInTicket() < 100){
-                if (p.getProductType()!= ProductType.Service){
-                add(p);
-                add = true;
-                }
-                else{
-                    System.out.println("You cannot add service to physical customers");
-                }
-                if (getState() == stateTicket.empty){
-                    setState(stateTicket.open);
-                }
-            }
-            else {
-                System.out.println("No further products can be added.");
-            }
-        }
-        return add;
+    @Override
+    public boolean allowed(ProductType productType) {
+        return productType != ProductType.Service;
     }
+
 
     @Override
     public double getTotalDiscount(){

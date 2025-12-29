@@ -80,10 +80,44 @@ public abstract class Ticket {
     public TicketType getType(){return type;}
 
     /**
-     * Method for adding p6roducts to a ticket
+     * Method with verify is allow or no tu add
+     * @param productType product to add
+     * @return yes or no(true/false)
+     */
+    public abstract boolean allowed(ProductType productType);
+    /**
+     * Method for adding products to a ticket
      * @return true or false (successful or failed)
      */
-    public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
+    public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
+        boolean add = false;
+        Product p =lista.getProduct(Id).CloneProduct();
+        if (allowed(p.getProductType())){
+            if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
+            ((CustomProduct)p).addPersonalized(message);
+            }
+            for (int i =0;i<quantity;i++){
+                if (getNumProductInTicket() < 100){
+                    if (p.getProductType()!= ProductType.Service){
+                        productList.add(p);
+                        add = true;
+                    }
+                    else{
+                        System.out.println("You cannot add service to physical customers");
+                    }
+                    if (getState() == stateTicket.empty){
+                        setState(stateTicket.open);
+                    }
+                }
+                else {
+                    System.out.println("No further products can be added.");
+                }
+            }
+        }
+
+
+        return add;
+    }
 
     /**
      * private method to perform the necessary counting
@@ -161,9 +195,6 @@ public abstract class Ticket {
     }
     public int NumService(){
         return categorytype[5];
-    }
-    public void add(Product p){
-        productList.add(p);
     }
 
 
