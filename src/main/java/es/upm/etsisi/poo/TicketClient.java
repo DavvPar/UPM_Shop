@@ -17,9 +17,10 @@ public class TicketClient extends Ticket{
 
     @Override
     public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {
-        Product p = lista.getProduct(Id).CloneProduct();
+        Product p = lista.getProduct(Id);
         boolean add = false;
         if (p.getProductType() != ProductType.Service){
+            p = p.CloneProduct();
             add =add(p,quantity,message);
         }
         return add;

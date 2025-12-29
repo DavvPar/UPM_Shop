@@ -17,9 +17,10 @@ public class TicketBusiness extends Ticket{
 
     @Override
     public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {
-        Product p = lista.getProduct(Id).CloneProduct();
+        Product p = lista.getProduct(Id);
         boolean add = false;
         if (allowedB(p.getProductType())){
+            p = p.CloneProduct();
             add =add(p,quantity,message);
         }
         return add;
