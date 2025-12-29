@@ -15,37 +15,29 @@ public class TicketBusiness extends Ticket{
         super(idTicket, state, type);
     }
 
-    public boolean addProductToTicket(ProductList lista,String Id, int quantity, String message){
+    @Override
+    public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {
+        Product p = lista.getProduct(Id);
         boolean add = false;
-        boolean allow = false;
-        Product p =lista.getProduct(Id).CloneProduct();
-        if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
-            ((CustomProduct)p).addPersonalized(message);
-        }
-        for (int i =0;i<quantity;i++){
-            if (getNumProductInTicket() < 100){
-                switch (getType()){
-                    case businessC -> allow = true;
-                    case businessP -> {
-                        if (p.getProductType() != ProductType.Service) allow = true;
-                    }
-                    case businessS -> {
-                        if (p.getProductType() == ProductType.Service)allow = true;
-                    }
-                }
-                if (allow){
-                    add(p);
-                    add = true;
-                }
-                if (getState() == stateTicket.empty){
-                    setState(stateTicket.open);
-                }
-            }
-            else {
-                System.out.println("No further products can be added.");
-            }
+        if (allowedB(p.getProductType())){
+            p = p.CloneProduct();
+            add =add(p,quantity,message);
         }
         return add;
+    }
+
+    private boolean allowedB(ProductType productType){
+        boolean allow = false;
+        switch (getType()){
+            case businessC -> allow = true;
+            case businessP -> {
+                if (productType != ProductType.Service) allow = true;
+            }
+            case businessS -> {
+                if (productType == ProductType.Service)allow = true;
+            }
+        }
+        return allow;
     }
 
     private double getDiscountProduct(){
@@ -78,7 +70,7 @@ public class TicketBusiness extends Ticket{
         String DiscountM ="";
         Sort();
         applyDiscunt();
-        for (int i = 0; i < getNumProductInTicket(); i++){
+        for (int i=0;i<getNumProductInTicket();i++){
             Product p = getProduct(i);
             if (p.getProductType() == ProductType.Service){
                 Mservice += p +"\n";
