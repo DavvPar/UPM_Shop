@@ -14,7 +14,18 @@ public class TicketBusiness extends Ticket{
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
     }
-    public boolean allowed(ProductType productType){
+
+    @Override
+    public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {
+        Product p = lista.getProduct(Id).CloneProduct();
+        boolean add = false;
+        if (allowedB(p.getProductType())){
+            add =add(p,quantity,message);
+        }
+        return add;
+    }
+
+    private boolean allowedB(ProductType productType){
         boolean allow = false;
         switch (getType()){
             case businessC -> allow = true;
