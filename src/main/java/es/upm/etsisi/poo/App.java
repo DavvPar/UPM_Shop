@@ -325,17 +325,11 @@ public class App {
 
         switch (command) {
             case "new":
-                TicketType type = null;
                 String[] input = String.join(" ", message).split("-");
                 String[] Firspart = input[0].split(" ");
-                if (Utils.validNIF(Firspart[Firspart.length-1])){
-                    switch (input[1].toUpperCase()){
-                        case "C"-> type = TicketType.businessC;
-                        case "S"-> type = TicketType.businessS;
-                        default -> type = TicketType.businessP;
-                    }
-                }else type = TicketType.Client;
+                TicketType type;
                 if (userList.containsId(Firspart[Firspart.length-1])&& userList.containsId(Firspart[Firspart.length-2])) {
+                    type = Utils.TypeTicket(Firspart[Firspart.length-1],input[1]);
                     if (Firspart[2].matches("[0-9]+") && Firspart[2].length() >= 5) {
                         currentTicket = ticketList.createTicket(Firspart[2], Firspart[3], Firspart[4],type);
                         if(currentTicket == null){

@@ -26,6 +26,17 @@ public class Utils {
             }
         return shortId;
     }
+    public static TicketType TypeTicket( String ID,String command){
+        TicketType type;
+        if (Utils.validNIF(ID)){
+            switch (command.toUpperCase()){
+                case "C"-> type = TicketType.businessC;
+                case "S"-> type = TicketType.businessS;
+                default -> type = TicketType.businessP;
+            }
+        }else type = TicketType.Client;
+        return type;
+    }
     public static boolean validNIF(String nif) {
         if (nif == null || nif.length() != 9 || !nif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$")) {
             return false;

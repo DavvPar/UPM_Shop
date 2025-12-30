@@ -104,7 +104,6 @@ public abstract class Ticket {
         }
         return add;
     }
-
     /**
      * private method to perform the necessary counting
      *number of types/product categories affecting the discount
