@@ -92,13 +92,8 @@ public abstract class Ticket {
         }
         for (int i =0;i<quantity;i++){
             if (getNumProductInTicket() < 100){
-                if (p.getProductType()!= ProductType.Service){
                     productList.add(p);
                     add = true;
-                }
-                else{
-                    System.out.println("You cannot add service to physical customers");
-                }
                 if (getState() == stateTicket.empty){
                     setState(stateTicket.open);
                 }
@@ -109,7 +104,6 @@ public abstract class Ticket {
         }
         return add;
     }
-
     /**
      * private method to perform the necessary counting
      *number of types/product categories affecting the discount
@@ -228,23 +222,6 @@ public abstract class Ticket {
      */
     public abstract double getTotalDiscount();
 
-
-    /**
-     * Get the short unique part of the id
-     * @return shortId
-     */
-    String getShortId(){
-        String shortId ="";
-        if(!(this.getState().equals(stateTicket.closed))){
-            String[] message =ticketId.trim().split("-:");
-            for (int i =0;i<message.length;i++){
-                if(message[i].length()>=5){
-                    shortId = message[i];
-                }
-            }
-        }
-        return shortId;
-    }
 
     /**
      * Getter for a product by its id

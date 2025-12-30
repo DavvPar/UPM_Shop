@@ -25,11 +25,11 @@ public class TicketList {
      * @return true if valid id, false if not
      */
     private boolean validId(String id){
+        id = Utils.getShortId(id);
         if (id == null) return false;
-        // must be numeric and at least 5 digits
         if (!id.matches("[0-9]+") || id.length() < 5) return false;
         for (Ticket current : ticketList) {
-            if (current.getShortId().equals(id)) {
+            if (Utils.getShortId(current.getTicketId()).equals(id)) {
                 return false;
             }
         }
@@ -45,31 +45,24 @@ public class TicketList {
      * @return ticket
      */
     public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
-        Ticket t = null;
-        String newId ="";
+        Ticket t;
         if (TicketId == null){
-            newId = createId();
+            TicketId = createId();
+        }else{
+            TicketId = Utils.getTime() + "-" +TicketId;
+        }
+        if (validId(TicketId)){
             if (type ==TicketType.Client) {
-                t = new TicketClient(newId, stateTicket.empty, type);
-            } else {
-                t= new TicketBusiness(newId,stateTicket.empty,type);
+                t = new TicketClient(TicketId, stateTicket.empty, type);
+            }else {
+                t= new TicketBusiness(TicketId,stateTicket.empty,type);
             }
             id.add(clientId+" "+CashId);
             addTicket(t);
-        }else {
-            if (validId(TicketId)){
-                if (type ==TicketType.Client) {
-                    t = new TicketClient(TicketId, stateTicket.empty, type);
-                }else {
-                    t= new TicketBusiness(TicketId,stateTicket.empty,type);
-                }
-                id.add(clientId+" "+CashId);
-            addTicket(t);
             }
-            else{
-                System.out.println("Invalid TicketId");
-                return null;
-            }
+        else{
+            System.out.println("Invalid TicketId");
+            return null;
         }
         return t ;
     }
@@ -83,8 +76,7 @@ public class TicketList {
         do {
             id =  String.valueOf(Utils.getRandomNumber(5));
         } while (!validId(id));
-        String finalId = Utils.getTime() + "-" + id;
-        return finalId;
+        return Utils.getTime() + "-" + id;
     }
 
     /**

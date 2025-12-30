@@ -12,7 +12,31 @@ import java.util.TimeZone;
  * that do not belong in any created class
  */
 public class Utils {
-
+    /**
+     * Get the short unique part of the id
+     * @return shortId
+     */
+    public static String getShortId(String Id){
+        String shortId ="";
+            String[] message =Id.trim().split("[-:]");
+            for (int i =0;i<message.length;i++){
+                if(message[i].length()>=5){
+                    shortId = message[i];
+                }
+            }
+        return shortId;
+    }
+    public static TicketType TypeTicket( String ID,String command){
+        TicketType type;
+        if (Utils.validNIF(ID)){
+            switch (command.toUpperCase()){
+                case "C"-> type = TicketType.businessC;
+                case "S"-> type = TicketType.businessS;
+                default -> type = TicketType.businessP;
+            }
+        }else type = TicketType.Client;
+        return type;
+    }
     public static boolean validNIF(String nif) {
         if (nif == null || nif.length() != 9 || !nif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$")) {
             return false;
