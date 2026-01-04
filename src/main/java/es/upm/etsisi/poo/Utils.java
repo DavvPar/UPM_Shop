@@ -2,16 +2,33 @@ package es.upm.etsisi.poo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.Locale;
+
+import es.upm.etsisi.poo.enums.*;
+
 
 /**
  * Utils is a class created for storing useful methods for the program
  * that do not belong in any created class
  */
 public class Utils {
+    /**
+     * Static method that converts the time format from dd/mm/yyyy to EEE MMM dd HH:mm:ss z yyyy
+     * @param inputDate dd/mm/yyyy
+     * @return EEE MMM dd HH:mm:ss z yyyy
+     */
+    public static String convertDate(String inputDate) {
+        LocalDate date = LocalDate.parse(inputDate);
+        ZoneId defaultZone = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = date.atStartOfDay(defaultZone);
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        return zonedDateTime.format(formatter);
+    }
     /**
      * Get the short unique part of the id
      * @return shortId
