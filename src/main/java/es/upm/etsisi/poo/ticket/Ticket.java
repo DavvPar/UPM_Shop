@@ -12,7 +12,7 @@ import java.util.Comparator;
  */
 
 
-public abstract class Ticket {
+public abstract class Ticket <P extends Product>{
     /**
      * Maximum number of products in a list
      */
@@ -20,7 +20,7 @@ public abstract class Ticket {
     /**
      * The list of products on the ticket.
      */
-    private ArrayList<Product> productList;
+    private ArrayList<P> productList;
     /**
      * Stores the discount of each product in the ticket.
      */
@@ -85,7 +85,7 @@ public abstract class Ticket {
         }
         for (int i =0;i<quantity;i++){
             if (getNumProductInTicket() < 100){
-                    productList.add(p);
+                    productList.add((P)p);
                     add = true;
                 if (getState() == stateTicket.empty){
                     setState(stateTicket.open);
@@ -257,7 +257,7 @@ public abstract class Ticket {
             if (productList.get(i).getProductType() == ProductType.Service) {
                 Product temp = productList.get(i);
                 productList.set(i, productList.get(servicesCount));
-                productList.set(servicesCount, temp);
+                productList.set(servicesCount, (P)temp);
                 servicesCount++;
             }
         }

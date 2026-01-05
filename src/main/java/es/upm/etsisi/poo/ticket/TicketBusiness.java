@@ -5,7 +5,7 @@ import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.ProductType;
-public class TicketBusiness extends Ticket{
+public class TicketBusiness<P extends Product> extends Ticket<P>{
     private double serviceDiscount;
     /**
      * Constructor of the Class Ticket.

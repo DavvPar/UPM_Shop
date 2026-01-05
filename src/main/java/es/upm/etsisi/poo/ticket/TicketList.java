@@ -6,11 +6,11 @@ import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList {
+public class TicketList <T extends Ticket>{
     /**
      * Array of tickets to create the list of tickets
      */
-    private ArrayList<Ticket> ticketList;
+    private ArrayList<T> ticketList;
     private ArrayList<String> id ;// "clientId CashId"
 
     /**
@@ -96,7 +96,7 @@ public class TicketList {
             }
 
             if (!exists ) {
-                ticketList.add(ticket);
+                ticketList.add((T)ticket);
                 added = true;
             } else
                 System.out.println("The Ticket already exists");
