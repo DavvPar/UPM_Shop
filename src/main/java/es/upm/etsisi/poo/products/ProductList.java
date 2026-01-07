@@ -1,5 +1,7 @@
-package es.upm.etsisi.poo;
-
+package es.upm.etsisi.poo.products;
+import es.upm.etsisi.poo.enums.ProductType;
+import es.upm.etsisi.poo.enums.CategoryType;
+import es.upm.etsisi.poo.enums.Category;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -11,7 +13,7 @@ public class ProductList {
     /**
      * Array of products to create the list of products
      */
-    private ArrayList<Product> products;
+    protected ArrayList<Product> products;
     /**
      * Maximum number of products in the list
      */

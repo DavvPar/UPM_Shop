@@ -1,6 +1,6 @@
-package es.upm.etsisi.poo;
-
-
+package es.upm.etsisi.poo.products;
+import es.upm.etsisi.poo.enums.ProductType;
+import es.upm.etsisi.poo.enums.Category;
 import java.util.ArrayList;
 import java.util.List;
 /**

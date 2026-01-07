@@ -1,7 +1,8 @@
-package es.upm.etsisi.poo;
+package es.upm.etsisi.poo.user;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import es.upm.etsisi.poo.Utils;
 
 public class UserList {
 
@@ -132,11 +133,11 @@ public class UserList {
         return cashiers;
     }
 
-    boolean containsId(String id){
+    public boolean containsId(String id){
         return getUserByID(id) != null;
     }
 
-    boolean containsEmail(String email){
+    public boolean containsEmail(String email){
         return getUserByEmail(email) != null;
     }
 

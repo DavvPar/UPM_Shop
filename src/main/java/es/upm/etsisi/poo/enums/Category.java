@@ -1,4 +1,4 @@
-package es.upm.etsisi.poo;
+package es.upm.etsisi.poo.enums;
 
 /**
  * Category is a class that is defined by a type and
@@ -6,13 +6,6 @@ package es.upm.etsisi.poo;
  * and calculate the discount for each type in a ticket.
  */
 
-enum CategoryType {
-    MERCH,
-    STATIONERY,
-    CLOTHES,
-    BOOK,
-    ELECTRONICS
-}
 public class Category {
     /**
      * Defines the concrete type of Category

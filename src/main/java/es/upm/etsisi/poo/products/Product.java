@@ -1,12 +1,5 @@
-package es.upm.etsisi.poo;
-enum ProductType{
-    ProductPersonalized,
-    Product,
-    Meeting,
-    Food,
-    Service //TODO revisar que haga falta esto!!!
-}
-
+package es.upm.etsisi.poo.products;
+import es.upm.etsisi.poo.enums.ProductType;
 public abstract class Product {
     private final String ID;
     private ProductType type;

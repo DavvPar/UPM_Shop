@@ -1,9 +1,12 @@
-package es.upm.etsisi.poo;
+package es.upm.etsisi.poo.ticket;
 
 import java.util.ArrayList;
-
-public class TicketBusiness extends Ticket{
-
+import es.upm.etsisi.poo.products.*;
+import es.upm.etsisi.poo.enums.stateTicket;
+import es.upm.etsisi.poo.enums.TicketType;
+import es.upm.etsisi.poo.enums.ProductType;
+public class TicketBusiness<P extends Product> extends Ticket<P>{
+    private double serviceDiscount;
     /**
      * Constructor of the Class Ticket.
      *
@@ -13,15 +16,18 @@ public class TicketBusiness extends Ticket{
      */
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
+        serviceDiscount = 0.15;
     }
-
+    public void setServiceDiscount(Double discount){
+        this.serviceDiscount = discount;
+    }
     @Override
     public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {
         Product p = lista.getProduct(Id);
         boolean add = false;
         if (allowedB(p.getProductType())){
             p = p.CloneProduct();
-            add = add(p,quantity,message);
+            add =add(p,quantity,message);
         }
         return add;
     }
@@ -60,7 +66,7 @@ public class TicketBusiness extends Ticket{
         return totaldiscount;
     }
     private double getDiscountServece(){
-        return Math.min(getTotalPrice()*(0.15*NumService()),getTotalPrice()-getDiscountProduct());
+        return Math.min(getTotalPrice()*(serviceDiscount*NumService()),getTotalPrice()-getDiscountProduct());
     }
 
     @Override

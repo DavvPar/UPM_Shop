@@ -1,5 +1,5 @@
-package es.upm.etsisi.poo;
-
+package es.upm.etsisi.poo.products;
+import es.upm.etsisi.poo.enums.ProductType;
 /**
  * ComplexProduct is a class for instancing products with more complex
  * requirements such as foods and meetings
@@ -34,7 +34,7 @@ public class ComplexProduct extends Item{
      * @param people permitted people
      * @param type food/meeting type
      */
-    public ComplexProduct(String ID, String name, double price, String expirationDate, int people,ProductType type) {
+    public ComplexProduct(String ID, String name, double price, String expirationDate, int people, ProductType type) {
         super(ID, name, price, type);
         MAX_PEOPLE = people;
         this.expirationDate = expirationDate;

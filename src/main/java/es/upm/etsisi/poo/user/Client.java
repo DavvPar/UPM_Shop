@@ -1,13 +1,10 @@
-package es.upm.etsisi.poo;
-
+package es.upm.etsisi.poo.user;
+import es.upm.etsisi.poo.enums.ClientType;
 /**
  * Cash is an extension of Users that needs a Cashier to be created
  * Has unique identification and creates tickets to purchase products
  */
-enum ClientType{
-    Client,
-    Business,
-}
+
 
 public class Client extends User {
 

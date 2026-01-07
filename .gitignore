@@ -36,3 +36,24 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/main/java/es/upm/etsisi/poo/enums/Category.java
+/src/main/java/es/upm/etsisi/poo/enums/CategoryType.java
+/src/main/java/es/upm/etsisi/poo/enums/ClientType.java
+/src/main/java/es/upm/etsisi/poo/enums/ProductType.java
+/src/main/java/es/upm/etsisi/poo/enums/ServiceType.java
+/src/main/java/es/upm/etsisi/poo/enums/stateTicket.java
+/src/main/java/es/upm/etsisi/poo/enums/TicketType.java
+/src/main/java/es/upm/etsisi/poo/products/ComplexProduct.java
+/src/main/java/es/upm/etsisi/poo/products/CustomProduct.java
+/src/main/java/es/upm/etsisi/poo/products/Item.java
+/src/main/java/es/upm/etsisi/poo/products/Product.java
+/src/main/java/es/upm/etsisi/poo/products/ProductList.java
+/src/main/java/es/upm/etsisi/poo/products/Service.java
+/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java
+/src/main/java/es/upm/etsisi/poo/ticket/TicketBusiness.java
+/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java
+/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java
+/src/main/java/es/upm/etsisi/poo/user/Cash.java
+/src/main/java/es/upm/etsisi/poo/user/Client.java
+/src/main/java/es/upm/etsisi/poo/user/User.java
+/src/main/java/es/upm/etsisi/poo/user/UserList.java

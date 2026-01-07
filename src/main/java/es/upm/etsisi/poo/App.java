@@ -5,6 +5,10 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
+import es.upm.etsisi.poo.enums.*;
+import es.upm.etsisi.poo.products.*;
+import es.upm.etsisi.poo.ticket.*;
+import es.upm.etsisi.poo.user.*;
 
 /*
  * Possibly will need these imports:
@@ -326,9 +330,13 @@ public class App {
             case "new":
                 String[] input = String.join(" ", message).split("-");
                 String[] Firspart = input[0].split(" ");
+                String typeTicket ="";
                 TicketType type;
+                if (input.length>1){
+                    typeTicket =input[1];
+                }
                 if (userList.containsId(Firspart[Firspart.length-1])&& userList.containsId(Firspart[Firspart.length-2])) {
-                    type = Utils.TypeTicket(Firspart[Firspart.length-1],input[1]);
+                    type = Utils.TypeTicket(Firspart[Firspart.length-1],typeTicket);
                     if (Firspart[2].matches("[0-9]+") && Firspart[2].length() >= 5) {
                         currentTicket = ticketList.createTicket(Firspart[2], Firspart[3], Firspart[4],type);
                         if(currentTicket == null){
