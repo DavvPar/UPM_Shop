@@ -4,8 +4,9 @@ enum ProductType{
     Product,
     Meeting,
     Food,
-    Service
+    Service //TODO revisar que haga falta esto!!!
 }
+
 public abstract class Product {
     private final String ID;
     private ProductType type;
