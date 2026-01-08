@@ -6,36 +6,18 @@ import es.upm.etsisi.poo.enums.ProductType;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/**
- * Tickets is a class for managing the ticket creation and deletion. It also works with
- * the product list, the prices, the dates and bills.
- */
-
-
 public abstract class Ticket <P extends Product>{
-    /**
-     * Maximum number of products in a list
-     */
+
     public final int MaxNumProduct;
-    /**
-     * The list of products on the ticket.
-     */
+
     private ArrayList<P> productList;
-    /**
-     * Stores the discount of each product in the ticket.
-     */
+
     private ArrayList<Double> discount;
-    /**
-     * Total price of all the products in the ticket.
-     */
+
     private double totalPrice;
-    /**
-     * Total discount of all the products in the ticket.
-     */
+
     private double totaldiscount;
-    /**
-     * Number of products currently in the ticket.
-     */
+
     private  String ticketId;
     /**
      *number of product types
@@ -47,18 +29,11 @@ public abstract class Ticket <P extends Product>{
      * [5]Service
      */
     private int[] categorytype;
-    /**
-     * cashId of the cashier that is selling
-     */
-    /**
-     * State of the ticket, empty, open or closed
-     */
+
     private stateTicket state;
+
     private TicketType type;
-    /**
-     * Constructor of the Class Ticket.
-     @param idTicket TicketId
-     */
+
     public Ticket(String idTicket, stateTicket state, TicketType type) {
         this.productList = new ArrayList<>();
         this.ticketId = idTicket;
@@ -72,11 +47,6 @@ public abstract class Ticket <P extends Product>{
 
     public TicketType getType(){return type;}
 
-    /**
-     * * Method for adding products to a ticket
-     * * @return true or false (successful or failed)
-     *
-     */
     public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
     public boolean add(Product p,int quantity,String message){
         boolean add = false;
@@ -97,16 +67,7 @@ public abstract class Ticket <P extends Product>{
         }
         return add;
     }
-    /**
-     * private method to perform the necessary counting
-     *number of types/product categories affecting the discount
-     * [0] MERCH,
-     * [1]STATIONERY,
-     * [2]CLOTHES,
-     * [3]BOOK,
-     * [4]ELECTRONICS
-     * [5]Service
-     */
+
     private void setupDiscount(){
         discount = new ArrayList<>();
         categorytype = new int[6];
@@ -128,10 +89,7 @@ public abstract class Ticket <P extends Product>{
             discount.add(0.0);
         }
     }
-    /**
-     * If there are at least 2 products of the same category in the list, it applies
-     * the according discount to it.
-     */
+
     public void applyDiscunt(){
         setupDiscount();
         for(int i =0; i<productList.size();i++){
@@ -175,11 +133,6 @@ public abstract class Ticket <P extends Product>{
         return categorytype[5];
     }
 
-
-    /**
-     * Remove ticket product
-     * @param Id product id will remove
-     */
     public void removeProduct(String Id) {
         int i = 0;
         while (i < productList.size()) {
@@ -193,11 +146,7 @@ public abstract class Ticket <P extends Product>{
             state = stateTicket.empty;
         }
     }
-    /**
-     * Returns the total price of the whole product list.
-     * Getter TotalPrice
-     * @return TotalPrice
-     */
+
     public double getTotalPrice(){
         totalPrice =0;
         for (int i =0; i < productList.size(); i++){
@@ -208,48 +157,23 @@ public abstract class Ticket <P extends Product>{
         totalPrice = Math.floor(totalPrice * 100) / 100;
         return totalPrice;
     }
-    /**
-     * Returns the total discount made in the whole product list
-     * Getter TotalDiscount
-     * @return TotalDiscount
-     */
+
     public abstract double getTotalDiscount();
 
-
-    /**
-     * Getter for a product by its id
-     * @param index product id
-     * @return product with said id
-     */
     public Product getProduct(int index){return productList.get(index);}
-    /**
-     * Getter for number of products in ticket
-     * @return number of products
-     */
+
     public int getNumProductInTicket(){return productList.size();}
-    /**
-     * Getter for price, taking into account the discount
-     * @return final price with applied discount
-     */
+
     public double getFinalPrice(){
         return getTotalPrice() - getTotalDiscount();
     }
-    /**
-     * Getter for ticket id
-     * @return ticket identification
-     */
+
     public String getTicketId(){return ticketId;}
+
     public void setTicketId(String id){ticketId = id;}
-    /**
-     * Getter for ticket state
-     * @return current ticket state
-     */
+
     public stateTicket getState (){return state;}
 
-    /**
-     * Setter for state
-     * @param state new ticket state
-     */
     public void setState(stateTicket state) {this.state= state;}
 
     public void Sort(){
@@ -278,10 +202,6 @@ public abstract class Ticket <P extends Product>{
         }
     }
 
-    /**
-     * Ticket toString, showing all the
-     * @return Ticket
-     */
     @Override
     public abstract String toString() ;
 }

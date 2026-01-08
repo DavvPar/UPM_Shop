@@ -5,41 +5,22 @@ import es.upm.etsisi.poo.enums.Category;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/**
- * ProductList is a class created to manage all types of products in a list,
- * adding them, removing them and basically operating with products
- */
 public class ProductList {
-    /**
-     * Array of products to create the list of products
-     */
+
     protected ArrayList<Product> products;
-    /**
-     * Maximum number of products in the list
-     */
+
     private int maxNumProduct;
-    /**
-     * Current number of products in the list
-     */
+
     private int numProduct;
     private int Numservice;
-    /**
-     * Constructor of the class
-     * Creates an empty product list
-     *
-     * @param MaxNumProduct maximum number of products that can be added
-     */
+
     public ProductList(int MaxNumProduct) {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
         products = new ArrayList<>();
         Numservice = 0;
     }
-    /**
-     * Adds a passed product to the product list
-     * @param product product will add
-     * @return true if added, false if failed
-     */
+
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {
@@ -65,11 +46,6 @@ public class ProductList {
         return added;
     }
 
-
-    /**
-     * Lists all the products from the list
-     * @return true if successful, false if not
-     */
     public boolean listProducts() {
         if (numProduct == 0) {
             System.out.println("Empty list");
@@ -82,14 +58,6 @@ public class ProductList {
         return true;
     }
 
-    /**
-     * Updates the NAME, CATEGORY or PRICE of the product with
-     * passed ID
-     * @param idToUpdate ID of the product to update
-     * @param field The field that will be changed on the product
-     * @param value New value to set the field to
-     * @return true if updated, false if not
-     */
     public boolean updateProduct(String idToUpdate, String field, String value) {
         boolean updated = false;
         if (numProduct == 0)
@@ -122,11 +90,6 @@ public class ProductList {
         return updated;
     }
 
-    /**
-     * Removes the selected product from the list, checking
-     * if it is in the list and removing all its instances
-     * @param selected product will remove
-     */
     public boolean removeProduct(Product selected) {
         boolean removed = false;
         for (int i = 0; i < numProduct; i++) {
@@ -139,11 +102,6 @@ public class ProductList {
         return removed;
     }
 
-    /**
-     * Getter for a Product using its ID to identify
-     * @param Id product ID
-     * @return Product with said ID
-     */
     public Product getProduct(String Id) {
         Product find = null;
         for (int i = 0; i < numProduct; i++) {
@@ -154,20 +112,12 @@ public class ProductList {
         return find;
     }
 
-    /**
-     * Getter of number of products
-     * @return numProduct
-     */
     public int getNumProduct(){
         return numProduct;
     }
+
     public int getNumservice(){return Numservice;}
 
-    /**
-     * toString for the list of products, showing all
-     * the products in the list
-     * @return ProductList string
-     */
     @Override
     public String toString() {
         String text = "Catalog:\n";

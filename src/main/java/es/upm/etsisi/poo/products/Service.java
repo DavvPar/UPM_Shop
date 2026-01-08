@@ -4,7 +4,9 @@ import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.ServiceType;
 
 public class Service extends Product{
+
     private ServiceType types;
+
     private String expirationDate;
 
     public Service(String ID,ServiceType typeS,String expitationDate,ProductType type){

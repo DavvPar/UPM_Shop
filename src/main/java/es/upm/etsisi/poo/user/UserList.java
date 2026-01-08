@@ -49,12 +49,15 @@ public class UserList {
     public boolean validateClient(Client client){
         return (validateClientId(client.getId()) && validateClientEmail(client.getEmail()) && validateClientCashId(client.getCashId()));
     }
+
     public boolean validateClientId(String clientId) {
         return !(containsId(clientId));
     }
+
     public boolean validateClientEmail(String email) {
         return !(containsEmail(email) && getUserByEmail(email) instanceof Cash);
     }
+
     public boolean validateClientCashId(String cashId) {
         User user = getUserByID(cashId);
         return user instanceof Cash;
@@ -63,12 +66,15 @@ public class UserList {
     public boolean validateCash(Cash cash){
         return (validateCashId(cash.getId()) && validateCashEmail(cash.getEmail()));
     }
+
     public boolean validateCashId(String cashId) {
         return !(containsId(cashId));
     }
+
     public boolean validateCashEmail(String email) {
         return !(containsEmail(email) && getUserByEmail(email) instanceof Client);
     }
+
     public boolean cashIdNull(String cashId) {
         return (cashId == null);
     }

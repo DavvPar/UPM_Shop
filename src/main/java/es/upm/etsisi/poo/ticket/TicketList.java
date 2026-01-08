@@ -7,26 +7,16 @@ import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
 public class TicketList <T extends Ticket>{
-    /**
-     * Array of tickets to create the list of tickets
-     */
+
     private ArrayList<T> ticketList;
+
     private ArrayList<String> id ;// "clientId CashId"
 
-    /**
-     * Constructor of the class
-     * No parameters
-     */
     public TicketList(){
         ticketList = new ArrayList<>();
         id = new ArrayList<>();
     }
 
-    /**
-     * Checks if passed ID is valid
-     * @param id ticket id to check validness
-     * @return true if valid id, false if not
-     */
     private boolean validId(String id){
         id = Utils.getShortId(id);
         if (id == null) return false;
@@ -39,14 +29,6 @@ public class TicketList <T extends Ticket>{
         return true;
     }
 
-    /**
-     * A way to create tickets, similar to a ticket constructor
-     * @param TicketId id for the new ticket, can be either null (creates new)
-     *                 or a valid one, already created
-     * @param clientId client that buys the ticket
-     * @param CashId cashier that operates the ticket
-     * @return ticket
-     */
     public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
         Ticket t;
         if (TicketId == null){
@@ -70,10 +52,6 @@ public class TicketList <T extends Ticket>{
         return t ;
     }
 
-    /**
-     * Creates a ticketId (for tickets with null id) with valid format
-     * @return valid id to assign
-     */
     private String createId(){
         String id;
         do {
@@ -82,11 +60,6 @@ public class TicketList <T extends Ticket>{
         return Utils.getTime() + "-" + id;
     }
 
-    /**
-     * Adds a new ticket to the ticket list
-     * @param ticket ticked added
-     * @return true if success, false if failed
-     */
     public boolean addTicket(Ticket ticket) {
         boolean added = false, exists = false;
             for(Ticket t : ticketList){
@@ -103,11 +76,6 @@ public class TicketList <T extends Ticket>{
         return added;
     }
 
-    /**
-     * Deletes all the tickets created with passed cashId
-     * @param cashid cashId that will have its tickets removed
-     * @return returns true if deleted, false if not found ticket/cashId
-     */
     public boolean removeTicket(String cashid) {
         boolean removed = false;
         int i =0;
@@ -123,11 +91,6 @@ public class TicketList <T extends Ticket>{
         return removed;
     }
 
-    /**
-     *method that returns the ticket according to its ID
-     * @param id ticket id
-     * @return return null if it does not exist and ticket if it does
-     */
     public Ticket getTicket(String id) {
         Ticket ticket = null;
         for (Ticket t : ticketList){
@@ -138,10 +101,6 @@ public class TicketList <T extends Ticket>{
         return ticket;
     }
 
-    /**
-     * Method for changing the ticket ID at the time of completion
-     * @param ticket
-     */
     public void CloseTicket(Ticket ticket,String date){
         if (ticket.getState() != stateTicket.closed){
         String NewId = ticket.getTicketId() +"-"+date;

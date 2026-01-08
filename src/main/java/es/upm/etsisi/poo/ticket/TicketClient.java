@@ -1,17 +1,11 @@
 package es.upm.etsisi.poo.ticket;
-
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.ProductType;
+
 public class TicketClient<P extends Product> extends Ticket<P>{
-    /**
-     * Constructor of the Class Ticket.
-     *
-     * @param idTicket TicketId
-     * @param state
-     * @param type
-     */
+
     public TicketClient(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
     }
