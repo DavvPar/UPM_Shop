@@ -16,8 +16,6 @@ public abstract class Ticket <P extends Product>{
 
     private double totalPrice;
 
-    private double totaldiscount;
-
     private  String ticketId;
     /**
      *number of product types
