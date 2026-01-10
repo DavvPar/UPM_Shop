@@ -17,9 +17,6 @@ public class ComplexProduct extends Item{
         this.expirationDate = expirationDate;
         this.people =0;
         this.priceP = price;
-        if(people < 0 || people > MAX_PEOPLE){
-            throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
-        }
     }
 
     public String getExpirationDate() {
