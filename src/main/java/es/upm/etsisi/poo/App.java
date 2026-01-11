@@ -5,24 +5,21 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
+
+import es.upm.etsisi.poo.command.Command;
+import es.upm.etsisi.poo.command.CommandManager;
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
 
 public class App {
-
     static Scanner sc = new Scanner(System.in);
-
-    static int MaxNumProduct = 200;
-
-    static Ticket currentTicket;
-
-    static ProductList productlist = new ProductList(MaxNumProduct);
-
-    static UserList userList = new UserList();
-
-    static TicketList ticketList = new TicketList();
+    //static int MaxNumProduct = 200;
+    //static Ticket currentTicket;
+    //static ProductList productlist = new ProductList(MaxNumProduct);
+    //static UserList userList = new UserList();
+    //static TicketList ticketList = new TicketList();
 
     public static void main(String[] args) {
         boolean readingFromFile = false;
@@ -43,7 +40,38 @@ public class App {
         application.run(sc, readingFromFile);
     }
 
-    private void run(Scanner scanner, boolean readingFromFile) {
+
+    private void run(Scanner scanner, boolean readingFromFile){
+        CommandManager commandManager = new CommandManager();
+        boolean cont = true;
+
+        while (cont && scanner.hasNextLine()) {
+            System.out.print("\ntUPM> ");
+            String line = scanner.nextLine();
+
+            if (readingFromFile) {
+                System.out.println(line);
+            }
+
+            if (line.isBlank()) continue;
+
+            boolean result = commandManager.execute(line);
+
+            if (line.trim().equalsIgnoreCase("exit")) {
+                cont = false;
+            }
+        }
+
+        scanner.close();
+    }
+
+    private void init() {
+        System.out.println("Welcome to the ticket module App.");
+        System.out.println("Ticket module. Type 'help' to see commands:");
+    }
+
+
+    /*private void run(Scanner scanner, boolean readingFromFile) {
         boolean cont = true;
         while (cont) {
             System.out.print("\ntUPM> ");
@@ -649,7 +677,6 @@ public class App {
     private void init() {
         System.out.println("Welcome to the ticket module App.");
         System.out.println("Ticket module. Type 'help' to see commands:");
-
     }
 
     private void helpCommand() {
@@ -701,6 +728,6 @@ public class App {
 
     private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");
-    }
+    }*/
 }
 

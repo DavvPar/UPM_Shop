@@ -1,21 +1,24 @@
 package es.upm.etsisi.poo.command;
 
+import es.upm.etsisi.poo.controller.TicketController;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 public class CommandTicket implements Command{
     private final Map<String, Function<String,Boolean>> commandRegistry = new HashMap<>();
+    private final TicketController controller;
 
-    public CommandTicket(){
-        LoadComand();
+    public CommandTicket(TicketController controller){
+        this.controller = controller;
+        loadComand();
     }
-    private void LoadComand(){
-        commandRegistry.put("add",this::add);
-        commandRegistry.put("remove",this::remove);
-        commandRegistry.put("list",this::list);
-        commandRegistry.put("new",this::newTicket);
-        commandRegistry.put("print",this::print);
+    private void loadComand(){
+        commandRegistry.put("add",controller::addTicket);
+        commandRegistry.put("remove",controller::removeTicket);
+        commandRegistry.put("list",args -> controller.listTicket());
+        commandRegistry.put("new",controller::newTicket);
+        commandRegistry.put("print",controller::printTicket);
     }
     public boolean execute(String args) {
         String[] parts = args.split(" ");
@@ -25,18 +28,6 @@ public class CommandTicket implements Command{
             String message = String.join(" ",java.util.Arrays.copyOfRange( parts,1, parts.length));
             return function.apply(message);
         }
-        return false;
-    }
-    private boolean add(String args){
-        return false;
-    }
-    private boolean print(String args){return false;}
-    private boolean remove(String args){
-        return false;}
-    private boolean list(String args){
-        return false;
-    }
-    private boolean newTicket(String args){
         return false;
     }
 }
