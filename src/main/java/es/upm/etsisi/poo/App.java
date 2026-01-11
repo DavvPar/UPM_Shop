@@ -5,24 +5,17 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
+
+import es.upm.etsisi.poo.command.Command;
+import es.upm.etsisi.poo.command.CommandManager;
+import es.upm.etsisi.poo.controller.ExitController;
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
 
 public class App {
-
     static Scanner sc = new Scanner(System.in);
-
-    static int MaxNumProduct = 200;
-
-    static Ticket currentTicket;
-
-    static ProductList productlist = new ProductList(MaxNumProduct);
-
-    static UserList userList = new UserList();
-
-    static TicketList ticketList = new TicketList();
 
     public static void main(String[] args) {
         boolean readingFromFile = false;
@@ -43,7 +36,34 @@ public class App {
         application.run(sc, readingFromFile);
     }
 
-    private void run(Scanner scanner, boolean readingFromFile) {
+
+    private void run(Scanner scanner, boolean readingFromFile){
+        ExitController exitController = new ExitController();
+        CommandManager commandManager = new CommandManager(exitController);
+
+        while (!exitController.isExitRequested()) {
+            System.out.print("\ntUPM> ");
+            String line = scanner.nextLine();
+
+            if (readingFromFile) {
+                System.out.println(line);
+            }
+
+            if (line.isBlank()) continue;
+
+            boolean result = commandManager.execute(line);
+        }
+
+        scanner.close();
+    }
+
+    private void init() {
+        System.out.println("Welcome to the ticket module App.");
+        System.out.println("Ticket module. Type 'help' to see commands:");
+    }
+
+
+    /*private void run(Scanner scanner, boolean readingFromFile) {
         boolean cont = true;
         while (cont) {
             System.out.print("\ntUPM> ");
@@ -205,9 +225,9 @@ public class App {
                         return;
                     }
                     try {
-                        EventProduct eventProduct = new EventProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
-                        if (productlist.addProduct(eventProduct)) {
-                            System.out.println(eventProduct);
+                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
+                        if (productlist.addProduct(complexProduct)) {
+                            System.out.println(complexProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -243,9 +263,9 @@ public class App {
                     }
 
                     try {
-                        EventProduct eventProduct = new EventProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
-                        if (productlist.addProduct(eventProduct)) {
-                            System.out.println(eventProduct);
+                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
+                        if (productlist.addProduct(complexProduct)) {
+                            System.out.println(complexProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -323,7 +343,7 @@ public class App {
                             Custom += (message[i]);
                         }
                         }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
-                            EventProduct product = (EventProduct) p;
+                            ComplexProduct product = (ComplexProduct) p;
                             product.setPeople(quantity);
                             if(!(quantity <= product.getMAX_PEOPLE())){
                                 System.out.println("have exceeded the maximum number of people allowed");
@@ -386,7 +406,7 @@ public class App {
                         for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
                             Product p = currentTicket.getProduct(i);
                             if (p.getProductType() == ProductType.Food || p.getProductType() == ProductType.Meeting){
-                                EventProduct product = (EventProduct) p;
+                                ComplexProduct product = (ComplexProduct) p;
                                 date = (product).getExpirationDate();
                                 if (!validatePlanningTime(p.getProductType(),date)){
                                     currentTicket.removeProduct(p.getID());
@@ -649,7 +669,6 @@ public class App {
     private void init() {
         System.out.println("Welcome to the ticket module App.");
         System.out.println("Ticket module. Type 'help' to see commands:");
-
     }
 
     private void helpCommand() {
@@ -701,5 +720,6 @@ public class App {
 
     private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");
-    }
+    }*/
 }
+
