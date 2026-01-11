@@ -3,10 +3,10 @@ package es.upm.etsisi.poo.command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandCash implements Command{
+public class CommandClient implements Command{
     private final Map<String, Command> commandRegistry = new HashMap<>();
 
-    public CommandCash(){
+    public CommandClient(){
         LoadComand();
     }
     private void LoadComand(){

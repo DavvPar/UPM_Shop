@@ -1,4 +1,8 @@
 package es.upm.etsisi.poo.command;
 
-public class CommandHelp {
+public class CommandHelp implements Command{
+    @Override
+    public boolean execute(String args) {
+        return false;
+    }
 }

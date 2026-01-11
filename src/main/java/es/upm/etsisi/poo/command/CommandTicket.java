@@ -3,19 +3,14 @@ package es.upm.etsisi.poo.command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandCash implements Command{
+public class CommandTicket implements Command{
     private final Map<String, Command> commandRegistry = new HashMap<>();
 
-    public CommandCash(){
+    public CommandTicket(){
         LoadComand();
     }
     private void LoadComand(){
-        commandRegistry.put("prod",new CommandProduct());
-        commandRegistry.put("ticket",new CommandTicket());
-        commandRegistry.put("client",new CommandClient());
-        commandRegistry.put("cash",new CommandCash());
-        commandRegistry.put("help",new CommandHelp());
-        commandRegistry.put("exit",new CommandExit());
+
     }
     public boolean execute(String args) {
         String[] parts = args.split(" ");
