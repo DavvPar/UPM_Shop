@@ -7,9 +7,11 @@ public class ComandManager implements Command{
     private final Map<String, Command> commandRegistry = new HashMap<>();
 
     public ComandManager(){
-
+        LoadComand();
     }
     private void LoadComand(){
+        commandRegistry.put("prod",new ComandProduct());
+        commandRegistry.put("ticket",new ComandTicket());
 
     }
     public boolean execute(String args) {

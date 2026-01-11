@@ -1,4 +1,4 @@
 package es.upm.etsisi.poo.command;
 
-public class ComandUser {
+public class CommandCash {
 }
