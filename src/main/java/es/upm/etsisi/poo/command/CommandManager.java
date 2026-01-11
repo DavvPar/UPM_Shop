@@ -1,9 +1,6 @@
 package es.upm.etsisi.poo.command;
 
-import es.upm.etsisi.poo.controller.CashController;
-import es.upm.etsisi.poo.controller.ProductController;
-import es.upm.etsisi.poo.controller.TicketController;
-import es.upm.etsisi.poo.controller.ClientController;
+import es.upm.etsisi.poo.controller.*;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.UserList;
@@ -17,13 +14,13 @@ public class CommandManager implements Command{
     private final ProductList productList;
     private final TicketList ticketList;
     private final UserList userList;
-
     private final ProductController productController;
     private final TicketController ticketController;
     private final ClientController clientController;
     private final CashController cashController;
-
-    public CommandManager(){
+    private final ExitController exitController;
+    private final HelpController helpController;
+    public CommandManager(ExitController exitController){
         productList = new ProductList(100);
         ticketList = new TicketList();
         userList = new UserList();
@@ -32,7 +29,8 @@ public class CommandManager implements Command{
         ticketController = new TicketController(ticketList, productList, userList, productController);
         clientController = new ClientController(userList);
         cashController = new CashController(ticketList, userList);
-
+        this.exitController = exitController;
+        helpController = new HelpController();
         LoadComand();
     }
     private void LoadComand(){
@@ -40,13 +38,19 @@ public class CommandManager implements Command{
         commandRegistry.put("ticket",new CommandTicket(ticketController));
         commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash(cashController));
-        commandRegistry.put("help",new CommandHelp());
-        commandRegistry.put("exit",new CommandExit());
     }
     public boolean execute(String args) {
             String[] parts = args.split(" ");
             String commandName = parts[0].toLowerCase();
             Command command = commandRegistry.get(commandName);
+        if ("exit".equalsIgnoreCase(commandName)) {
+            exitController.requestExit();
+            return true;
+        }
+        if ("help".equalsIgnoreCase(commandName)) {
+            helpController.help();
+            return true;
+        }
             if (command != null) {
                 String message = String.join(" ",java.util.Arrays.copyOfRange( parts,1, parts.length));
                 return command.execute(message);

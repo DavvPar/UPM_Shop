@@ -290,5 +290,4 @@ public class ProductController {
         }
         return isValid;
     }
-
 }

@@ -65,11 +65,13 @@ public class CashController { //TODO revisar los returns de los metodos
         }
         if (removed) System.out.println("cash remove: ok");
         else System.out.println("cash remove: error");
+        return removed;
     }
 
     public boolean listCash(){
         userList.printCashiers();
         System.out.println("cash list: ok");
+        return true;
     }
 
     public boolean ticketsCash(String args){
@@ -87,6 +89,6 @@ public class CashController { //TODO revisar los returns de los metodos
         }else{
             System.out.println("cash tickets:error");
         }
-        return;
+        return true;
     }
 }

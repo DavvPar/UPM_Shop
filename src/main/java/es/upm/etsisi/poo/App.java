@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import es.upm.etsisi.poo.command.Command;
 import es.upm.etsisi.poo.command.CommandManager;
+import es.upm.etsisi.poo.controller.ExitController;
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
@@ -15,11 +16,6 @@ import es.upm.etsisi.poo.user.*;
 
 public class App {
     static Scanner sc = new Scanner(System.in);
-    //static int MaxNumProduct = 200;
-    //static Ticket currentTicket;
-    //static ProductList productlist = new ProductList(MaxNumProduct);
-    //static UserList userList = new UserList();
-    //static TicketList ticketList = new TicketList();
 
     public static void main(String[] args) {
         boolean readingFromFile = false;
@@ -42,10 +38,10 @@ public class App {
 
 
     private void run(Scanner scanner, boolean readingFromFile){
-        CommandManager commandManager = new CommandManager();
-        boolean cont = true;
+        ExitController exitController = new ExitController();
+        CommandManager commandManager = new CommandManager(exitController);
 
-        while (cont && scanner.hasNextLine()) {
+        while (!exitController.isExitRequested()) {
             System.out.print("\ntUPM> ");
             String line = scanner.nextLine();
 
@@ -56,10 +52,6 @@ public class App {
             if (line.isBlank()) continue;
 
             boolean result = commandManager.execute(line);
-
-            if (line.trim().equalsIgnoreCase("exit")) {
-                cont = false;
-            }
         }
 
         scanner.close();
