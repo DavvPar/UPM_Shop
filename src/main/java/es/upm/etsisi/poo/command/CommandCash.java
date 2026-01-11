@@ -30,8 +30,6 @@ public class CommandCash implements Command{
 
         return false;
     }
-    private boolean addfood(String args){return false;}
-    private boolean addmeeting(String args){return false;}
     private boolean remove(String args){
         return false;}
     private boolean list(String args){
