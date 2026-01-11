@@ -2,8 +2,10 @@ package es.upm.etsisi.poo.command;
 
 import es.upm.etsisi.poo.controller.ProductController;
 import es.upm.etsisi.poo.controller.TicketController;
+import es.upm.etsisi.poo.controller.ClientController;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.TicketList;
+import es.upm.etsisi.poo.user.UserList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,27 +15,27 @@ public class CommandManager implements Command{
 
     private final ProductList productList;
     private final TicketList ticketList;
-    //private final ClientList clientList;
+    private final UserList userList;
 
     private final ProductController productController;
     private final TicketController ticketController;
-    //private final ClientController clientController;
+    private final ClientController clientController;
 
     public CommandManager(){
         productList = new ProductList(100);
         ticketList = new TicketList();
-        //clientList = new ClientList();
+        userList = new UserList();
 
         productController = new ProductController(productList);
-        ticketController = new TicketController(ticketList, productList);
-        //clientController = new ClientController(clientList);
+        ticketController = new TicketController(ticketList, productList, userList, productController);
+        clientController = new ClientController(userList);
 
         LoadComand();
     }
     private void LoadComand(){
         commandRegistry.put("prod",new CommandProduct(productController));
         commandRegistry.put("ticket",new CommandTicket(ticketController));
-        commandRegistry.put("client",new CommandClient());
+        commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash());
         commandRegistry.put("help",new CommandHelp());
         commandRegistry.put("exit",new CommandExit());

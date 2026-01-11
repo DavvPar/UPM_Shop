@@ -1,19 +1,24 @@
 package es.upm.etsisi.poo.command;
 
+import es.upm.etsisi.poo.controller.ClientController;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 public class CommandClient implements Command{
     private final Map<String, Function<String,Boolean>> commandRegistry = new HashMap<>();
+    private final ClientController controller;
 
-    public CommandClient(){
-        LoadComand();
+
+    public CommandClient(ClientController controller){
+        this.controller = controller;
+        loadComand();
     }
-    private void LoadComand(){
-        commandRegistry.put("add",this::add);
-        commandRegistry.put("remove",this::remove);
-        commandRegistry.put("list",this::list);
+    private void loadComand(){
+        commandRegistry.put("add",controller::addClient);
+        commandRegistry.put("remove",controller::removeClient);
+        commandRegistry.put("list",args -> controller.listClient());
     }
     public boolean execute(String args) {
         String[] parts = args.split(" ");
@@ -23,15 +28,6 @@ public class CommandClient implements Command{
             String message = String.join(" ",java.util.Arrays.copyOfRange( parts,1, parts.length));
             return function.apply(message);
         }
-        return false;
-    }
-    private boolean add(String args){
-
-        return false;
-    }
-    private boolean remove(String args){
-        return false;}
-    private boolean list(String args){
         return false;
     }
 }
