@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo.command;
 
+import es.upm.etsisi.poo.controller.CashController;
 import es.upm.etsisi.poo.controller.ProductController;
 import es.upm.etsisi.poo.controller.TicketController;
 import es.upm.etsisi.poo.controller.ClientController;
@@ -20,6 +21,7 @@ public class CommandManager implements Command{
     private final ProductController productController;
     private final TicketController ticketController;
     private final ClientController clientController;
+    private final CashController cashController;
 
     public CommandManager(){
         productList = new ProductList(100);
@@ -29,6 +31,7 @@ public class CommandManager implements Command{
         productController = new ProductController(productList);
         ticketController = new TicketController(ticketList, productList, userList, productController);
         clientController = new ClientController(userList);
+        cashController = new CashController(ticketList, userList);
 
         LoadComand();
     }
@@ -36,7 +39,7 @@ public class CommandManager implements Command{
         commandRegistry.put("prod",new CommandProduct(productController));
         commandRegistry.put("ticket",new CommandTicket(ticketController));
         commandRegistry.put("client",new CommandClient(clientController));
-        commandRegistry.put("cash",new CommandCash());
+        commandRegistry.put("cash",new CommandCash(cashController));
         commandRegistry.put("help",new CommandHelp());
         commandRegistry.put("exit",new CommandExit());
     }
