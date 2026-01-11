@@ -39,7 +39,7 @@ public class TicketController {
 
             Product p = productList.getProduct(id);
 
-            if (!userList.containsId(cashId) || currentTicket == null) {
+            if (!userList.containsId(cashId)) {
                 System.out.println("ticket or cashID not found");
                 return false;
             }

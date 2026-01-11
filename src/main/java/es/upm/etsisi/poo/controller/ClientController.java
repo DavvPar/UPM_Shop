@@ -16,17 +16,15 @@ public class ClientController {
     public boolean addClient(String args){
         String[] message = args.split(" ");
         try {
-            String fullLine = String.join(" ", message);
-            String name = Utils.getNameScanner(fullLine);
-            String[] rightParts = secondPartArray(fullLine);
+            String name = Utils.getNameScanner(args);
 
-            if (rightParts.length < 3) {
+            if (message.length < 3) {
                 System.out.println("client add: error");
                 return false;
             }
-            String dni = rightParts[0];
-            String email = rightParts[1];
-            String cashId = rightParts[2];
+            String dni = message[message.length-3];
+            String email = message[message.length-2];
+            String cashId = message[message.length-1];
 
             if (!UserValidator.validName(name)) {
                 System.out.println("client add: error name");
@@ -63,21 +61,6 @@ public class ClientController {
         return false;
     }
 
-    private String[] secondPartArray(String input){
-        int firstQuote = input.indexOf('"');
-        int secondQuote = input.indexOf('"', firstQuote + 1);
-
-        if (firstQuote == -1 || secondQuote == -1) {
-            return new String[0];
-        }
-
-        String rightPart = input.substring(secondQuote + 1).trim();
-
-        if (rightPart.isEmpty()) {
-            return new String[0];
-        }
-        return rightPart.split(" ");
-    }
 
     public boolean removeClient(String args){
         String[] message = args.split(" ");

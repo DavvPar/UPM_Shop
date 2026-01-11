@@ -6,7 +6,7 @@ import es.upm.etsisi.poo.user.Cash;
 import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.user.UserValidator;
 
-public class CashController { //TODO revisar los returns de los metodos
+public class CashController {
     private final TicketList ticketList;
     private final UserList userList;
 
@@ -18,14 +18,12 @@ public class CashController { //TODO revisar los returns de los metodos
     public boolean addCash(String args){
         String[] message = args.split(" ");
         try {
-            String fullLine = String.join(" ", message);
-            String name = Utils.getNameScanner(fullLine);
-            //Never used: String[] rightParts = secondPartArray(fullLine);
+            String name = Utils.getNameScanner(args);
             String email;
             String id = null;
 
-            if (message.length >= 4 && message[2].startsWith("UW")) {
-                id = message[2];
+            if (message.length >= 3 && message[0].startsWith("UW")) {
+                id = message[0];
                 email = message[message.length - 1];
             } else {
                 email = message[message.length - 1];
