@@ -1,7 +1,9 @@
 package es.upm.etsisi.poo.controller;
 
 public class HelpController {
+
     String[] commands;
+
     public HelpController(){
          commands = new String[]{
                  "◦ Client/Cash:",
@@ -33,6 +35,7 @@ public class HelpController {
                  "   exit"
          };
     }
+
     public void help(){
         System.out.println("Commands:");
         for (String cmd : commands) {

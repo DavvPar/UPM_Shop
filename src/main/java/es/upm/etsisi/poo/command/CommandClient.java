@@ -7,9 +7,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class CommandClient implements Command{
-    private final Map<String, Function<String,Boolean>> commandRegistry = new HashMap<>();
-    private final ClientController controller;
 
+    private final Map<String, Function<String,Boolean>> commandRegistry = new HashMap<>();
+
+    private final ClientController controller;
 
     public CommandClient(ClientController controller){
         this.controller = controller;

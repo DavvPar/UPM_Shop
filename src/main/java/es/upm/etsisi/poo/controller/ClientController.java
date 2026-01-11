@@ -7,6 +7,7 @@ import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.user.UserValidator;
 
 public class ClientController {
+
     private final UserList userList;
 
     public ClientController(UserList userList) {

@@ -7,7 +7,9 @@ import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.user.UserValidator;
 
 public class CashController { //TODO revisar los returns de los metodos
+
     private final TicketList ticketList;
+
     private final UserList userList;
 
     public CashController(TicketList ticketList, UserList userList) {

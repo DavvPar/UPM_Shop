@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo.controller;
 
 public class ExitController {
+
     private boolean exitRequested = false;
 
     public void requestExit() {

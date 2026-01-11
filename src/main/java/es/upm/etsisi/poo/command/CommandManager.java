@@ -9,17 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandManager implements Command{
+
     private final Map<String, Command> commandRegistry = new HashMap<>();
 
     private final ProductList productList;
+
     private final TicketList ticketList;
+
     private final UserList userList;
+
     private final ProductController productController;
+
     private final TicketController ticketController;
+
     private final ClientController clientController;
+
     private final CashController cashController;
+
     private final ExitController exitController;
+
     private final HelpController helpController;
+
     public CommandManager(ExitController exitController){
         productList = new ProductList(100);
         ticketList = new TicketList();
@@ -33,12 +43,14 @@ public class CommandManager implements Command{
         helpController = new HelpController();
         LoadComand();
     }
+
     private void LoadComand(){
         commandRegistry.put("prod",new CommandProduct(productController));
         commandRegistry.put("ticket",new CommandTicket(ticketController));
         commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash(cashController));
     }
+
     public boolean execute(String args) {
             String[] parts = args.split(" ");
             String commandName = parts[0].toLowerCase();

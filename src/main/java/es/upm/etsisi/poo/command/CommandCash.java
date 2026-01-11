@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class CommandCash implements Command{
+
     private final Map<String, Function<String,Boolean>> commandRegistry = new HashMap<>();
+
     private final CashController controller;
 
     public CommandCash(CashController controller){

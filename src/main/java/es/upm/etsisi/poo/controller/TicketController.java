@@ -12,9 +12,13 @@ import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.UserList;
 
 public class TicketController {
+
     private final TicketList ticketList;
+
     public final ProductList productList;
+
     private final UserList userList;
+
     private final ProductController productController;//esto es por valid time
 
     private Ticket currentTicket;
