@@ -2,11 +2,7 @@ package es.upm.etsisi.poo;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
-
-import es.upm.etsisi.poo.command.Command;
 import es.upm.etsisi.poo.command.CommandManager;
 import es.upm.etsisi.poo.controller.ExitController;
 import es.upm.etsisi.poo.enums.*;
