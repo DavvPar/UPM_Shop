@@ -1,7 +1,7 @@
 package es.upm.etsisi.poo.products;
 import es.upm.etsisi.poo.enums.ProductType;
 
-public abstract class  Item extends Product{
+public abstract class Item extends Product{
 
     private final String ID;
 

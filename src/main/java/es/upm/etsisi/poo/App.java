@@ -205,9 +205,9 @@ public class App {
                         return;
                     }
                     try {
-                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
-                        if (productlist.addProduct(complexProduct)) {
-                            System.out.println(complexProduct);
+                        EventProduct eventProduct = new EventProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);
+                        if (productlist.addProduct(eventProduct)) {
+                            System.out.println(eventProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -243,9 +243,9 @@ public class App {
                     }
 
                     try {
-                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
-                        if (productlist.addProduct(complexProduct)) {
-                            System.out.println(complexProduct);
+                        EventProduct eventProduct = new EventProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);
+                        if (productlist.addProduct(eventProduct)) {
+                            System.out.println(eventProduct);
                             System.out.println("prod add: ok");
                         } else {
                             System.out.println("prod add: error");
@@ -323,7 +323,7 @@ public class App {
                             Custom += (message[i]);
                         }
                         }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){
-                            ComplexProduct product = (ComplexProduct) p;
+                            EventProduct product = (EventProduct) p;
                             product.setPeople(quantity);
                             if(!(quantity <= product.getMAX_PEOPLE())){
                                 System.out.println("have exceeded the maximum number of people allowed");
@@ -386,7 +386,7 @@ public class App {
                         for (int i = 0; i<currentTicket.getNumProductInTicket();i++){
                             Product p = currentTicket.getProduct(i);
                             if (p.getProductType() == ProductType.Food || p.getProductType() == ProductType.Meeting){
-                                ComplexProduct product = (ComplexProduct) p;
+                                EventProduct product = (EventProduct) p;
                                 date = (product).getExpirationDate();
                                 if (!validatePlanningTime(p.getProductType(),date)){
                                     currentTicket.removeProduct(p.getID());
@@ -703,4 +703,3 @@ public class App {
         System.out.println("Command unknown. Type \"help\" to see commands:");
     }
 }
-

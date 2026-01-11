@@ -43,7 +43,7 @@ build/
 /src/main/java/es/upm/etsisi/poo/enums/ServiceType.java
 /src/main/java/es/upm/etsisi/poo/enums/stateTicket.java
 /src/main/java/es/upm/etsisi/poo/enums/TicketType.java
-/src/main/java/es/upm/etsisi/poo/products/ComplexProduct.java
+/src/main/java/es/upm/etsisi/poo/products/EventProduct.java
 /src/main/java/es/upm/etsisi/poo/products/CustomProduct.java
 /src/main/java/es/upm/etsisi/poo/products/Item.java
 /src/main/java/es/upm/etsisi/poo/products/Product.java

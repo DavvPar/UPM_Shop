@@ -28,7 +28,6 @@ public class CustomProduct extends Item{
             return false;
         }
         return true;
-
     }
 
     public boolean addPersonalized(String personalized){
