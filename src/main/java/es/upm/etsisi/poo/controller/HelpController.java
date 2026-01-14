@@ -23,7 +23,7 @@ public class HelpController {
                  "   ticket list",
 
                  "◦ Product:",
-                 "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>] || (\"<name>\" <category> )",
+                 "   prod add [<id>] \"<name>\" <category> <price> [<maxPers>] || \"<name>\" <category>",
                  "   prod update <id> NAME|CATEGORY|PRICE <value>",
                  "   prod addFood [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                  "   prod addMeeting [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
