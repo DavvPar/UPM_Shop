@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo.command;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.controller.*;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.TicketList;
@@ -30,10 +31,12 @@ public class CommandManager implements Command{
 
     private final HelpController helpController;
 
+    private final MapDBManager MapDb;
     public CommandManager(ExitController exitController){
-        productList = new ProductList(100);
-        ticketList = new TicketList();
-        userList = new UserList();
+        MapDb = new MapDBManager();
+        productList = MapDb.getProductoList();
+        ticketList = MapDb.getTicketList();
+        userList = MapDb.getUserList();
 
         productController = new ProductController(productList);
         ticketController = new TicketController(ticketList, productList, userList, productController);

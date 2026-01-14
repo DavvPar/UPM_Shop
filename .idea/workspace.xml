@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="todo arreglado">
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="MapdB integrado">
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/App.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +41,9 @@
     &quot;accountId&quot;: &quot;2bca0656-685b-4023-8423-e24e7b226c67&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -48,6 +54,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.App.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
@@ -56,6 +63,7 @@
     "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.language.and.region",
     "应用程序.App.executor": "Run"
   }
 }]]></component>
@@ -85,7 +93,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="应用程序.App" />
+        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
@@ -201,7 +209,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768414867947</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="MapdB integrado">
+      <option name="closed" value="true" />
+      <created>1768415763993</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1768415763993</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -212,7 +228,8 @@
     <MESSAGE value="terminado help y exit" />
     <MESSAGE value="correciones de metodos" />
     <MESSAGE value="todo arreglado" />
-    <option name="LAST_COMMIT_MESSAGE" value="todo arreglado" />
+    <MESSAGE value="MapdB integrado" />
+    <option name="LAST_COMMIT_MESSAGE" value="MapdB integrado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
