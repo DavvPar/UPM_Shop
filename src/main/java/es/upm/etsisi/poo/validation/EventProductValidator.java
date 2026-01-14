@@ -1,7 +1,5 @@
 package es.upm.etsisi.poo.validation;
-
 import es.upm.etsisi.poo.products.EventProduct;
-
 public class EventProductValidator implements Validator<EventProduct> {
 
     @Override

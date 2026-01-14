@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="correciones de metodos">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JunqinYe&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DavvPar/UPM_Shop.git&quot;,
+    &quot;accountId&quot;: &quot;2bca0656-685b-4023-8423-e24e7b226c67&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3805auaI5Pi08UgaHM1Qo74nILB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;应用程序.App.executor&quot;: &quot;Run&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="es.upm.etsisi.poo.App" />
+      <module name="UPM_SHOP" />
+      <option name="PROGRAM_PARAMETERS" value="input.txt" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.upm.etsisi.poo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="应用程序.App" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="" />
+      <created>1767923714468</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767923714468</updated>
+    </task>
+    <task id="LOCAL-00001" summary="borrar variable no usada">
+      <option name="closed" value="true" />
+      <created>1767923797186</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1767923797186</updated>
+    </task>
+    <task id="LOCAL-00002" summary="borrar variable no usada">
+      <option name="closed" value="true" />
+      <created>1768062337299</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1768062337299</updated>
+    </task>
+    <task id="LOCAL-00003" summary="creacion de Manager comand y validaciones">
+      <option name="closed" value="true" />
+      <created>1768090224298</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1768090224298</updated>
+    </task>
+    <task id="LOCAL-00004" summary="creacion de Manager comand y validaciones">
+      <option name="closed" value="true" />
+      <created>1768091633927</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1768091633927</updated>
+    </task>
+    <task id="LOCAL-00005" summary="creacion  comand y validaciones">
+      <option name="closed" value="true" />
+      <created>1768092905235</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1768092905235</updated>
+    </task>
+    <task id="LOCAL-00006" summary="estructura basica de command terminado">
+      <option name="closed" value="true" />
+      <created>1768094915497</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1768094915497</updated>
+    </task>
+    <task id="LOCAL-00007" summary="estructura basica de command terminado">
+      <option name="closed" value="true" />
+      <created>1768094948956</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1768094948956</updated>
+    </task>
+    <task id="LOCAL-00008" summary="terminado help y exit">
+      <option name="closed" value="true" />
+      <created>1768150983869</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1768150983869</updated>
+    </task>
+    <task id="LOCAL-00009" summary="correciones de metodos">
+      <option name="closed" value="true" />
+      <created>1768152304299</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1768152304299</updated>
+    </task>
+    <task id="LOCAL-00010" summary="correciones de metodos">
+      <option name="closed" value="true" />
+      <created>1768152406177</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1768152406177</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="borrar variable no usada" />
+    <MESSAGE value="creacion de Manager comand y validaciones" />
+    <MESSAGE value="creacion  comand y validaciones" />
+    <MESSAGE value="estructura basica de command terminado" />
+    <MESSAGE value="terminado help y exit" />
+    <MESSAGE value="correciones de metodos" />
+    <option name="LAST_COMMIT_MESSAGE" value="correciones de metodos" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java</url>
+          <line>171</line>
+          <properties class="es.upm.etsisi.poo.controller.TicketController" method="newTicket">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ClientController.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
