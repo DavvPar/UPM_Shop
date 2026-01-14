@@ -4,7 +4,7 @@ import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.stateTicket;
-import es.upm.etsisi.poo.products.ComplexProduct;
+import es.upm.etsisi.poo.products.EventProduct;
 import es.upm.etsisi.poo.products.Product;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.Ticket;
@@ -61,7 +61,7 @@ public class TicketController {
                 } else if (p.getProductType() == ProductType.Meeting
                         || p.getProductType() == ProductType.Food) {
 
-                    ComplexProduct product = (ComplexProduct) p;
+                    EventProduct product = (EventProduct) p;
                     product.setPeople(quantity);
 
                     if (quantity > product.getMAX_PEOPLE()) {
@@ -109,7 +109,7 @@ public class TicketController {
                 if (p.getProductType() == ProductType.Food
                         || p.getProductType() == ProductType.Meeting) {
 
-                    ComplexProduct product = (ComplexProduct) p;
+                    EventProduct product = (EventProduct) p;
                     String date = product.getExpirationDate();
 
                     if (!productController.validatePlanningTime(p.getProductType(), date)) {

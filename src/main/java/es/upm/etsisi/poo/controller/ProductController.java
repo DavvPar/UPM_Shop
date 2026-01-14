@@ -6,6 +6,9 @@ import es.upm.etsisi.poo.enums.CategoryType;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.ServiceType;
 import es.upm.etsisi.poo.products.*;
+import es.upm.etsisi.poo.validation.EventProductValidator;
+import es.upm.etsisi.poo.validation.CustomProductValidator;
+import es.upm.etsisi.poo.validation.ServiceValidator;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -13,9 +16,15 @@ import java.time.temporal.ChronoUnit;
 public class ProductController {
 
     private final ProductList productList;
+    private final EventProductValidator eventValidator;
+    private final CustomProductValidator customValidator;
+    private final ServiceValidator serviceValidator;
 
     public ProductController(ProductList productList) {
         this.productList = productList;
+        this.eventValidator = new EventProductValidator();
+        this.customValidator = new CustomProductValidator();
+        this.serviceValidator = new ServiceValidator();
     }
 
     public boolean addProduct(String args) {
@@ -33,6 +42,7 @@ public class ProductController {
                         expireDate,
                         ProductType.Service
                 );
+                serviceValidator.validate((Service) product);
             }
             // Producto normal
             else {
@@ -56,6 +66,7 @@ public class ProductController {
                             id, name, category, price,
                             0, ProductType.Product
                     );
+                    customValidator.validate((CustomProduct) product);
                 }
             }
 
@@ -204,11 +215,11 @@ public class ProductController {
                 return false;
             }
 
-            ComplexProduct complexProduct =
-                    new ComplexProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
-
-            boolean ok = productList.addProduct(complexProduct);
-            System.out.println(ok ? complexProduct : "prod add: error");
+            EventProduct eventProduct =
+                    new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
+            eventValidator.validate(eventProduct);
+            boolean ok = productList.addProduct(eventProduct);
+            System.out.println(ok ? eventProduct : "prod add: error");
             if (ok) System.out.println("prod add: ok");
 
             return ok;
@@ -250,11 +261,11 @@ public class ProductController {
                 return false;
             }
 
-            ComplexProduct complexProduct =
-                    new ComplexProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
-
-            boolean ok = productList.addProduct(complexProduct);
-            System.out.println(ok ? complexProduct : "prod add: error");
+            EventProduct eventProduct =
+                    new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
+            eventValidator.validate(eventProduct);
+            boolean ok = productList.addProduct(eventProduct);
+            System.out.println(ok ? eventProduct : "prod add: error");
             if (ok) System.out.println("prod add: ok");
 
             return ok;
@@ -268,6 +279,7 @@ public class ProductController {
     }
 
     //TODO CAMBIAR ESTO DE SITIO, PQ ES PUBLICO Y LO NECESITA TICKET
+    //Si hacemos un PlanningTimeValidator??
     public boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
         //YYYY-MM-DD-HH:MM
         String[] currentTimeString = Utils.getTime().trim().split("[:-]");
