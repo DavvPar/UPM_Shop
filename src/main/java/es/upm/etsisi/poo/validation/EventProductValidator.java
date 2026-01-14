@@ -16,7 +16,7 @@ public class EventProductValidator implements Validator<EventProduct> {
         int people = product.getPeople();
         int max = product.getMAX_PEOPLE();
 
-        if (people <= 0 || people > max) {
+        if (people < 0 || people > max) {
             throw new IllegalArgumentException(
                     "People must be between 1 and " + max
             );
