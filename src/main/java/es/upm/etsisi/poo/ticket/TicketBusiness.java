@@ -1,11 +1,12 @@
 package es.upm.etsisi.poo.ticket;
+import java.io.Serializable;
 import java.util.ArrayList;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.ProductType;
 
-public class TicketBusiness<P extends Product> extends Ticket<P>{
+public class TicketBusiness<P extends Product> extends Ticket<P>implements Serializable {
     private double serviceDiscount;
 
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {

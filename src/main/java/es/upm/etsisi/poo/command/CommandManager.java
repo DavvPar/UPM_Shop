@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo.command;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.controller.*;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.TicketList;
@@ -11,12 +12,6 @@ import java.util.Map;
 public class CommandManager implements Command{
 
     private final Map<String, Command> commandRegistry = new HashMap<>();
-
-    private final ProductList productList;
-
-    private final TicketList ticketList;
-
-    private final UserList userList;
 
     private final ProductController productController;
 
@@ -30,15 +25,13 @@ public class CommandManager implements Command{
 
     private final HelpController helpController;
 
+    private final MapDBManager MapDb;
     public CommandManager(ExitController exitController){
-        productList = new ProductList(100);
-        ticketList = new TicketList();
-        userList = new UserList();
-
-        productController = new ProductController(productList);
-        ticketController = new TicketController(ticketList, productList, userList, productController);
-        clientController = new ClientController(userList);
-        cashController = new CashController(ticketList, userList);
+        MapDb = new MapDBManager();
+        productController = new ProductController(MapDb);
+        ticketController = new TicketController(MapDb);
+        clientController = new ClientController(MapDb);
+        cashController = new CashController(MapDb);
         this.exitController = exitController;
         helpController = new HelpController();
         LoadComand();
@@ -50,7 +43,6 @@ public class CommandManager implements Command{
         commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash(cashController));
     }
-
     public boolean execute(String args) {
             String[] parts = args.split(" ");
             String commandName = parts[0].toLowerCase();

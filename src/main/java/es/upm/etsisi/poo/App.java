@@ -8,9 +8,6 @@ import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
-import org.mapdb.Serializer;
 public class App {
     static Scanner sc = new Scanner(System.in);
 

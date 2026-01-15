@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo.controller;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.TicketType;
@@ -9,8 +10,9 @@ import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.Ticket;
 import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.UserList;
+import es.upm.etsisi.poo.validation.EventProductValidator;
 
-public class TicketController {
+public class TicketController extends Controller{
 
     private final TicketList ticketList;
 
@@ -18,15 +20,13 @@ public class TicketController {
 
     private final UserList userList;
 
-    private final ProductController productController;//esto es por valid time
-
     private Ticket currentTicket;
 
-    public TicketController(TicketList ticketList, ProductList productList, UserList userList, ProductController productController) {
-        this.ticketList = ticketList;
-        this.productList = productList;
-        this.userList = userList;
-        this.productController = productController;
+    public TicketController(MapDBManager mapDBManager) {
+        super(mapDBManager);
+        this.ticketList = mapDBManager.getTicketList();
+        this.productList = mapDBManager.getProductoList();
+        this.userList = mapDBManager.getUserList();
     }
 
     public boolean addTicket(String args){
@@ -77,7 +77,6 @@ public class TicketController {
                 System.out.println("ticket closed");
                 return false;
             }
-
             currentTicket.addProductToTicket(productList, id, quantity, custom);
             System.out.println(currentTicket);
             System.out.println("ticket add: ok");
@@ -111,7 +110,7 @@ public class TicketController {
                     EventProduct product = (EventProduct) p;
                     String date = product.getExpirationDate();
 
-                    if (!productController.validatePlanningTime(p.getProductType(), date)) {
+                    if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
                         currentTicket.removeProduct(p.getID());
                     }
                 }
@@ -119,6 +118,7 @@ public class TicketController {
 
             ticketList.CloseTicket(currentTicket, Utils.getTime());
             System.out.println(currentTicket);
+            mapDBManager.addTicket(currentTicket);
             System.out.println("ticket print: ok");
             return true;
 
@@ -189,10 +189,11 @@ public class TicketController {
         } else {
             currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type);
         }
-
+        if (currentTicket != null){
         currentTicket.setState(stateTicket.empty);
         System.out.println(currentTicket);
-        System.out.println("ticket new: ok");
+        System.out.println("ticket new: ok");}
+        else System.out.println("ticket new: error");
         return true;
     }
 }

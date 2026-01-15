@@ -1,18 +1,20 @@
 package es.upm.etsisi.poo.controller;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.Cash;
 import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.user.UserValidator;
 
-public class CashController {
+public class CashController extends  Controller{
     private final TicketList ticketList;
     private final UserList userList;
 
-    public CashController(TicketList ticketList, UserList userList) {
-        this.ticketList = ticketList;
-        this.userList = userList;
+    public CashController(MapDBManager mapDBManager) {
+        super(mapDBManager);
+        this.ticketList = mapDBManager.getTicketList();
+        this.userList = mapDBManager.getUserList();
     }
 
     public boolean addCash(String args){
@@ -38,6 +40,7 @@ public class CashController {
 
             boolean added = userList.addCash(cash);
             if (added) {
+                mapDBManager.addUser(cash);
                 System.out.println("cash add: ok");
             } else {
                 System.out.println("cash add: error");
@@ -61,8 +64,10 @@ public class CashController {
             ticketList.removeTicket(cash.getId());
             removed = userList.removeUser(id);
         }
-        if (removed) System.out.println("cash remove: ok");
-        else System.out.println("cash remove: error");
+        if (removed) {
+            mapDBManager.removeUser(id);
+            System.out.println("cash remove: ok");
+        } else System.out.println("cash remove: error");
         return removed;
     }
 
