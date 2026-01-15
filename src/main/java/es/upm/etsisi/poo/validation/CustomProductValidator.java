@@ -1,46 +1,57 @@
 package es.upm.etsisi.poo.validation;
 
-import es.upm.etsisi.poo.products.CustomProduct;
+import es.upm.etsisi.poo.enums.CategoryType;
+import es.upm.etsisi.poo.products.ProductList;
 
-public class CustomProductValidator implements Validator<CustomProduct> {
+public class CustomProductValidator implements Validator{
     @Override
-    public void validate(CustomProduct product) {
-        if (product == null) {
-            throw new IllegalArgumentException("CustomProduct cannot be null");
+    public boolean validate(String[] params) {
+        if (params.length == 0){
+            return false;
         }
-
-        validateCategory(product);
-        validateMaxPersonalization(product);
-        validatePrice(product);
+        if (params.length == 3){
+            return validId(params[0]) && validCategoryType(params[1]) && validPrice(params[2]);
+        }
+        if (params.length == 4){
+            return validId(params[0]) && validCategoryType(params[1])
+                    && validPrice(params[2]) && validMaxPers(params[3]);
+        }
+        return false;
     }
 
-    private void validateCategory(CustomProduct product) {
-        if (product.getCategory() == null) {
-            throw new IllegalArgumentException("Category is required");
-        }
-    }
-
-    private void validateMaxPersonalization(CustomProduct product) {
-        int max = product.getMaxPers();
-
-        if (max < 0) {
-            throw new IllegalArgumentException("Max personalizations cannot be negative");
-        }
-
-        int current = product.getPersonalization().isEmpty()
-                ? 0
-                : product.getPersonalization().split("--p").length - 1;
-
-        if (current > max) {
-            throw new IllegalArgumentException(
-                    "Exceeded max personalization limit (" + max + ")"
-            );
+    private boolean validPrice(String priceStr){
+        try {
+            double price = Double.parseDouble(priceStr);
+            return price > 0;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
-    private void validatePrice(CustomProduct product) {
-        if (product.getPrice() <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
+    private boolean validId(String idStr){
+        try {
+            int id = Integer.parseInt(idStr);
+            return id > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean validCategoryType(String type){
+        try {
+            CategoryType.valueOf(type.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private boolean validMaxPers (String maxPersStr){
+        try {
+            int maxPers = Integer.parseInt(maxPersStr);
+            return maxPers >= 0;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 }

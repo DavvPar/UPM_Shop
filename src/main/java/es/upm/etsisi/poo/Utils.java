@@ -90,7 +90,7 @@ public class Utils {
         return id;
     }
 
-    public static boolean ValidDate(String Date) {
+    public static boolean validDate(String Date) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate fecha = LocalDate.parse(Date, formatter);
@@ -100,5 +100,21 @@ public class Utils {
                     "YYYY/MM/DD");
             return false;
         }
+    }
+
+    public static String[] secondPartArray(String input){
+        int firstQuote = input.indexOf('"');
+        int secondQuote = input.indexOf('"', firstQuote + 1);
+
+        if (firstQuote == -1 || secondQuote == -1) {
+            return new String[0];
+        }
+
+        String rightPart = input.substring(secondQuote + 1).trim();
+
+        if (rightPart.isEmpty()) {
+            return new String[0];
+        }
+        return rightPart.split(" ");
     }
 }

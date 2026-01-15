@@ -1,25 +1,31 @@
 package es.upm.etsisi.poo.validation;
 import es.upm.etsisi.poo.products.EventProduct;
-public class EventProductValidator implements Validator<EventProduct> {
+public class EventProductValidator implements Validator {
 
     @Override
-    public void validate(EventProduct product) {
-        if(product == null){
-            throw new IllegalArgumentException("EventProduct cannot be null");
-        }
-        validatePeople(product);
-        validateExpirationDate(product);
-        validateBasePrice(product); //no debe calcular el precio
+
+
+    /**
+     * public void validate(EventProduct product) {
+     *         if(product == null){
+     *             throw new IllegalArgumentException("EventProduct cannot be null");
+     *         }
+     *         validatePeople(product);
+     *         validateExpirationDate(product);
+     *         validateBasePrice(product); //no debe calcular el precio
+     *     }
+     */
+
+    public boolean validate(String[] params) {
+        return true;
     }
 
-    private void validatePeople(EventProduct product) {
-        int people = product.getPeople();
-        int max = product.getMAX_PEOPLE();
-
-        if (people < 0 || people > max) {
-            throw new IllegalArgumentException(
-                    "People must be between 1 and " + max
-            );
+    private boolean validatePeople(String peopleStr, int maxPeople) {
+        try {
+            int people = Integer.parseInt(peopleStr);
+            return people >= 0 && people <= maxPeople;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 

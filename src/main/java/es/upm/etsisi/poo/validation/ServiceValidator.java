@@ -1,36 +1,25 @@
 package es.upm.etsisi.poo.validation;
 
-import es.upm.etsisi.poo.products.Service;
+import es.upm.etsisi.poo.Utils;
+import es.upm.etsisi.poo.enums.ServiceType;
 
-public class ServiceValidator implements Validator<Service> {
+public class ServiceValidator implements Validator {
+
     @Override
-    public void validate(Service service) {
-        if (service == null) {
-            throw new IllegalArgumentException("Service cannot be null");
-        }
-
-        validateType(service);
-        validateExpirationDate(service);
-        validateId(service);
+    public boolean validate(String[] params) {
+        return (validateExpirationDate(params[0]) && validateType(params[1]));
     }
 
-    private void validateType(Service service) {
-        if (service.getType() == null) {
-            throw new IllegalArgumentException("Service type is required");
+    private boolean validateType(String type){
+        try {
+            ServiceType.valueOf(type);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
     }
 
-    private void validateExpirationDate(Service service) {
-        String date = service.getExpirationDate();
-
-        if (date == null || date.isBlank()) {
-            throw new IllegalArgumentException("Expiration date is required");
-        }
-    }
-
-    private void validateId(Service service) {
-        if (service.getID() == null || service.getID().isBlank()) {
-            throw new IllegalArgumentException("Service ID is required");
-        }
+    private boolean validateExpirationDate(String date){
+        return Utils.validDate(date);
     }
 }

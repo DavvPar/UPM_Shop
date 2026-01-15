@@ -1,5 +1,4 @@
 package es.upm.etsisi.poo.user;
-import es.upm.etsisi.poo.user.UserList;
 
 public class UserValidator{
 

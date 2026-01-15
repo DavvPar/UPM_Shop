@@ -25,7 +25,7 @@ public class ProductList {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {
             for (int i = 0; i < numProduct; i++) {
-                if (product.getID() == products.get(i).getID()) {
+                if (product.getID().equals(products.get(i).getID())) {
                     exists = true;
                 }
             }

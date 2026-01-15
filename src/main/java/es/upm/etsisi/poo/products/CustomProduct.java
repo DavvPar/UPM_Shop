@@ -8,7 +8,7 @@ public class CustomProduct extends Item{
 
     private ArrayList<String> personalization;
 
-    private int maxPers;
+    private final int maxPers;
 
     private Category category;
 
