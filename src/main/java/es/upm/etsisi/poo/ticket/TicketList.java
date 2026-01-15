@@ -9,7 +9,7 @@ import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket> implements Serializable {
+public class TicketList <T extends Ticket<Product>> implements Serializable {
 
     private ArrayList<T> ticketList;
 

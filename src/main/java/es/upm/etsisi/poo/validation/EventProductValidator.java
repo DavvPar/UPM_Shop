@@ -2,6 +2,7 @@ package es.upm.etsisi.poo.validation;
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.products.EventProduct;
+import es.upm.etsisi.poo.products.Product;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -15,10 +16,13 @@ public class EventProductValidator implements Validator<EventProduct> {
         }
         validatePeople(product);
         validateExpirationDate(product);
-        validateBasePrice(product); //no debe calcular el precio
+        validateBasePrice(product);
+        validateExpirationDate(product);
     }
-    public static boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
+    private boolean validatePlanningTime(EventProduct product) {
         //YYYY-MM-DD-HH:MM
+        String expirationDate = product.getExpirationDate();
+        ProductType typeProduct = product.getProductType();
         String[] currentTimeString = Utils.getTime().trim().split("[:-]");
         String[] time = expirationDate.trim().split("[:-]");
         LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),

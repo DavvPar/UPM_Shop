@@ -8,7 +8,6 @@ public class CustomProductValidator implements Validator<CustomProduct> {
         if (product == null) {
             throw new IllegalArgumentException("CustomProduct cannot be null");
         }
-
         validateCategory(product);
         validateMaxPersonalization(product);
         validatePrice(product);

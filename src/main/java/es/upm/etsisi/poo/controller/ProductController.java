@@ -215,9 +215,6 @@ public class ProductController extends Controller{
                 return false;
             }
 
-            if (!EventProductValidator.validatePlanningTime(ProductType.Food, expirationStrg)) {
-                return false;
-            }
 
             EventProduct eventProduct =
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
@@ -248,7 +245,6 @@ public class ProductController extends Controller{
                 );
                 return false;
             }
-
             String line = args;
             String name = Utils.getNameScanner(line);
             String id = message[0];
@@ -261,11 +257,6 @@ public class ProductController extends Controller{
                 System.out.println("have exceeded the maximum number of people allowed(100)");
                 return false;
             }
-
-            if (!EventProductValidator.validatePlanningTime(ProductType.Food, expirationStrg)) {
-                return false;
-            }
-
             EventProduct eventProduct =
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
             eventValidator.validate(eventProduct);

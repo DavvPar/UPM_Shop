@@ -6,7 +6,7 @@ import es.upm.etsisi.poo.enums.ProductType;
 
 import java.io.Serializable;
 
-public class TicketClient<P extends Product> extends Ticket<P>implements Serializable {
+public class TicketClient<P extends Item> extends Ticket<P>implements Serializable {
 
     public TicketClient(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
