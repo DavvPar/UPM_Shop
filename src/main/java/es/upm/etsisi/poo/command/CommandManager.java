@@ -13,12 +13,6 @@ public class CommandManager implements Command{
 
     private final Map<String, Command> commandRegistry = new HashMap<>();
 
-    private final ProductList productList;
-
-    private final TicketList ticketList;
-
-    private final UserList userList;
-
     private final ProductController productController;
 
     private final TicketController ticketController;
@@ -34,14 +28,10 @@ public class CommandManager implements Command{
     private final MapDBManager MapDb;
     public CommandManager(ExitController exitController){
         MapDb = new MapDBManager();
-        productList = MapDb.getProductoList();
-        ticketList = MapDb.getTicketList();
-        userList = MapDb.getUserList();
-
-        productController = new ProductController(productList);
-        ticketController = new TicketController(ticketList, productList, userList, productController);
-        clientController = new ClientController(userList);
-        cashController = new CashController(ticketList, userList);
+        productController = new ProductController(MapDb);
+        ticketController = new TicketController(MapDb);
+        clientController = new ClientController(MapDb);
+        cashController = new CashController(MapDb);
         this.exitController = exitController;
         helpController = new HelpController();
         LoadComand();
@@ -53,7 +43,6 @@ public class CommandManager implements Command{
         commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash(cashController));
     }
-
     public boolean execute(String args) {
             String[] parts = args.split(" ");
             String commandName = parts[0].toLowerCase();

@@ -1,5 +1,6 @@
 package es.upm.etsisi.poo.controller;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.Category;
 import es.upm.etsisi.poo.enums.CategoryType;
@@ -13,15 +14,16 @@ import es.upm.etsisi.poo.validation.ServiceValidator;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class ProductController {
+public class ProductController extends Controller{
 
     private final ProductList productList;
     private final EventProductValidator eventValidator;
     private final CustomProductValidator customValidator;
     private final ServiceValidator serviceValidator;
 
-    public ProductController(ProductList productList) {
-        this.productList = productList;
+    public ProductController(MapDBManager mapDBManager) {
+        super(mapDBManager);
+        this.productList = mapDBManager.getProductoList();
         this.eventValidator = new EventProductValidator();
         this.customValidator = new CustomProductValidator();
         this.serviceValidator = new ServiceValidator();
@@ -71,6 +73,7 @@ public class ProductController {
             }
 
             boolean ok = productList.addProduct(product);
+            if (ok) mapDBManager.addProduct(product);
             System.out.println(ok ? "prod add: ok" : "prod add: error");
             return ok;
 
@@ -175,6 +178,7 @@ public class ProductController {
             System.out.println(productRemove);
 
             boolean ok = productList.removeProduct(productRemove);
+            if (ok) mapDBManager.removeProduct(productRemove);
             System.out.println(ok ? "prod remove: ok" : "prod remove: error");
             return ok;
 
@@ -211,7 +215,7 @@ public class ProductController {
                 return false;
             }
 
-            if (!validatePlanningTime(ProductType.Meeting, expirationStrg)) {
+            if (!EventProductValidator.validatePlanningTime(ProductType.Food, expirationStrg)) {
                 return false;
             }
 
@@ -219,6 +223,7 @@ public class ProductController {
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
             eventValidator.validate(eventProduct);
             boolean ok = productList.addProduct(eventProduct);
+            if (ok) mapDBManager.addProduct(eventProduct);
             System.out.println(ok ? eventProduct : "prod add: error");
             if (ok) System.out.println("prod add: ok");
 
@@ -257,7 +262,7 @@ public class ProductController {
                 return false;
             }
 
-            if (!validatePlanningTime(ProductType.Food, expirationStrg)) {
+            if (!EventProductValidator.validatePlanningTime(ProductType.Food, expirationStrg)) {
                 return false;
             }
 
@@ -265,6 +270,7 @@ public class ProductController {
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
             eventValidator.validate(eventProduct);
             boolean ok = productList.addProduct(eventProduct);
+            if (ok) mapDBManager.addProduct(eventProduct);
             System.out.println(ok ? eventProduct : "prod add: error");
             if (ok) System.out.println("prod add: ok");
 
@@ -276,31 +282,5 @@ public class ProductController {
             );
             return false;
         }
-    }
-
-    //TODO CAMBIAR ESTO DE SITIO, PQ ES PUBLICO Y LO NECESITA TICKET
-    //Si hacemos un PlanningTimeValidator??
-    public boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
-        //YYYY-MM-DD-HH:MM
-        String[] currentTimeString = Utils.getTime().trim().split("[:-]");
-        String[] time = expirationDate.trim().split("[:-]");
-        LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),
-                Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));
-        LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),
-                0,0);
-        long HourD = ChronoUnit.HOURS.between(now,Date);
-        boolean isValid = true;
-        if (typeProduct == ProductType.Food) {
-            if (HourD < 72) {
-                System.out.println("Error adding product");
-                isValid = false;
-            }
-        }else{
-            if (HourD< 12){
-                System.out.println("Error adding meeting");
-                isValid=false;
-            }
-        }
-        return isValid;
     }
 }

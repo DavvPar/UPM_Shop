@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="MapdB integrado">
-      <change afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/System_date.db" beforeDir="false" afterPath="$PROJECT_DIR$/System_date.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/System_date.db.wal.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketBusiness.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketBusiness.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/App.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +52,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -217,7 +227,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768415763993</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="MapdB integrado">
+      <option name="closed" value="true" />
+      <created>1768432217076</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1768432217076</updated>
+    </task>
+    <task id="LOCAL-00016" summary="MapdB integrado">
+      <option name="closed" value="true" />
+      <created>1768432245157</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1768432245157</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -235,9 +261,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java</url>
-          <line>217</line>
-          <option name="timeStamp" value="13" />
+          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java</url>
+          <line>186</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,4 +1,5 @@
 package es.upm.etsisi.poo.MapDB;
+import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
@@ -7,11 +8,12 @@ import java.util.*;
 
 public class MapDBManager {
     private DB db;
-    private UserList usercache;
+    private UserList usercache ;
     private ProductList productcache;
     private TicketList<Ticket<Product>> ticketscache;
-    private Map<String, Object> commandosCache;
-
+    private HTreeMap productMap;
+    private HTreeMap userMap;
+    private HTreeMap ticketMap;
     private static final String COL_USER = "userList";
     private static final String COL_PRODUCT = "productList";
     private static final String COL_TICKET = "ticketList";
@@ -21,26 +23,49 @@ public class MapDBManager {
         Load();
     }
     private void Load(){
-        HTreeMap Map;
-        Map = db
+        userMap = db
                 .hashMap("user")
                 .keySerializer(Serializer.STRING)
                 .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
-
-        LoadUserList(Map);
-        Map = db
+        LoadUserList(userMap);
+        productMap = db
                 .hashMap("product")
                 .keySerializer(Serializer.STRING)
                 .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
-        LoadProductList(Map);
-        Map = db
+        LoadProductList(productMap);
+        ticketMap = db
                 .hashMap("ticket")
                 .keySerializer(Serializer.STRING)
                 .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
-        LoadTicketList(Map);
+        LoadTicketList(ticketMap);
+    }
+    public void addUser(User user){
+        userMap.put(user.getId(),user);
+        db.commit();
+    }
+    public void addProduct(Product product){
+        productMap.put(product.getID(),product);
+        db.commit();
+    }
+    public void addTicket(Ticket ticket){
+        String id =Utils.getShortId(ticket.getTicketId());
+        ticketMap.put(id,ticket);
+        db.commit();
+    }
+    public void removeUser(String id){
+        userMap.remove(id);
+        db.commit();
+    }
+    public void removeProduct(Product product){
+        productMap.remove(product.getID());
+        db.commit();
+    }
+    public void removeTicket(Ticket ticket){
+        ticketMap.remove(Utils.getShortId(ticket.getTicketId()));
+        db.commit();
     }
     private void LoadUserList(HTreeMap<String,User> Map){
         if (Map.isEmpty()) {
@@ -74,7 +99,6 @@ public class MapDBManager {
             }
         }
     }
-
     public ProductList getProductoList() {
         return productcache;
     }
@@ -92,9 +116,9 @@ public class MapDBManager {
                     .transactionEnable()
                     .make();
         }
-
-    }
-    private void initValue(){
+        ticketscache = new TicketList<>();
+        productcache = new ProductList(200);
+        usercache = new UserList();
 
     }
 }

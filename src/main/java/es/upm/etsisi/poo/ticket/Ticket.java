@@ -3,10 +3,12 @@ import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.ProductType;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public abstract class Ticket <P extends Product>{
+public abstract class Ticket <P extends Product>implements Serializable {
 
     public final int MaxNumProduct;
 

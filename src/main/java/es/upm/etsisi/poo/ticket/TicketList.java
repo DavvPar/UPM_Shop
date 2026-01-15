@@ -1,12 +1,15 @@
 package es.upm.etsisi.poo.ticket;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket>{
+public class TicketList <T extends Ticket> implements Serializable {
 
     private ArrayList<T> ticketList;
 
@@ -29,7 +32,7 @@ public class TicketList <T extends Ticket>{
         return true;
     }
 
-    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
+    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type,MapDBManager mapDBManager){
         Ticket t;
         if (TicketId == null){
             TicketId = createId();
@@ -44,6 +47,7 @@ public class TicketList <T extends Ticket>{
             }
             id.add(clientId+" "+CashId);
             addTicket(t);
+            mapDBManager.addTicket(t);
             }
         else{
             System.out.println("Invalid TicketId");

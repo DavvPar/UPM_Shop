@@ -1,17 +1,19 @@
 package es.upm.etsisi.poo.controller;
 
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ClientType;
 import es.upm.etsisi.poo.user.Client;
 import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.user.UserValidator;
 
-public class ClientController {
+public class ClientController extends Controller{
 
     private final UserList userList;
 
-    public ClientController(UserList userList) {
-        this.userList = userList;
+    public ClientController(MapDBManager mapDBManager) {
+        super(mapDBManager);
+        this.userList = mapDBManager.getUserList();
     }
 
     public boolean addClient(String args){
@@ -48,6 +50,7 @@ public class ClientController {
             }
             if (c != null){
                 if (userList.addClient(c)) {
+                    mapDBManager.addUser(c);
                     System.out.println("client add: ok");
                 }
                 else {
@@ -72,6 +75,7 @@ public class ClientController {
         String dni = message[2];
         boolean removed = userList.removeUser(dni);
         if (removed) {
+            mapDBManager.removeUser(dni);
             System.out.println("client remove: ok");
         } else {
             System.out.println("client remove: error");
