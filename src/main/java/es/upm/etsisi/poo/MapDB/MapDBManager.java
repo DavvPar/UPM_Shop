@@ -43,17 +43,23 @@ public class MapDBManager {
         LoadTicketList(ticketMap);
     }
     public void addUser(User user){
+        if (userMap.get(user.getId())== null){
         userMap.put(user.getId(),user);
         db.commit();
+        }
     }
     public void addProduct(Product product){
+        if (productMap.get(product.getID()) == null){
         productMap.put(product.getID(),product);
         db.commit();
+        }
     }
     public void addTicket(Ticket ticket){
         String id =Utils.getShortId(ticket.getTicketId());
+        if (ticketMap.get(id) == null){
         ticketMap.put(id,ticket);
         db.commit();
+        }
     }
     public void removeUser(String id){
         userMap.remove(id);
@@ -111,7 +117,7 @@ public class MapDBManager {
     private void initDB(){
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("System_date.db")
+                    .fileDB("UPM_SHOP.db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();

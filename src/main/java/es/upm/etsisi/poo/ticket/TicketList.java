@@ -32,7 +32,7 @@ public class TicketList <T extends Ticket> implements Serializable {
         return true;
     }
 
-    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type,MapDBManager mapDBManager){
+    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
         Ticket t;
         if (TicketId == null){
             TicketId = createId();
@@ -47,7 +47,6 @@ public class TicketList <T extends Ticket> implements Serializable {
             }
             id.add(clientId+" "+CashId);
             addTicket(t);
-            mapDBManager.addTicket(t);
             }
         else{
             System.out.println("Invalid TicketId");

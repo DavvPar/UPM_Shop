@@ -1,7 +1,9 @@
 package es.upm.etsisi.poo.products;
 import es.upm.etsisi.poo.enums.ProductType;
 
-public abstract class Product {
+import java.io.Serializable;
+
+public abstract class Product implements Serializable {
 
     private final String ID;
 

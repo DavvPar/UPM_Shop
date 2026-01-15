@@ -118,6 +118,7 @@ public class TicketController extends Controller{
 
             ticketList.CloseTicket(currentTicket, Utils.getTime());
             System.out.println(currentTicket);
+            mapDBManager.addTicket(currentTicket);
             System.out.println("ticket print: ok");
             return true;
 
@@ -184,9 +185,9 @@ public class TicketController extends Controller{
         TicketType type = Utils.TypeTicket(firstPart[firstPart.length - 1], typeTicket);
 
         if (firstPart[0].matches("[0-9]+") && firstPart[0].length() >= 5) {
-            currentTicket = ticketList.createTicket(firstPart[0], firstPart[1], firstPart[2], type,mapDBManager);
+            currentTicket = ticketList.createTicket(firstPart[0], firstPart[1], firstPart[2], type);
         } else {
-            currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type,mapDBManager);
+            currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type);
         }
         if (currentTicket != null){
         currentTicket.setState(stateTicket.empty);
