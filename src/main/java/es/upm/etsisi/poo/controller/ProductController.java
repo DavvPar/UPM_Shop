@@ -89,7 +89,7 @@ public class ProductController extends Controller{
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            System.out.println("Usage: `prod add <id> \"<name>\" <category> <price> [maxPers] || \"<name>\" <category>`");
+            System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers] || \"<name>\" <category>");
             return false;
         }
     }

@@ -91,7 +91,7 @@ public class TicketController extends Controller{
 
     public boolean printTicket(String args){
         String[] message = args.split(" ");
-
+        
         try {
             currentTicket = ticketList.getTicket(message[0]);
             String cashId = message[1];
@@ -110,9 +110,11 @@ public class TicketController extends Controller{
                     EventProduct product = (EventProduct) p;
                     String date = product.getExpirationDate();
 
-                    if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
-                        currentTicket.removeProduct(p.getID());
-                    }
+                    /** TODO
+                     * if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
+                     *                         currentTicket.removeProduct(p.getID());
+                     *                     }
+                     */
                 }
             }
 

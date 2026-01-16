@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="ProdController &amp; validators">
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="prodlist update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +32,12 @@
     &quot;assignee&quot;: &quot;JunqinYe&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/DavvPar/UPM_Shop.git&quot;,
-    &quot;accountId&quot;: &quot;9116ad7e-286e-4ab6-b70e-cbc796ecf7e1&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/DavvPar/UPM_Shop.git",
+    "accountId": "52f02ab9-bfb7-4845-addc-a5362cd264d4"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -48,23 +49,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.App.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.UPM_SHOP [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.UPM_SHOP [package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.language.and.region&quot;,
-    &quot;应用程序.App.executor&quot;: &quot;Run&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.App.executor": "Run",
+    "Maven.UPM_SHOP [clean].executor": "Run",
+    "Maven.UPM_SHOP [package].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.language.and.region",
+    "应用程序.App.executor": "Run"
   }
-}</component>
+}]]></component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean" />
@@ -254,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768506545804</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="prodlist update">
+      <option name="closed" value="true" />
+      <created>1768525617604</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1768525617604</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,7 +277,8 @@
     <MESSAGE value="todo arreglado" />
     <MESSAGE value="MapdB integrado" />
     <MESSAGE value="setup de .jar terminado" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup de .jar terminado" />
+    <MESSAGE value="prodlist update" />
+    <option name="LAST_COMMIT_MESSAGE" value="prodlist update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -277,12 +288,15 @@
           <line>102</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
