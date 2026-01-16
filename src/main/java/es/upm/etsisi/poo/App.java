@@ -8,39 +8,68 @@ import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
+
 public class App {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         boolean readingFromFile = false;
+        Scanner fileScanner = null;
+        Scanner consoleScanner = null;
+
         try {
             if (args.length >= 1) {
                 readingFromFile = true;
                 String file_name = args[0];
-                sc = new Scanner(new FileReader(file_name));
-            } else {
-                sc = new Scanner(System.in);
+                fileScanner = new Scanner(new FileReader(file_name));
             }
         } catch (FileNotFoundException e) {
-            sc = new Scanner(System.in);
-            throw new RuntimeException(e);
+            System.err.println("Archivo no encontrado: " + args[0]);
+            System.err.println("Continuando en modo interactivo...");
         }
+        consoleScanner = new Scanner(System.in);
+
         App application = new App();
         application.init();
-        application.run(sc, readingFromFile);
+        application.run(fileScanner, consoleScanner, readingFromFile);
     }
-
-
-    private void run(Scanner scanner, boolean readingFromFile){
+    private void run(Scanner fileScanner, Scanner consoleScanner, boolean readingFromFile) {
         ExitController exitController = new ExitController();
         CommandManager commandManager = new CommandManager(exitController);
-
+        boolean fileFinished = false;
         while (!exitController.isExitRequested()) {
-            System.out.print("\ntUPM> ");
-            String line = scanner.nextLine();
+            Scanner currentScanner;
+            if (readingFromFile && !fileFinished && fileScanner != null) {
+                currentScanner = fileScanner;
+            } else {
+                currentScanner = consoleScanner;
+                readingFromFile = false;
+                if (!fileFinished && fileScanner != null) {
+                    fileScanner.close();
+                    fileFinished = true;
+                }
+            }
+            if (currentScanner == consoleScanner) {
+                System.out.print("\ntUPM> ");
+            }
 
-            if (readingFromFile) {
-                System.out.println(line);
+            String line;
+            if (currentScanner.hasNextLine()) {
+                line = currentScanner.nextLine();
+
+                if (currentScanner == fileScanner) {
+                    System.out.println("tUPM> " + line);
+                }
+            } else {
+                if (currentScanner == fileScanner) {
+                    fileScanner.close();
+                    readingFromFile = false;
+                    fileFinished = true;
+                    System.out.println("\n=== Fin del archivo, continuando en modo interactivo ===");
+                    continue;
+                } else {
+                    break;
+                }
             }
 
             if (line.isBlank()) continue;
@@ -48,13 +77,21 @@ public class App {
             boolean result = commandManager.execute(line);
         }
 
-        scanner.close();
+        if (fileScanner != null) {
+            fileScanner.close();
+        }
+        if (consoleScanner != null) {
+            consoleScanner.close();
+        }
+
+        System.out.println("Saliendo del programa...");
     }
 
     private void init() {
         System.out.println("Welcome to the ticket module App.");
         System.out.println("Ticket module. Type 'help' to see commands:");
     }
+}
 
 
     /*private void run(Scanner scanner, boolean readingFromFile) {
@@ -715,5 +752,5 @@ public class App {
     private void unknownCommand() {
         System.out.println("Command unknown. Type \"help\" to see commands:");
     }*/
-}
+
 

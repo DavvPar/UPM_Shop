@@ -6,9 +6,12 @@ import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.enums.ProductType;
 
-public class TicketBusiness<P extends Product> extends Ticket<P>implements Serializable {
+public class TicketBusiness<P extends Product> extends Ticket<P> {
     private double serviceDiscount;
-
+    public TicketBusiness() {
+        super();
+        serviceDiscount = 0.15;
+    }
     public TicketBusiness(String idTicket, stateTicket state, TicketType type) {
         super(idTicket, state, type);
         serviceDiscount = 0.15;

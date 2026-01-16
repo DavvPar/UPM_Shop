@@ -120,7 +120,7 @@ public class TicketController extends Controller{
 
             ticketList.CloseTicket(currentTicket, Utils.getTime());
             System.out.println(currentTicket);
-            mapDBManager.addTicket(currentTicket);
+            mapDBManager.addTicket(ticketList.getTicketDate(currentTicket));
             System.out.println("ticket print: ok");
             return true;
 

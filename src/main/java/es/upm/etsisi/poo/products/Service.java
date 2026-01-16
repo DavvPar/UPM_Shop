@@ -3,12 +3,18 @@ import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.ServiceType;
 
-public class Service extends Product{
+import java.io.Serializable;
+
+public class Service extends Product {
 
     private ServiceType type;
 
     private String expirationDate;
-
+    public Service() {
+        super();
+        this.type = null;
+        this.expirationDate = "";
+    }
     public Service(String ID,ServiceType typeS,String expitationDate,ProductType type){
         super(ID,type);
         this.type = typeS;

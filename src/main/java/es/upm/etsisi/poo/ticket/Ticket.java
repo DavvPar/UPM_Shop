@@ -33,7 +33,16 @@ public abstract class Ticket <P extends Product>implements Serializable {
     private stateTicket state;
 
     private TicketType type;
-
+    public Ticket() {
+        this.MaxNumProduct = 100;
+        this.productList = new ArrayList<>();
+        this.ticketId = "";
+        this.totalPrice = 0.0;
+        this.state = stateTicket.empty;
+        this.type = null;
+        this.discount = new ArrayList<>();
+        this.categorytype = new int[6];
+    }
     public Ticket(String idTicket, stateTicket state, TicketType type) {
         this.productList = new ArrayList<>();
         this.ticketId = idTicket;

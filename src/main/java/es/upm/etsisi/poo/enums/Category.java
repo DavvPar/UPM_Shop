@@ -9,7 +9,9 @@ public class Category {
     private double discountClothes = 0.07;
     private double discountBook = 0.10;
     private double discountElectronic = 0.03;
-
+    public Category() {
+        this.type = null;
+    }
     public Category(CategoryType type) {
         this.type = type;
     }

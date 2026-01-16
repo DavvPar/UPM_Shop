@@ -10,7 +10,7 @@ import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket<Product>> implements Serializable {
+public class TicketList <T extends Ticket<Product>>  {
 
     private HashMap<String,HashMap<String,Object>> ticketList;
 
@@ -84,6 +84,10 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
             }
         }
         return removed;
+    }
+
+    public HashMap<String, Object> getTicketDate(Ticket ticket) {
+        return ticketList.get(ticket.getTicketId());
     }
 
     public Ticket getTicket(String id) {
