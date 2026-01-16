@@ -29,13 +29,12 @@ public class ProductController extends Controller{
         this.serviceValidator = new ServiceValidator();
     }
 
-    // java
     public boolean addProduct(String args) {
         try {
             String[] message = args.trim().split(" ");
             Product product = null;
 
-            // Servicio (ej: "2025-12-20 STYPE")
+            //Servicio
             if (message.length == 2) {
                 if (!serviceValidator.validate(message)) {
                     System.out.println("prod add: error");
@@ -60,7 +59,6 @@ public class ProductController extends Controller{
                 String categoryStr = rightParts[0];
                 String priceStr = rightParts[1];
 
-                // Construir parámetros para el validador
                 String[] params;
                 if (rightParts.length == 3){
                     params = new String[]{id, categoryStr, priceStr, rightParts[2]};
@@ -68,13 +66,11 @@ public class ProductController extends Controller{
                     params = new String[]{id, categoryStr, priceStr};
                 }
 
-                // Validar con CustomProductValidator antes de parsear
                 if (!customValidator.validate(params)) {
                     System.out.println("prod add: error");
                     return false;
                 }
 
-                // Parseos seguros tras validación
                 double price = Double.parseDouble(priceStr);
                 Category category = new Category(CategoryType.valueOf(categoryStr.toUpperCase()));
 
@@ -99,9 +95,13 @@ public class ProductController extends Controller{
     }
 
     public boolean listProducts(){
-        boolean ok = productList.listProducts();
-        System.out.println(ok ? "prod list: ok" : "prod list: error");
-        return ok;
+        if(productList.listProducts()){
+            System.out.println("prod list: ok");
+            return true;
+        } else {
+            System.out.println("prod list: error");
+            return false;
+        }
     }
 
     public boolean updateProduct(String args){
