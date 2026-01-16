@@ -2,6 +2,7 @@ package es.upm.etsisi.poo.ticket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
@@ -11,22 +12,19 @@ import es.upm.etsisi.poo.Utils;
 
 public class TicketList <T extends Ticket<Product>> implements Serializable {
 
-    private ArrayList<T> ticketList;
-
-    private ArrayList<String> id ;// "clientId CashId"
+    private HashMap<String,HashMap<String,Object>> ticketList;
 
     public TicketList(){
-        ticketList = new ArrayList<>();
-        id = new ArrayList<>();
+        ticketList = new HashMap<>();
     }
 
     private boolean validId(String id){
-        id = Utils.getShortId(id);
         if (id == null) return false;
         if (!id.matches("[0-9]+") || id.length() < 5) return false;
-        for (Ticket current : ticketList) {
-            if (Utils.getShortId(current.getTicketId()).equals(id)) {
-                return false;
+        for (HashMap<String,Object> ticket : ticketList.values() ) {
+            String IdTicket = ((Ticket)ticket.get("ticket")).getTicketId();
+            if (IdTicket.equals(id)){
+            return false;
             }
         }
         return true;
@@ -34,10 +32,10 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
 
     public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
         Ticket t;
+        HashMap<String,Object> ticket = new HashMap<>();
         if (TicketId == null){
+            ticket.put("opentime",Utils.getTime());
             TicketId = createId();
-        }else{
-            TicketId = Utils.getTime() + "-" +TicketId;
         }
         if (validId(TicketId)){
             if (type ==TicketType.Client) {
@@ -45,8 +43,11 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
             }else {
                 t= new TicketBusiness(TicketId,stateTicket.empty,type);
             }
-            id.add(clientId+" "+CashId);
-            addTicket(t);
+            ticket.put("ticket",t);
+            ticket.put("Cashid",CashId);
+            ticket.put("clientId",clientId);
+            ticketList.put(TicketId,ticket);
+            addTicket(ticket);
             }
         else{
             System.out.println("Invalid TicketId");
@@ -60,63 +61,51 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
         do {
             id =  String.valueOf(Utils.getRandomNumber(5));
         } while (!validId(id));
-        return Utils.getTime() + "-" + id;
+        return id;
     }
 
-    public boolean addTicket(Ticket ticket) {
-        boolean added = false, exists = false;
-            for(Ticket t : ticketList){
-                if (ticket.getTicketId().equals(t.getTicketId())) {
-                    exists = true;
-                }
-            }
-
-            if (!exists ) {
-                ticketList.add((T)ticket);
-                added = true;
-            } else
-                System.out.println("The Ticket already exists");
+    public boolean addTicket(HashMap<String,Object> ticket) {
+        boolean added = false;
+        String id = ((Ticket)ticket.get("ticket")).getTicketId();
+        if (ticketList.get(id) == null){
+            added = true;
+            ticketList.put(id,ticket);
+        }
         return added;
     }
 
     public boolean removeTicket(String cashid) {
         boolean removed = false;
-        int i =0;
-        while (i<ticketList.size()) {
-            String[] Id= id.get(i).split(" ");// clientId CashId
-            if (Id[1].equals(cashid)) {
-                ticketList.remove(i);
+        for(HashMap<String, Object> ticketData : ticketList.values()) {
+            String ticketCashId = (String) ticketData.get("cashId");
+            if (cashid.equals(ticketCashId)) {
+                ticketList.remove(ticketData);
                 removed = true;
-            }else{
-                i++;
             }
         }
         return removed;
     }
 
     public Ticket getTicket(String id) {
-        Ticket ticket = null;
-        for (Ticket t : ticketList){
-            if (t.getTicketId().contains(id)){
-                ticket = t;
-            }
-        }
-        return ticket;
+        return (Ticket) ticketList.get(id).get("ticket");
     }
 
     public void CloseTicket(Ticket ticket,String date){
         if (ticket.getState() != stateTicket.closed){
-        String NewId = ticket.getTicketId() +"-"+date;
-        ticket.setTicketId(NewId);
-        ticket.setState(stateTicket.closed);}
+            HashMap<String,Object> ticketDate = ticketList.get(ticket.getTicketId());
+        ticketDate.put("closetime",date);
+        ticket.setState(stateTicket.closed);
+        }
     }
 
     public TicketList getTicketsOfCash(String cashId){
         TicketList ticketsOfCash = new TicketList();
-        for(int i =0;i<ticketList.size();i++){
-            String[] IDs = id.get(i).split(" ");
-            if(IDs[1].equals(cashId)){
-                ticketsOfCash.addTicket(ticketList.get(i));
+        for(HashMap<String, Object> ticketData : ticketList.values()){
+            String ticketCashId = (String) ticketData.get("cashId");
+            if (cashId.equals(ticketCashId)) {
+            if(ticketCashId.equals(cashId)){
+                ticketsOfCash.addTicket(ticketData);
+            }
             }
         }
         return ticketsOfCash;
@@ -124,8 +113,8 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
 
     public String toString(){
         String text = "";
-        for (int i = 0; i < ticketList.size(); i++){
-            Ticket t = ticketList.get(i);
+        for (HashMap<String,Object> ticket :ticketList.values()){
+            Ticket t = (Ticket) ticket.get("ticket");
             String state = String.valueOf(t.getState());
             text += t.getTicketId() + " - " + state.toUpperCase() + "\n";
         }

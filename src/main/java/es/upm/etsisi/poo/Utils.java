@@ -12,7 +12,6 @@ import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.user.UserValidator;
 
 public class Utils {
-
     public static String convertDate(String inputDate) {
         LocalDate date = LocalDate.parse(inputDate);
         ZoneId defaultZone = ZoneId.systemDefault();

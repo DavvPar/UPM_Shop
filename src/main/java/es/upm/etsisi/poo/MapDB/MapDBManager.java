@@ -13,7 +13,7 @@ public class MapDBManager {
     private TicketList<Ticket<Product>> ticketscache;
     private HTreeMap productMap;
     private HTreeMap userMap;
-    private HTreeMap ticketMap;
+    private HTreeMap<String,HashMap<String,Object>> ticketMap;
     private static final String COL_USER = "userList";
     private static final String COL_PRODUCT = "productList";
     private static final String COL_TICKET = "ticketList";
@@ -54,8 +54,8 @@ public class MapDBManager {
         db.commit();
         }
     }
-    public void addTicket(Ticket ticket){
-        String id =Utils.getShortId(ticket.getTicketId());
+    public void addTicket(HashMap<String,Object> ticket){
+        String id = ((Ticket)ticket.get("ticket")).getTicketId();
         if (ticketMap.get(id) == null){
         ticketMap.put(id,ticket);
         db.commit();
@@ -95,12 +95,12 @@ public class MapDBManager {
             }
         }
     }
-    private void LoadTicketList(HTreeMap<String,Ticket> Map) {
+    private void LoadTicketList(HTreeMap<String,HashMap<String,Object>> Map) {
         if (Map.isEmpty()) {
             ticketscache = new TicketList<>();
         }
         else{
-            for (Ticket ticket : Map.values()) {
+            for (HashMap<String,Object> ticket : Map.values()) {
                 ticketscache.addTicket(ticket);
             }
         }
@@ -117,7 +117,7 @@ public class MapDBManager {
     private void initDB(){
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("UPM_SHOP.db")
+                    .fileDB("UPM_SHOP1.db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();
