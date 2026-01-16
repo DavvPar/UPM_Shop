@@ -1,0 +1,845 @@
+Index: src/main/java/es/upm/etsisi/poo/ticket/Ticket.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.ticket;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.enums.stateTicket;\r\nimport es.upm.etsisi.poo.enums.TicketType;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.ArrayList;\r\nimport java.util.Comparator;\r\n\r\npublic abstract class Ticket <P extends Product>implements Serializable {\r\n\r\n    public final int MaxNumProduct;\r\n\r\n    private ArrayList<P> productList;\r\n\r\n    private ArrayList<Double> discount;\r\n\r\n    private double totalPrice;\r\n\r\n    private  String ticketId;\r\n    /**\r\n     *number of product types\r\n     * [0] MERCH,\r\n     * [1]STATIONERY,\r\n     * [2]CLOTHES,\r\n     * [3]BOOK,\r\n     * [4]ELECTRONICS\r\n     * [5]Service\r\n     */\r\n    private int[] categorytype;\r\n\r\n    private stateTicket state;\r\n\r\n    private TicketType type;\r\n\r\n    public Ticket(String idTicket, stateTicket state, TicketType type) {\r\n        this.productList = new ArrayList<>();\r\n        this.ticketId = idTicket;\r\n        this.MaxNumProduct = 100;\r\n        this.totalPrice = 0;\r\n        this.state = state;\r\n        this.type =type;\r\n        discount = new ArrayList<>();\r\n        categorytype= new int[6];\r\n    }\r\n\r\n    public TicketType getType(){return type;}\r\n\r\n    public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);\r\n    public boolean add(Product p,int quantity,String message){\r\n        boolean add = false;\r\n        if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){\r\n            ((CustomProduct)p).addPersonalized(message);\r\n        }\r\n        for (int i =0;i<quantity;i++){\r\n            if (getNumProductInTicket() < 100){\r\n                    productList.add((P)p);\r\n                    add = true;\r\n                if (getState() == stateTicket.empty){\r\n                    setState(stateTicket.open);\r\n                }\r\n            }\r\n            else {\r\n                System.out.println(\"No further products can be added.\");\r\n            }\r\n        }\r\n        return add;\r\n    }\r\n\r\n    private void setupDiscount(){\r\n        discount = new ArrayList<>();\r\n        categorytype = new int[6];\r\n        for (int i =0;i<productList.size();i++){\r\n            Product p =productList.get(i);\r\n            if (p.getProductType() == ProductType.Service){\r\n                categorytype[5]++;\r\n            }\r\n            if (p.getProductType() == ProductType.Product || p.getProductType() == ProductType.ProductPersonalized){\r\n                CustomProduct c = (CustomProduct)p;\r\n                switch (c.getCategory().getType()){\r\n                    case MERCH -> categorytype[0]++;\r\n                    case STATIONERY -> categorytype[1]++;\r\n                    case CLOTHES -> categorytype[2]++;\r\n                    case BOOK -> categorytype[3]++;\r\n                    case ELECTRONICS -> categorytype[4]++;\r\n                }\r\n            }\r\n            discount.add(0.0);\r\n        }\r\n    }\r\n\r\n    public void applyDiscunt(){\r\n        setupDiscount();\r\n        for(int i =0; i<productList.size();i++){\r\n            Product p = productList.get(i);\r\n            if (p.getProductType() == ProductType.Product || p.getProductType() == ProductType.ProductPersonalized){\r\n                CustomProduct c = (CustomProduct)p;\r\n                switch (c.getCategory().getType()){\r\n                    case MERCH:\r\n                        if (categorytype[0]>=2){\r\n                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);\r\n                        }\r\n                        break;\r\n                    case BOOK:\r\n                        if (categorytype[3]>=2){\r\n                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);\r\n                        }\r\n                        break;\r\n                    case CLOTHES:\r\n                        if (categorytype[2]>=2){\r\n                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);\r\n                        }\r\n                        break;\r\n                    case STATIONERY:\r\n                        if (categorytype[1]>=2){\r\n                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);\r\n                        }\r\n                        break;\r\n                    case ELECTRONICS:\r\n                        if (categorytype[4]>=2){\r\n                            discount.set(i,Math.floor(((Item)p).getPrice()*c.getCategory().getDiscount()*100)/100);\r\n                        }\r\n                        break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n    public double getDiscount(int index){\r\n        return discount.get(index);\r\n    }\r\n    public int NumService(){\r\n        return categorytype[5];\r\n    }\r\n\r\n    public void removeProduct(String Id) {\r\n        int i = 0;\r\n        while (i < productList.size()) {\r\n            if (productList.get(i).getID().equals(Id)) {\r\n                productList.remove(productList.get(i));\r\n            } else {\r\n                i++;\r\n            }\r\n        }\r\n        if (productList.size() == 0){\r\n            state = stateTicket.empty;\r\n        }\r\n    }\r\n\r\n    public double getTotalPrice(){\r\n        totalPrice =0;\r\n        for (int i =0; i < productList.size(); i++){\r\n            if (productList.get(i).getProductType() !=ProductType.Service){\r\n            totalPrice += ((Item)productList.get(i)).getPrice();\r\n            }\r\n        }\r\n        totalPrice = Math.floor(totalPrice * 100) / 100;\r\n        return totalPrice;\r\n    }\r\n\r\n    public abstract double getTotalDiscount();\r\n\r\n    public Product getProduct(int index){return productList.get(index);}\r\n\r\n    public int getNumProductInTicket(){return productList.size();}\r\n\r\n    public double getFinalPrice(){\r\n        return getTotalPrice() - getTotalDiscount();\r\n    }\r\n\r\n    public String getTicketId(){return ticketId;}\r\n\r\n    public void setTicketId(String id){ticketId = id;}\r\n\r\n    public stateTicket getState (){return state;}\r\n\r\n    public void setState(stateTicket state) {this.state= state;}\r\n\r\n    public void Sort(){\r\n        int servicesCount = 0;\r\n        for (int i = 0; i < productList.size(); i++) {\r\n            if (productList.get(i).getProductType() == ProductType.Service) {\r\n                Product temp = productList.get(i);\r\n                productList.set(i, productList.get(servicesCount));\r\n                productList.set(servicesCount, (P)temp);\r\n                servicesCount++;\r\n            }\r\n        }\r\n        if (servicesCount > 1) {\r\n            productList.subList(0, servicesCount)\r\n                    .sort(Comparator.comparing(\r\n                            Product::getID,\r\n                            String.CASE_INSENSITIVE_ORDER\r\n                    ));\r\n        }\r\n        if (servicesCount < (productList.size() - 1)) {\r\n            productList.subList(servicesCount, productList.size())\r\n                    .sort(Comparator.comparing(\r\n                            p ->((Item)p).getName(),\r\n                            String.CASE_INSENSITIVE_ORDER\r\n                    ));\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public abstract String toString() ;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java b/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java
+--- a/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java	(date 1768531140624)
+@@ -189,8 +189,14 @@
+         if (servicesCount > 1) {
+             productList.subList(0, servicesCount)
+                     .sort(Comparator.comparing(
+-                            Product::getID,
+-                            String.CASE_INSENSITIVE_ORDER
++                            p -> {
++                                String id = p.getID();
++                                try {
++                                    return Integer.parseInt(id.substring(1));
++                                } catch (NumberFormatException e) {
++                                    return Integer.MAX_VALUE;
++                                }
++                            }
+                     ));
+         }
+         if (servicesCount < (productList.size() - 1)) {
+Index: src/main/java/es/upm/etsisi/poo/controller/ProductController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.controller;\r\n\r\nimport es.upm.etsisi.poo.MapDB.MapDBManager;\r\nimport es.upm.etsisi.poo.Utils;\r\nimport es.upm.etsisi.poo.enums.Category;\r\nimport es.upm.etsisi.poo.enums.CategoryType;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\nimport es.upm.etsisi.poo.enums.ServiceType;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.validation.EventProductValidator;\r\nimport es.upm.etsisi.poo.validation.CustomProductValidator;\r\nimport es.upm.etsisi.poo.validation.ServiceValidator;\r\n\r\nimport java.time.LocalDateTime;\r\nimport java.time.temporal.ChronoUnit;\r\n\r\npublic class ProductController extends Controller{\r\n\r\n    private final ProductList productList;\r\n    private final EventProductValidator eventValidator;\r\n    private final CustomProductValidator customValidator;\r\n    private final ServiceValidator serviceValidator;\r\n\r\n    public ProductController(MapDBManager mapDBManager) {\r\n        super(mapDBManager);\r\n        this.productList = mapDBManager.getProductoList();\r\n        this.eventValidator = new EventProductValidator();\r\n        this.customValidator = new CustomProductValidator();\r\n        this.serviceValidator = new ServiceValidator();\r\n    }\r\n\r\n    public boolean addProduct(String args) {\r\n        try {\r\n            String[] message = args.split(\" \");\r\n            Product product;\r\n\r\n            // Servicio\r\n            if (message.length == 2) {\r\n                String expireDate = message[0];\r\n                ServiceType sType = ServiceType.valueOf(message[1].toUpperCase());\r\n                product = new Service(\r\n                        (productList.getNumservice() + 1) + \"S\",\r\n                        sType,\r\n                        expireDate,\r\n                        ProductType.Service\r\n                );\r\n                serviceValidator.validate((Service) product);\r\n            }\r\n            // Producto normal\r\n            else {\r\n                String line = args;\r\n                String name = Utils.getNameScanner(line);\r\n                String id = message[0];\r\n\r\n                String[] rightParts = secondPartArray(line);\r\n                CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());\r\n                Category category = new Category(type);\r\n                double price = Double.parseDouble(rightParts[1]);\r\n\r\n                if (rightParts.length == 3) {\r\n                    int maxPers = Integer.parseInt(rightParts[2]);\r\n                    product = new CustomProduct(\r\n                            id, name, category, price,\r\n                            maxPers, ProductType.ProductPersonalized\r\n                    );\r\n                } else {\r\n                    product = new CustomProduct(\r\n                            id, name, category, price,\r\n                            0, ProductType.Product\r\n                    );\r\n                    customValidator.validate((CustomProduct) product);\r\n                }\r\n            }\r\n\r\n            boolean ok = productList.addProduct(product);\r\n            if (ok) mapDBManager.addProduct(product);\r\n            System.out.println(ok ? \"prod add: ok\" : \"prod add: error\");\r\n            return ok;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"Error: \" + e.getMessage());\r\n            System.out.println(\"Usage: prod add <id> \\\"<name>\\\" <category> <price> [maxPers]\");\r\n            return false;\r\n        }\r\n    }\r\n\r\n    //TODO VER DONDE METEMOS ESTO\r\n    private String[] secondPartArray(String input){\r\n        int firstQuote = input.indexOf('\"');\r\n        int secondQuote = input.indexOf('\"', firstQuote + 1);\r\n\r\n        if (firstQuote == -1 || secondQuote == -1) {\r\n            return new String[0];\r\n        }\r\n\r\n        String rightPart = input.substring(secondQuote + 1).trim();\r\n\r\n        if (rightPart.isEmpty()) {\r\n            return new String[0];\r\n        }\r\n        return rightPart.split(\" \");\r\n    }\r\n\r\n\r\n    public boolean listProducts(){\r\n        boolean ok = productList.listProducts();\r\n        System.out.println(ok ? \"prod list: ok\" : \"prod list: error\");\r\n        return ok;\r\n    }\r\n\r\n    public boolean updateProduct(String args){\r\n        try {\r\n            String[] message = args.split(\" \");\r\n            if (message.length < 3) {\r\n                System.out.println(\"Usage: prod update <id> <field> <value>\");\r\n                return false;\r\n            }\r\n\r\n            String idToUpdate = message[0];\r\n            String field = message[1].toLowerCase();\r\n            String value;\r\n\r\n            if (field.equalsIgnoreCase(\"name\")) {\r\n                value = Utils.getNameScanner(args);\r\n            } else {\r\n                value = message[message.length - 1];\r\n            }\r\n\r\n            if (!validField(field)) {\r\n                System.out.println(\"Invalid field\");\r\n                return false;\r\n            }\r\n\r\n            boolean ok = productList.updateProduct(idToUpdate, field, value);\r\n\r\n            if (ok) {\r\n                Product updated = productList.getProduct(idToUpdate);\r\n                System.out.println(updated);\r\n                System.out.println(\"prod update: ok\");\r\n            } else {\r\n                System.out.println(\"prod update: error\");\r\n            }\r\n\r\n            return ok;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"Error: \" + e.getMessage());\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean validField(String field) {\r\n        String[] allowedFields = {\"name\", \"category\", \"price\"};\r\n        boolean validField = false;\r\n        for (String f : allowedFields) {\r\n            if (f.equals(field)) {\r\n                validField = true;\r\n                break;\r\n            }\r\n        }\r\n\r\n        if (!validField) {\r\n            System.out.println(\"Error: invalid field. The allowed fields are: name, category, price\");\r\n        }\r\n        return validField;\r\n    }\r\n\r\n    public boolean removeProduct(String args) {\r\n        try {\r\n            String idRemove = args.trim();\r\n            Product productRemove = productList.getProduct(idRemove);\r\n\r\n            if (productRemove == null) {\r\n                System.out.println(\"prod remove: error\");\r\n                return false;\r\n            }\r\n\r\n            System.out.println(productRemove);\r\n\r\n            boolean ok = productList.removeProduct(productRemove);\r\n            if (ok) mapDBManager.removeProduct(productRemove);\r\n            System.out.println(ok ? \"prod remove: ok\" : \"prod remove: error\");\r\n            return ok;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"prod remove: error\");\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public boolean addMeeting(String args) {\r\n        try {\r\n            String[] message = args.split(\" \");\r\n            String[] rightParts = secondPartArray(args);\r\n\r\n            if (rightParts.length != 3) {\r\n                System.out.println(\r\n                        \"Usage: prod addmeeting <id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\"\r\n                );\r\n                return false;\r\n            }\r\n\r\n            String line = args;\r\n            String name = Utils.getNameScanner(line);\r\n            String id = message[0];\r\n\r\n            double price = Double.parseDouble(rightParts[0]);\r\n            String expirationStrg = rightParts[1];\r\n            int maxPeople = Integer.parseInt(rightParts[2]);\r\n\r\n            if (!Utils.ValidDate(expirationStrg)) return false;\r\n\r\n            if (maxPeople > 100) {\r\n                System.out.println(\"have exceeded the maximum number of people allowed(100)\");\r\n                return false;\r\n            }\r\n\r\n\r\n            EventProduct eventProduct =\r\n                    new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);\r\n            eventValidator.validate(eventProduct);\r\n            boolean ok = productList.addProduct(eventProduct);\r\n            if (ok) mapDBManager.addProduct(eventProduct);\r\n            System.out.println(ok ? eventProduct : \"prod add: error\");\r\n            if (ok) System.out.println(\"prod add: ok\");\r\n\r\n            return ok;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\r\n                    \"Error: wrong format. Use prod addmeeting <id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\"\r\n            );\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public boolean addFood(String args) {\r\n        try {\r\n            String[] message = args.split(\" \");\r\n            String[] rightParts = secondPartArray(args);\r\n\r\n            if (rightParts.length != 3) {\r\n                System.out.println(\r\n                        \"Usage: prod addfood <id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\"\r\n                );\r\n                return false;\r\n            }\r\n            String line = args;\r\n            String name = Utils.getNameScanner(line);\r\n            String id = message[0];\r\n\r\n            double price = Double.parseDouble(rightParts[0]);\r\n            String expirationStrg = rightParts[1];\r\n            int maxPeople = Integer.parseInt(rightParts[2]);\r\n\r\n            if (maxPeople > 100) {\r\n                System.out.println(\"have exceeded the maximum number of people allowed(100)\");\r\n                return false;\r\n            }\r\n            EventProduct eventProduct =\r\n                    new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);\r\n            eventValidator.validate(eventProduct);\r\n            boolean ok = productList.addProduct(eventProduct);\r\n            if (ok) mapDBManager.addProduct(eventProduct);\r\n            System.out.println(ok ? eventProduct : \"prod add: error\");\r\n            if (ok) System.out.println(\"prod add: ok\");\r\n\r\n            return ok;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\r\n                    \"Error: wrong format. Use prod addfood <id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\"\r\n            );\r\n            return false;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/controller/ProductController.java b/src/main/java/es/upm/etsisi/poo/controller/ProductController.java
+--- a/src/main/java/es/upm/etsisi/poo/controller/ProductController.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/controller/ProductController.java	(date 1768531140622)
+@@ -31,44 +31,54 @@
+ 
+     public boolean addProduct(String args) {
+         try {
+-            String[] message = args.split(" ");
+-            Product product;
++            String[] message = args.trim().split(" ");
++            Product product = null;
+ 
+-            // Servicio
++            //Servicio
+             if (message.length == 2) {
++                if (!serviceValidator.validate(message)) {
++                    System.out.println("prod add: error");
++                    return false;
++                }
++                String numService = ((productList.getNumservice() + 1) + "S");
++                ServiceType serviceType = ServiceType.valueOf(message[1].toUpperCase());
+                 String expireDate = message[0];
+-                ServiceType sType = ServiceType.valueOf(message[1].toUpperCase());
+-                product = new Service(
+-                        (productList.getNumservice() + 1) + "S",
+-                        sType,
+-                        expireDate,
+-                        ProductType.Service
+-                );
+-                serviceValidator.validate((Service) product);
++                product = new Service(numService, serviceType, expireDate, ProductType.Service);
+             }
+-            // Producto normal
++            // Producto (con o sin maxPers)
+             else {
+-                String line = args;
+-                String name = Utils.getNameScanner(line);
++                String name = Utils.getNameScanner(args);
++                String[] rightParts = Utils.secondPartArray(args);
++
++                if (rightParts.length < 2) {
++                    System.out.println("prod add: error");
++                    return false;
++                }
++
+                 String id = message[0];
++                String categoryStr = rightParts[0];
++                String priceStr = rightParts[1];
+ 
+-                String[] rightParts = secondPartArray(line);
+-                CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());
+-                Category category = new Category(type);
+-                double price = Double.parseDouble(rightParts[1]);
++                String[] params;
++                if (rightParts.length == 3){
++                    params = new String[]{id, categoryStr, priceStr, rightParts[2]};
++                } else {
++                    params = new String[]{id, categoryStr, priceStr};
++                }
++
++                if (!customValidator.validate(params)) {
++                    System.out.println("prod add: error");
++                    return false;
++                }
++
++                double price = Double.parseDouble(priceStr);
++                Category category = new Category(CategoryType.valueOf(categoryStr.toUpperCase()));
+ 
+                 if (rightParts.length == 3) {
+                     int maxPers = Integer.parseInt(rightParts[2]);
+-                    product = new CustomProduct(
+-                            id, name, category, price,
+-                            maxPers, ProductType.ProductPersonalized
+-                    );
++                    product = new CustomProduct(id, name, category, price, maxPers, ProductType.ProductPersonalized);
+                 } else {
+-                    product = new CustomProduct(
+-                            id, name, category, price,
+-                            0, ProductType.Product
+-                    );
+-                    customValidator.validate((CustomProduct) product);
++                    product = new CustomProduct(id, name, category, price, 0, ProductType.Product);
+                 }
+             }
+ 
+@@ -79,33 +89,19 @@
+ 
+         } catch (Exception e) {
+             System.out.println("Error: " + e.getMessage());
+-            System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers]");
++            System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [maxPers] || \"<name>\" <category>");
+             return false;
+         }
+     }
+ 
+-    //TODO VER DONDE METEMOS ESTO
+-    private String[] secondPartArray(String input){
+-        int firstQuote = input.indexOf('"');
+-        int secondQuote = input.indexOf('"', firstQuote + 1);
+-
+-        if (firstQuote == -1 || secondQuote == -1) {
+-            return new String[0];
+-        }
+-
+-        String rightPart = input.substring(secondQuote + 1).trim();
+-
+-        if (rightPart.isEmpty()) {
+-            return new String[0];
+-        }
+-        return rightPart.split(" ");
+-    }
+-
+-
+     public boolean listProducts(){
+-        boolean ok = productList.listProducts();
+-        System.out.println(ok ? "prod list: ok" : "prod list: error");
+-        return ok;
++        if(productList.listProducts()){
++            System.out.println("prod list: ok");
++            return true;
++        } else {
++            System.out.println("prod list: error");
++            return false;
++        }
+     }
+ 
+     public boolean updateProduct(String args){
+@@ -191,7 +187,7 @@
+     public boolean addMeeting(String args) {
+         try {
+             String[] message = args.split(" ");
+-            String[] rightParts = secondPartArray(args);
++            String[] rightParts = Utils.secondPartArray(args);
+ 
+             if (rightParts.length != 3) {
+                 System.out.println(
+@@ -208,7 +204,7 @@
+             String expirationStrg = rightParts[1];
+             int maxPeople = Integer.parseInt(rightParts[2]);
+ 
+-            if (!Utils.ValidDate(expirationStrg)) return false;
++            if (!Utils.validDate(expirationStrg)) return false;
+ 
+             if (maxPeople > 100) {
+                 System.out.println("have exceeded the maximum number of people allowed(100)");
+@@ -218,7 +214,7 @@
+ 
+             EventProduct eventProduct =
+                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
+-            eventValidator.validate(eventProduct);
++            //TODO eventValidator.validate(eventProduct);
+             boolean ok = productList.addProduct(eventProduct);
+             if (ok) mapDBManager.addProduct(eventProduct);
+             System.out.println(ok ? eventProduct : "prod add: error");
+@@ -237,7 +233,7 @@
+     public boolean addFood(String args) {
+         try {
+             String[] message = args.split(" ");
+-            String[] rightParts = secondPartArray(args);
++            String[] rightParts = Utils.secondPartArray(args);
+ 
+             if (rightParts.length != 3) {
+                 System.out.println(
+@@ -259,7 +255,7 @@
+             }
+             EventProduct eventProduct =
+                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
+-            eventValidator.validate(eventProduct);
++            //TODO eventValidator.validate(eventProduct);
+             boolean ok = productList.addProduct(eventProduct);
+             if (ok) mapDBManager.addProduct(eventProduct);
+             System.out.println(ok ? eventProduct : "prod add: error");
+@@ -275,3 +271,4 @@
+         }
+     }
+ }
++
+Index: src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.ticket;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.enums.stateTicket;\r\nimport es.upm.etsisi.poo.enums.TicketType;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\n\r\nimport java.io.Serializable;\r\n\r\npublic class TicketClient<P extends Item> extends Ticket<P>implements Serializable {\r\n\r\n    public TicketClient(String idTicket, stateTicket state, TicketType type) {\r\n        super(idTicket, state, type);\r\n    }\r\n\r\n    @Override\r\n    public boolean addProductToTicket(ProductList lista, String Id, int quantity, String message) {\r\n        Product p = lista.getProduct(Id);\r\n        boolean add = false;\r\n        if (p.getProductType() != ProductType.Service){\r\n            p = p.CloneProduct();\r\n            add =add(p,quantity,message);\r\n        }\r\n        return add;\r\n    }\r\n    @Override\r\n    public double getTotalDiscount(){\r\n        double totaldiscount =0 ;\r\n        for (int i =0; i < getNumProductInTicket(); i++){\r\n            totaldiscount += getDiscount(i);\r\n        }\r\n        totaldiscount = Math.floor((totaldiscount) * 100) / 100;\r\n        return totaldiscount;\r\n    }\r\n\r\n\r\n    public String toString() {\r\n        String message = \"\";\r\n        if (getNumProductInTicket()>0){\r\n        Sort();\r\n        applyDiscunt();\r\n        for (int i =0;i<getNumProductInTicket();i++){\r\n            if (getDiscount(i)>0) {\r\n                message += \"  \"  + getProduct(i).toString() + \"**discount -\" + getDiscount(i) + \"\\n\";\r\n            }\r\n            else{\r\n                message += getProduct(i).toString() + \"\\n\";\r\n            }\r\n        }\r\n        }\r\n        return \"Ticket : \"+ getTicketId() + \"\\n\" +message +\"  Total price: \"+getTotalPrice() +\"\\n\"\r\n                + \"  Total discount: \"+ getTotalDiscount() +\"\\n\"\r\n                + \"  Final Price: \" + getFinalPrice();\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java b/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java
+--- a/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java	(date 1768531140624)
+@@ -6,7 +6,7 @@
+ 
+ import java.io.Serializable;
+ 
+-public class TicketClient<P extends Item> extends Ticket<P>implements Serializable {
++public class TicketClient<P extends Product> extends Ticket<P>implements Serializable {
+ 
+     public TicketClient(String idTicket, stateTicket state, TicketType type) {
+         super(idTicket, state, type);
+Index: src/main/java/es/upm/etsisi/poo/ticket/TicketList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.ticket;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.ArrayList;\r\n\r\nimport es.upm.etsisi.poo.MapDB.MapDBManager;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.enums.stateTicket;\r\nimport es.upm.etsisi.poo.enums.TicketType;\r\nimport es.upm.etsisi.poo.Utils;\r\n\r\npublic class TicketList <T extends Ticket<Product>> implements Serializable {\r\n\r\n    private ArrayList<T> ticketList;\r\n\r\n    private ArrayList<String> id ;// \"clientId CashId\"\r\n\r\n    public TicketList(){\r\n        ticketList = new ArrayList<>();\r\n        id = new ArrayList<>();\r\n    }\r\n\r\n    private boolean validId(String id){\r\n        id = Utils.getShortId(id);\r\n        if (id == null) return false;\r\n        if (!id.matches(\"[0-9]+\") || id.length() < 5) return false;\r\n        for (Ticket current : ticketList) {\r\n            if (Utils.getShortId(current.getTicketId()).equals(id)) {\r\n                return false;\r\n            }\r\n        }\r\n        return true;\r\n    }\r\n\r\n    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){\r\n        Ticket t;\r\n        if (TicketId == null){\r\n            TicketId = createId();\r\n        }else{\r\n            TicketId = Utils.getTime() + \"-\" +TicketId;\r\n        }\r\n        if (validId(TicketId)){\r\n            if (type ==TicketType.Client) {\r\n                t = new TicketClient(TicketId, stateTicket.empty, type);\r\n            }else {\r\n                t= new TicketBusiness(TicketId,stateTicket.empty,type);\r\n            }\r\n            id.add(clientId+\" \"+CashId);\r\n            addTicket(t);\r\n            }\r\n        else{\r\n            System.out.println(\"Invalid TicketId\");\r\n            return null;\r\n        }\r\n        return t ;\r\n    }\r\n\r\n    private String createId(){\r\n        String id;\r\n        do {\r\n            id =  String.valueOf(Utils.getRandomNumber(5));\r\n        } while (!validId(id));\r\n        return Utils.getTime() + \"-\" + id;\r\n    }\r\n\r\n    public boolean addTicket(Ticket ticket) {\r\n        boolean added = false, exists = false;\r\n            for(Ticket t : ticketList){\r\n                if (ticket.getTicketId().equals(t.getTicketId())) {\r\n                    exists = true;\r\n                }\r\n            }\r\n\r\n            if (!exists ) {\r\n                ticketList.add((T)ticket);\r\n                added = true;\r\n            } else\r\n                System.out.println(\"The Ticket already exists\");\r\n        return added;\r\n    }\r\n\r\n    public boolean removeTicket(String cashid) {\r\n        boolean removed = false;\r\n        int i =0;\r\n        while (i<ticketList.size()) {\r\n            String[] Id= id.get(i).split(\" \");// clientId CashId\r\n            if (Id[1].equals(cashid)) {\r\n                ticketList.remove(i);\r\n                removed = true;\r\n            }else{\r\n                i++;\r\n            }\r\n        }\r\n        return removed;\r\n    }\r\n\r\n    public Ticket getTicket(String id) {\r\n        Ticket ticket = null;\r\n        for (Ticket t : ticketList){\r\n            if (t.getTicketId().contains(id)){\r\n                ticket = t;\r\n            }\r\n        }\r\n        return ticket;\r\n    }\r\n\r\n    public void CloseTicket(Ticket ticket,String date){\r\n        if (ticket.getState() != stateTicket.closed){\r\n        String NewId = ticket.getTicketId() +\"-\"+date;\r\n        ticket.setTicketId(NewId);\r\n        ticket.setState(stateTicket.closed);}\r\n    }\r\n\r\n    public TicketList getTicketsOfCash(String cashId){\r\n        TicketList ticketsOfCash = new TicketList();\r\n        for(int i =0;i<ticketList.size();i++){\r\n            String[] IDs = id.get(i).split(\" \");\r\n            if(IDs[1].equals(cashId)){\r\n                ticketsOfCash.addTicket(ticketList.get(i));\r\n            }\r\n        }\r\n        return ticketsOfCash;\r\n    }\r\n\r\n    public String toString(){\r\n        String text = \"\";\r\n        for (int i = 0; i < ticketList.size(); i++){\r\n            Ticket t = ticketList.get(i);\r\n            String state = String.valueOf(t.getState());\r\n            text += t.getTicketId() + \" - \" + state.toUpperCase() + \"\\n\";\r\n        }\r\n        return text;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java b/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java
+--- a/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java	(date 1768531140625)
+@@ -9,7 +9,7 @@
+ import es.upm.etsisi.poo.enums.TicketType;
+ import es.upm.etsisi.poo.Utils;
+ 
+-public class TicketList <T extends Ticket<Product>> implements Serializable {
++public class TicketList <T extends Ticket> implements Serializable {
+ 
+     private ArrayList<T> ticketList;
+ 
+Index: src/main/java/es/upm/etsisi/poo/validation/Validator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.validation;\r\n\r\npublic interface Validator<T>{\r\n    void validate(T obj);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/validation/Validator.java b/src/main/java/es/upm/etsisi/poo/validation/Validator.java
+--- a/src/main/java/es/upm/etsisi/poo/validation/Validator.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/validation/Validator.java	(date 1768531140627)
+@@ -1,5 +1,5 @@
+ package es.upm.etsisi.poo.validation;
+ 
+-public interface Validator<T>{
+-    void validate(T obj);
++public interface Validator{
++    boolean validate(String[] params);
+ }
+Index: src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.validation;\r\n\r\nimport es.upm.etsisi.poo.products.CustomProduct;\r\n\r\npublic class CustomProductValidator implements Validator<CustomProduct> {\r\n    @Override\r\n    public void validate(CustomProduct product) {\r\n        if (product == null) {\r\n            throw new IllegalArgumentException(\"CustomProduct cannot be null\");\r\n        }\r\n        validateCategory(product);\r\n        validateMaxPersonalization(product);\r\n        validatePrice(product);\r\n    }\r\n\r\n    private void validateCategory(CustomProduct product) {\r\n        if (product.getCategory() == null) {\r\n            throw new IllegalArgumentException(\"Category is required\");\r\n        }\r\n    }\r\n\r\n    private void validateMaxPersonalization(CustomProduct product) {\r\n        int max = product.getMaxPers();\r\n\r\n        if (max < 0) {\r\n            throw new IllegalArgumentException(\"Max personalizations cannot be negative\");\r\n        }\r\n\r\n        int current = product.getPersonalization().isEmpty()\r\n                ? 0\r\n                : product.getPersonalization().split(\"--p\").length - 1;\r\n\r\n        if (current > max) {\r\n            throw new IllegalArgumentException(\r\n                    \"Exceeded max personalization limit (\" + max + \")\"\r\n            );\r\n        }\r\n    }\r\n\r\n    private void validatePrice(CustomProduct product) {\r\n        if (product.getPrice() <= 0) {\r\n            throw new IllegalArgumentException(\"Price must be greater than 0\");\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java b/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java
+--- a/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java	(date 1768531140625)
+@@ -1,45 +1,58 @@
+ package es.upm.etsisi.poo.validation;
+ 
+-import es.upm.etsisi.poo.products.CustomProduct;
++import es.upm.etsisi.poo.enums.CategoryType;
++import es.upm.etsisi.poo.products.ProductList;
+ 
+-public class CustomProductValidator implements Validator<CustomProduct> {
++public class CustomProductValidator implements Validator{
+     @Override
+-    public void validate(CustomProduct product) {
+-        if (product == null) {
+-            throw new IllegalArgumentException("CustomProduct cannot be null");
++    public boolean validate(String[] params) {
++        if (params.length == 0){
++            return false;
+         }
+-        validateCategory(product);
+-        validateMaxPersonalization(product);
+-        validatePrice(product);
+-    }
+-
+-    private void validateCategory(CustomProduct product) {
+-        if (product.getCategory() == null) {
+-            throw new IllegalArgumentException("Category is required");
++        if (params.length == 3){
++            return validId(params[0]) && validCategoryType(params[1]) && validPrice(params[2]);
++        }
++        if (params.length == 4){
++            return validId(params[0]) && validCategoryType(params[1])
++                    && validPrice(params[2]) && validMaxPers(params[3]);
+         }
++        return false;
+     }
+ 
+-    private void validateMaxPersonalization(CustomProduct product) {
+-        int max = product.getMaxPers();
+-
+-        if (max < 0) {
+-            throw new IllegalArgumentException("Max personalizations cannot be negative");
++    private boolean validPrice(String priceStr){
++        try {
++            double price = Double.parseDouble(priceStr);
++            return price > 0;
++        } catch (NumberFormatException e) {
++            return false;
+         }
++    }
+ 
+-        int current = product.getPersonalization().isEmpty()
+-                ? 0
+-                : product.getPersonalization().split("--p").length - 1;
++    private boolean validId(String idStr){
++        try {
++            int id = Integer.parseInt(idStr);
++            return id > 0;
++        } catch (NumberFormatException e) {
++            return false;
++        }
++    }
+ 
+-        if (current > max) {
+-            throw new IllegalArgumentException(
+-                    "Exceeded max personalization limit (" + max + ")"
+-            );
++    private boolean validCategoryType(String type){
++        try {
++            CategoryType.valueOf(type.toUpperCase());
++            return true;
++        } catch (IllegalArgumentException e) {
++            return false;
+         }
+     }
+ 
+-    private void validatePrice(CustomProduct product) {
+-        if (product.getPrice() <= 0) {
+-            throw new IllegalArgumentException("Price must be greater than 0");
++    private boolean validMaxPers (String maxPersStr){
++        try {
++            int maxPers = Integer.parseInt(maxPersStr);
++            return maxPers >= 0;
++        } catch (NumberFormatException e) {
++            return false;
+         }
+     }
+ }
++
+Index: src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.validation;\r\n\r\nimport es.upm.etsisi.poo.products.Product;\r\nimport es.upm.etsisi.poo.ticket.Ticket;\r\nimport es.upm.etsisi.poo.user.UserList;\r\n\r\npublic class ValidationTicket implements Validator<Ticket<Product>> {\r\n    private UserList userList;\r\n\r\n    public void validate(Ticket<Product> ticket) {\r\n\r\n        if (!userList.containsId(cashId)) {\r\n            System.out.println(\"ticket or cashID not found\");\r\n            return false;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java b/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java
+--- a/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java	(date 1768531140626)
+@@ -1,17 +1,4 @@
+ package es.upm.etsisi.poo.validation;
+ 
+-import es.upm.etsisi.poo.products.Product;
+-import es.upm.etsisi.poo.ticket.Ticket;
+-import es.upm.etsisi.poo.user.UserList;
+-
+-public class ValidationTicket implements Validator<Ticket<Product>> {
+-    private UserList userList;
+-
+-    public void validate(Ticket<Product> ticket) {
+-
+-        if (!userList.containsId(cashId)) {
+-            System.out.println("ticket or cashID not found");
+-            return false;
+-        }
+-    }
++public class ValidationTicket {
+ }
+Index: src/main/java/es/upm/etsisi/poo/validation/ServiceValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.validation;\r\n\r\nimport es.upm.etsisi.poo.products.Service;\r\n\r\npublic class ServiceValidator implements Validator<Service> {\r\n    @Override\r\n    public void validate(Service service) {\r\n        if (service == null) {\r\n            throw new IllegalArgumentException(\"Service cannot be null\");\r\n        }\r\n\r\n        validateType(service);\r\n        validateExpirationDate(service);\r\n        validateId(service);\r\n    }\r\n\r\n    private void validateType(Service service) {\r\n        if (service.getType() == null) {\r\n            throw new IllegalArgumentException(\"Service type is required\");\r\n        }\r\n    }\r\n\r\n    private void validateExpirationDate(Service service) {\r\n        String date = service.getExpirationDate();\r\n\r\n        if (date == null || date.isBlank()) {\r\n            throw new IllegalArgumentException(\"Expiration date is required\");\r\n        }\r\n    }\r\n\r\n    private void validateId(Service service) {\r\n        if (service.getID() == null || service.getID().isBlank()) {\r\n            throw new IllegalArgumentException(\"Service ID is required\");\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/validation/ServiceValidator.java b/src/main/java/es/upm/etsisi/poo/validation/ServiceValidator.java
+--- a/src/main/java/es/upm/etsisi/poo/validation/ServiceValidator.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/validation/ServiceValidator.java	(date 1768531140626)
+@@ -1,36 +1,25 @@
+ package es.upm.etsisi.poo.validation;
+ 
+-import es.upm.etsisi.poo.products.Service;
++import es.upm.etsisi.poo.Utils;
++import es.upm.etsisi.poo.enums.ServiceType;
+ 
+-public class ServiceValidator implements Validator<Service> {
++public class ServiceValidator implements Validator {
++
+     @Override
+-    public void validate(Service service) {
+-        if (service == null) {
+-            throw new IllegalArgumentException("Service cannot be null");
+-        }
+-
+-        validateType(service);
+-        validateExpirationDate(service);
+-        validateId(service);
++    public boolean validate(String[] params) {
++        return (validateExpirationDate(params[0]) && validateType(params[1]));
+     }
+ 
+-    private void validateType(Service service) {
+-        if (service.getType() == null) {
+-            throw new IllegalArgumentException("Service type is required");
++    private boolean validateType(String type){
++        try {
++            ServiceType.valueOf(type);
++            return true;
++        } catch (IllegalArgumentException e) {
++            return false;
+         }
+     }
+ 
+-    private void validateExpirationDate(Service service) {
+-        String date = service.getExpirationDate();
+-
+-        if (date == null || date.isBlank()) {
+-            throw new IllegalArgumentException("Expiration date is required");
+-        }
+-    }
+-
+-    private void validateId(Service service) {
+-        if (service.getID() == null || service.getID().isBlank()) {
+-            throw new IllegalArgumentException("Service ID is required");
+-        }
++    private boolean validateExpirationDate(String date){
++        return Utils.validDate(date);
+     }
+ }
+Index: src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.validation;\r\nimport es.upm.etsisi.poo.Utils;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\nimport es.upm.etsisi.poo.products.EventProduct;\r\nimport es.upm.etsisi.poo.products.Product;\r\n\r\nimport java.time.LocalDateTime;\r\nimport java.time.temporal.ChronoUnit;\r\n\r\npublic class EventProductValidator implements Validator<EventProduct> {\r\n\r\n    @Override\r\n    public void validate(EventProduct product) {\r\n        if(product == null){\r\n            throw new IllegalArgumentException(\"EventProduct cannot be null\");\r\n        }\r\n        validatePeople(product);\r\n        validateExpirationDate(product);\r\n        validateBasePrice(product);\r\n        validateExpirationDate(product);\r\n    }\r\n    private boolean validatePlanningTime(EventProduct product) {\r\n        //YYYY-MM-DD-HH:MM\r\n        String expirationDate = product.getExpirationDate();\r\n        ProductType typeProduct = product.getProductType();\r\n        String[] currentTimeString = Utils.getTime().trim().split(\"[:-]\");\r\n        String[] time = expirationDate.trim().split(\"[:-]\");\r\n        LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),\r\n                Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));\r\n        LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),\r\n                0,0);\r\n        long HourD = ChronoUnit.HOURS.between(now,Date);\r\n        boolean isValid = true;\r\n        if (typeProduct == ProductType.Food) {\r\n            if (HourD < 72) {\r\n                System.out.println(\"Error adding product\");\r\n                isValid = false;\r\n            }\r\n        }else{\r\n            if (HourD< 12){\r\n                System.out.println(\"Error adding meeting\");\r\n                isValid=false;\r\n            }\r\n        }\r\n        return isValid;\r\n    }\r\n    private void validatePeople(EventProduct product) {\r\n        int people = product.getPeople();\r\n        int max = product.getMAX_PEOPLE();\r\n\r\n        if (people < 0 || people > max) {\r\n            throw new IllegalArgumentException(\r\n                    \"People must be between 1 and \" + max\r\n            );\r\n        }\r\n    }\r\n\r\n    private void validateExpirationDate(EventProduct product) {\r\n        String date = product.getExpirationDate();\r\n\r\n        if (date == null || date.isBlank()) {\r\n            throw new IllegalArgumentException(\"Expiration date is required\");\r\n        }\r\n    }\r\n\r\n    private void validateBasePrice(EventProduct product) {\r\n        if (product.getPrice() <= 0) {\r\n            throw new IllegalArgumentException(\"Price must be greater than 0\");\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java b/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java
+--- a/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java	(date 1768531140626)
+@@ -2,27 +2,54 @@
+ import es.upm.etsisi.poo.Utils;
+ import es.upm.etsisi.poo.enums.ProductType;
+ import es.upm.etsisi.poo.products.EventProduct;
+-import es.upm.etsisi.poo.products.Product;
+ 
+ import java.time.LocalDateTime;
+ import java.time.temporal.ChronoUnit;
+ 
+-public class EventProductValidator implements Validator<EventProduct> {
++public class EventProductValidator implements Validator {
+ 
+     @Override
+-    public void validate(EventProduct product) {
+-        if(product == null){
+-            throw new IllegalArgumentException("EventProduct cannot be null");
++
++
++    /**
++     * public void validate(EventProduct product) {
++     *         if(product == null){
++     *             throw new IllegalArgumentException("EventProduct cannot be null");
++     *         }
++     *         validatePeople(product);
++     *         validateExpirationDate(product);
++     *         validateBasePrice(product); //no debe calcular el precio
++     *     }
++     */
++
++    public boolean validate(String[] params) {
++        return true;
++    }
++
++    private boolean validatePeople(String peopleStr, int maxPeople) {
++        try {
++            int people = Integer.parseInt(peopleStr);
++            return people >= 0 && people <= maxPeople;
++        } catch (NumberFormatException e) {
++            return false;
+         }
+-        validatePeople(product);
+-        validateExpirationDate(product);
+-        validateBasePrice(product);
+-        validateExpirationDate(product);
+     }
+-    private boolean validatePlanningTime(EventProduct product) {
++
++    private void validateExpirationDate(EventProduct product) {
++        String date = product.getExpirationDate();
++
++        if (date == null || date.isBlank()) {
++            throw new IllegalArgumentException("Expiration date is required");
++        }
++    }
++
++    private void validateBasePrice(EventProduct product) {
++        if (product.getPrice() <= 0) {
++            throw new IllegalArgumentException("Price must be greater than 0");
++        }
++    }
++    public static boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
+         //YYYY-MM-DD-HH:MM
+-        String expirationDate = product.getExpirationDate();
+-        ProductType typeProduct = product.getProductType();
+         String[] currentTimeString = Utils.getTime().trim().split("[:-]");
+         String[] time = expirationDate.trim().split("[:-]");
+         LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),
+@@ -44,28 +71,4 @@
+         }
+         return isValid;
+     }
+-    private void validatePeople(EventProduct product) {
+-        int people = product.getPeople();
+-        int max = product.getMAX_PEOPLE();
+-
+-        if (people < 0 || people > max) {
+-            throw new IllegalArgumentException(
+-                    "People must be between 1 and " + max
+-            );
+-        }
+-    }
+-
+-    private void validateExpirationDate(EventProduct product) {
+-        String date = product.getExpirationDate();
+-
+-        if (date == null || date.isBlank()) {
+-            throw new IllegalArgumentException("Expiration date is required");
+-        }
+-    }
+-
+-    private void validateBasePrice(EventProduct product) {
+-        if (product.getPrice() <= 0) {
+-            throw new IllegalArgumentException("Price must be greater than 0");
+-        }
+-    }
+-}
++}
+\ No newline at end of file
+Index: src/main/java/es/upm/etsisi/poo/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo;\r\nimport java.io.FileNotFoundException;\r\nimport java.io.FileReader;\r\nimport java.util.Scanner;\r\nimport es.upm.etsisi.poo.command.CommandManager;\r\nimport es.upm.etsisi.poo.controller.ExitController;\r\nimport es.upm.etsisi.poo.enums.*;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.ticket.*;\r\nimport es.upm.etsisi.poo.user.*;\r\npublic class App {\r\n    static Scanner sc = new Scanner(System.in);\r\n\r\n    public static void main(String[] args) {\r\n        boolean readingFromFile = false;\r\n        try {\r\n            if (args.length >= 1) {\r\n                readingFromFile = true;\r\n                String file_name = args[0];\r\n                sc = new Scanner(new FileReader(file_name));\r\n            } else {\r\n                sc = new Scanner(System.in);\r\n            }\r\n        } catch (FileNotFoundException e) {\r\n            sc = new Scanner(System.in);\r\n            throw new RuntimeException(e);\r\n        }\r\n        App application = new App();\r\n        application.init();\r\n        application.run(sc, readingFromFile);\r\n    }\r\n\r\n\r\n    private void run(Scanner scanner, boolean readingFromFile){\r\n        ExitController exitController = new ExitController();\r\n        CommandManager commandManager = new CommandManager(exitController);\r\n\r\n        while (!exitController.isExitRequested()) {\r\n            System.out.print(\"\\ntUPM> \");\r\n            String line = scanner.nextLine();\r\n\r\n            if (readingFromFile) {\r\n                System.out.println(line);\r\n            }\r\n\r\n            if (line.isBlank()) continue;\r\n\r\n            boolean result = commandManager.execute(line);\r\n        }\r\n\r\n        scanner.close();\r\n    }\r\n\r\n    private void init() {\r\n        System.out.println(\"Welcome to the ticket module App.\");\r\n        System.out.println(\"Ticket module. Type 'help' to see commands:\");\r\n    }\r\n\r\n\r\n    /*private void run(Scanner scanner, boolean readingFromFile) {\r\n        boolean cont = true;\r\n        while (cont) {\r\n            System.out.print(\"\\ntUPM> \");\r\n            String line = scanner.nextLine();\r\n            if (readingFromFile){\r\n                System.out.println(line);\r\n            }\r\n            String[] lineSepSpace = line.split(\" \");\r\n\r\n            switch (lineSepSpace[0].toLowerCase()) {\r\n                case \"prod\":\r\n                    optionsOfProd(lineSepSpace);\r\n                    break;\r\n                case \"client\":\r\n                    optionsClient(lineSepSpace);\r\n                    break;\r\n                case \"cash\":\r\n                    optionsCash(lineSepSpace);\r\n                    break;\r\n                case \"ticket\":\r\n                    optionsOfTicket(lineSepSpace);\r\n                    break;\r\n                case \"echo\":\r\n                    String[] echoSepSpace = line.split(\"\\\"\");\r\n                    System.out.println(\"\\\"\" + echoSepSpace[1] + \"\\\"\");\r\n                    break;\r\n                case \"help\":\r\n                    helpCommand();\r\n                    break;\r\n                case \"exit\":\r\n                    exitProgram();\r\n                    cont = false;\r\n                    break;\r\n                default:\r\n                    unknownCommand();\r\n                    break;\r\n            }\r\n        }\r\n        sc.close();\r\n    }\r\n\r\n    private void optionsOfProd(String[] message) {\r\n        if (message.length < 2) {\r\n            System.out.println(\"Usage: prod with add, list, update or remove\");\r\n            return;\r\n        }\r\n        String command = message[1].toLowerCase();\r\n        String input = String.join(\" \", message);\r\n        String[] rightParts = secondPartArray(input);\r\n        switch (command) {\r\n            case \"add\":\r\n                if (!input.toLowerCase().startsWith(\"prod add\")) {\r\n                    System.out.println(\"Usage: prod add <id> \\\"<name>\\\" <category> <price> [maxPers]\");\r\n                    return;\r\n                }\r\n                try {\r\n                    //line: prod add id \\name con espacios\\ category price\r\n                    Product product = null;\r\n                    if (message.length==4){\r\n                      String expireDate = message[2];\r\n                      ServiceType Stype = ServiceType.valueOf(message[3].toUpperCase());\r\n                      product =new Service((productlist.getNumservice()+1)+\"S\",Stype,expireDate,ProductType.Service);\r\n                    }else{\r\n                        String line = String.join(\" \", message);\r\n                        String name = Utils.getNameScanner(line); //cambio en get nombre de scanner\r\n                        String id = message[2];\r\n\r\n                        CategoryType type = CategoryType.valueOf(rightParts[0].toUpperCase());\r\n                        Category category = new Category(type);\r\n                        double price = Double.parseDouble(rightParts[1]);\r\n                        if (rightParts.length == 3) {\r\n                            int maxPers = Integer.parseInt(message[message.length-1]);\r\n                            product = new CustomProduct(id, name, category, price, maxPers,ProductType.ProductPersonalized);\r\n                        } else {\r\n                            product = new CustomProduct(id, name, category, price,0,ProductType.Product);\r\n                        }\r\n                    }\r\n\r\n                    if (productlist.addProduct(product)) {\r\n                        String addProduct = product.toString();\r\n                        System.out.println(addProduct);\r\n                        System.out.println(\"prod add: ok\");\r\n                    } else {\r\n                        System.out.println(\"prod add: error\");\r\n                    }\r\n                } catch (Exception e) {\r\n                    //System.out.println(\"Error: wrong format. Use prod add <id> \\\"<name>\\\" <category> <price>\");\r\n                    System.out.println(\"Error: \" + e.getMessage());\r\n                    System.out.println(\"Usage: prod add <id> \\\"<name>\\\" <category> <price> [<maxPers>]\");\r\n                }\r\n                break;\r\n\r\n            case \"list\":\r\n                if (productlist.listProducts()) {\r\n                    System.out.println(\"prod list: ok\");\r\n                } else {\r\n                    System.out.println(\"prod list: error\");\r\n                }\r\n                break;\r\n\r\n            case \"update\":\r\n                if (message.length < 5) {\r\n                    System.out.println(\"Usage: prod update <id> <field> <value>\");\r\n                    return;\r\n                }\r\n\r\n                String idToUpdate = message[2];\r\n                String field = message[3].toLowerCase();\r\n                String value;\r\n                if (field.equalsIgnoreCase(\"name\")) {\r\n                    value = Utils.getNameScanner(String.join(\" \", message));\r\n                }\r\n                else{\r\n                    value = message[message.length-1];\r\n                }\r\n                if (validField(field)) {\r\n                    if (productlist.updateProduct(idToUpdate, field, value)) {\r\n                        Product productUpdate = productlist.getProduct(idToUpdate);\r\n                        String stringUpdate = productUpdate.toString();\r\n                        System.out.println(stringUpdate);\r\n                        System.out.println(\"prod update: ok\");\r\n                    } else {\r\n                        System.out.println(\"prod update: error\");\r\n                    }\r\n                }\r\n\r\n                break;\r\n\r\n            case \"remove\":\r\n                String idRemove = message[2];\r\n                Product productRemove = productlist.getProduct(idRemove);\r\n                String stringProd = productRemove.toString();\r\n                System.out.println(stringProd);\r\n                if (productlist.removeProduct(productRemove)) {\r\n                    System.out.println(\"prod remove: ok\");\r\n                } else {\r\n                    System.out.println(\"prod remove: error\");\r\n                }\r\n                break;\r\n\r\n            case \"addmeeting\":\r\n                if (rightParts.length != 3) {\r\n                    System.out.println(\"Usage: prod \"+command+\" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>\");\r\n                    return;\r\n                }\r\n                try {\r\n                    String line = String.join(\" \", message);\r\n                    String name = Utils.getNameScanner(line);\r\n                    String id = message[2];\r\n                    double price = Double.parseDouble(rightParts[0]);\r\n                    if (!Utils.ValidDate(rightParts[1])){return;}\r\n                    String expirationStrg = rightParts[1];\r\n                    int maxPeople = Integer.parseInt(rightParts[2]);\r\n                    if (maxPeople>100){\r\n                        System.out.println(\"have exceeded the maximum number of people allowed(100)\");\r\n                        break;\r\n                    }\r\n                    if(!validatePlanningTime(ProductType.Meeting, expirationStrg)){\r\n                        return;\r\n                    }\r\n                    try {\r\n                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Meeting);\r\n                        if (productlist.addProduct(complexProduct)) {\r\n                            System.out.println(complexProduct);\r\n                            System.out.println(\"prod add: ok\");\r\n                        } else {\r\n                            System.out.println(\"prod add: error\");\r\n                        }\r\n                    } catch (Exception e) {\r\n                        System.out.println(\"Error creating product: \" + e.getMessage());\r\n\r\n                    }\r\n                } catch (Exception e) {\r\n                    System.out.println(\"Error: wrong format. Use prod addMeeting \" +\r\n                            \"<id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people >\");\r\n                }\r\n                break;\r\n            case \"addfood\":\r\n                // Never used: String in = String.join(\" \", message);\r\n                if (rightParts.length != 3) {\r\n                    System.out.println(\"Usage: prod \"+command+\" <id> <name> <price> <expiration: yyyy-MM-dd> <max_people>\");\r\n                    return;\r\n                }\r\n                try {\r\n                    String line = String.join(\" \", message);\r\n                    String name = Utils.getNameScanner(line);\r\n                    String id = message[2];\r\n                    double price = Double.parseDouble(rightParts[0]);\r\n                    String expirationStrg = rightParts[1];\r\n                    int maxPeople = Integer.parseInt(rightParts[2]);\r\n                    if (maxPeople>100){\r\n                        System.out.println(\"have exceeded the maximum number of people allowed(100)\");\r\n                        break;\r\n                    }\r\n                    if(!validatePlanningTime(ProductType.Food, expirationStrg)){\r\n                        return;\r\n                    }\r\n\r\n                    try {\r\n                        ComplexProduct complexProduct = new ComplexProduct(id, name, price, expirationStrg, maxPeople,ProductType.Food);\r\n                        if (productlist.addProduct(complexProduct)) {\r\n                            System.out.println(complexProduct);\r\n                            System.out.println(\"prod add: ok\");\r\n                        } else {\r\n                            System.out.println(\"prod add: error\");\r\n                        }\r\n                    } catch (Exception e) {\r\n                        System.out.println(\"Error creating product: \" + e.getMessage());\r\n\r\n                    }\r\n                } catch (Exception e) {\r\n                    System.out.println(\"Error: wrong format. Use prod addMeeting \" +\r\n                            \"<id> \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people >\");\r\n                }\r\n                break;\r\n            default:\r\n                unknownCommand();\r\n                break;\r\n        }\r\n    }\r\n\r\n    private void optionsOfTicket(String[] message) {\r\n        if (message.length < 2) {\r\n            System.out.println(\"Usage: ticket with new, add, remove or print\");\r\n            return;\r\n        }\r\n        String command = message[1].toLowerCase();\r\n\r\n\r\n        switch (command) {\r\n            case \"new\":\r\n                String[] input = String.join(\" \", message).split(\"-\");\r\n                String[] Firspart = input[0].split(\" \");\r\n                String typeTicket =\"\";\r\n                TicketType type;\r\n                if (input.length>1){\r\n                    typeTicket =input[1];\r\n                }\r\n                if (userList.containsId(Firspart[Firspart.length-1])&& userList.containsId(Firspart[Firspart.length-2])) {\r\n                    type = Utils.TypeTicket(Firspart[Firspart.length-1],typeTicket);\r\n                    if (Firspart[2].matches(\"[0-9]+\") && Firspart[2].length() >= 5) {\r\n                        currentTicket = ticketList.createTicket(Firspart[2], Firspart[3], Firspart[4],type);\r\n                        if(currentTicket == null){\r\n                            System.out.println(\"ticket new: error\");\r\n                        }else{\r\n                            currentTicket.setState(stateTicket.empty);\r\n                            System.out.println(currentTicket.toString());\r\n                            System.out.println(\"ticket new: ok\");\r\n                        }\r\n                    } else {\r\n\r\n                        currentTicket = ticketList.createTicket(null, Firspart[2], Firspart[3],type);\r\n                        System.out.println(currentTicket.toString());\r\n                        System.out.println(\"ticket new: ok\");\r\n                    }\r\n                }\r\n                else{\r\n                    System.out.println(\"Incorrect format or IDs, use:\");\r\n                    System.out.println(\"ticket new <ticketId> <CashId> <ClientID>\");\r\n                    System.out.println(\"ticket new <CashId> <ClientId>\");\r\n                }\r\n                break;\r\n            case \"add\":\r\n                try {\r\n                    String Custom = \"\";\r\n                    int quantity;\r\n                    currentTicket = ticketList.getTicket(message[2]);\r\n                    String CashId = message[3];\r\n                    String id = message[4];\r\n                    Product p = productlist.getProduct(id);\r\n\r\n                    if (userList.containsId(CashId)&& currentTicket !=null){\r\n                        if (p.getProductType() != ProductType.Service){\r\n                        quantity = Integer.parseInt(message[5]);\r\n                        if (p.getProductType() == ProductType.ProductPersonalized || p.getProductType() == ProductType.Product){\r\n                        for (int i =6;i<message.length;i++){\r\n                            Custom += (message[i]);\r\n                        }\r\n                        }else if(p.getProductType() == ProductType.Meeting || p.getProductType() == ProductType.Food){\r\n                            ComplexProduct product = (ComplexProduct) p;\r\n                            product.setPeople(quantity);\r\n                            if(!(quantity <= product.getMAX_PEOPLE())){\r\n                                System.out.println(\"have exceeded the maximum number of people allowed\");\r\n                                break;\r\n                            }\r\n                            quantity = 1;\r\n                        }\r\n                        }else{\r\n                            quantity = 1;\r\n                        }\r\n                        try {\r\n                            if (currentTicket.getState() != stateTicket.closed){\r\n                                currentTicket.addProductToTicket(productlist, id, quantity,Custom);\r\n                                System.out.println(currentTicket.toString());\r\n                                System.out.println(\"ticket add: ok\");}\r\n                            else {\r\n                                System.out.println(\"ticket closed\");\r\n                            }\r\n                        } catch (Exception e) {\r\n                            System.out.println(\"Error adding product\");\r\n                        }\r\n                    }else {\r\n                        System.out.println(\"ticket or cashID not found\");\r\n                    }\r\n                } catch (Exception e) {\r\n                    System.out.println(\"inappropriate format\");\r\n                    System.out.println(\"ticket add <ticketID> <CashId> <id> <quantity>\" +\"\\n\"+\r\n                            \"ticket add <ticketID> <CashId> <id> <people>\");\r\n                }\r\n                break;\r\n            case \"remove\":\r\n                if (message.length != 5) {\r\n                    System.out.println(\"inappropriate format\" + \"\\n\" + \"ticket remove <ticketId> <cashId> <prodId>\");\r\n                    return;\r\n                }\r\n                try {\r\n                    currentTicket = ticketList.getTicket(message[2]);\r\n                    String CashId = message[3];\r\n                    if (userList.containsId(CashId)&& currentTicket !=null){\r\n                        String id = message[4];\r\n                        if (currentTicket.getState() != stateTicket.closed){\r\n                        currentTicket.removeProduct(id);\r\n                        System.out.println(currentTicket.toString());\r\n                        System.out.println(\"ticket remove: ok\");}\r\n                        else {\r\n                            System.out.println(\"ticket closed\");\r\n                        }\r\n                    }else {\r\n                        System.out.println(\"ticket or cashID not found\");\r\n                    }\r\n                } catch (Exception e) {\r\n                    System.out.println(\"inappropriate format\" + \"\\n\" + \"ticket remove <ticketId> <cashId> <prodId>\");\r\n                }\r\n                break;\r\n            case \"print\":\r\n                try {currentTicket = ticketList.getTicket(message[2]);\r\n                    String CashId = message[3];\r\n                    String date;\r\n                    if (userList.containsId(CashId)&& currentTicket !=null){\r\n                        for (int i = 0; i<currentTicket.getNumProductInTicket();i++){\r\n                            Product p = currentTicket.getProduct(i);\r\n                            if (p.getProductType() == ProductType.Food || p.getProductType() == ProductType.Meeting){\r\n                                ComplexProduct product = (ComplexProduct) p;\r\n                                date = (product).getExpirationDate();\r\n                                if (!validatePlanningTime(p.getProductType(),date)){\r\n                                    currentTicket.removeProduct(p.getID());\r\n                                }\r\n                            }\r\n\r\n                        }\r\n                        ticketList.CloseTicket(currentTicket,Utils.getTime());\r\n                        System.out.println(currentTicket.toString());\r\n                        System.out.println(\"ticket print: ok\");\r\n                    }else {\r\n                        System.out.println(\"ticket or cashID not found\");\r\n                    }\r\n                } catch (Exception e) {\r\n                    System.out.println(\"ticket print: fail\");\r\n                }\r\n                break;\r\n            case \"list\":\r\n                System.out.println(\"Ticket list:\");\r\n                System.out.print(ticketList.toString());\r\n                System.out.println(\"ticket list: ok\");\r\n                break;\r\n            default:\r\n                unknownCommand();\r\n                break;\r\n        }\r\n    }\r\n    \r\n    private void optionsClient(String[] message) {\r\n        if (message.length < 2) {\r\n            System.out.println(\"Usage: client add/remove/list\");\r\n            return;\r\n        }\r\n        String command = message[1].toLowerCase();\r\n        switch (command) {\r\n            case \"add\":\r\n                clientAdd(message);\r\n                break;\r\n            case \"remove\":\r\n                clientRemove(message);\r\n                break;\r\n            case \"list\":\r\n                clientList();\r\n                break;\r\n            default:\r\n                unknownCommand();\r\n        }\r\n    }\r\n\r\n    private void clientAdd(String[] message) {\r\n        try {\r\n            String fullLine = String.join(\" \", message);\r\n            String name = Utils.getNameScanner(fullLine);\r\n            String[] rightParts = secondPartArray(fullLine);\r\n            \r\n            if (rightParts.length < 3) {\r\n                System.out.println(\"client add: error\");\r\n                return;\r\n            }\r\n            String dni = rightParts[0];\r\n            String email = rightParts[1];\r\n            String cashId = rightParts[2];\r\n\r\n            if (!UserValidator.validName(name)) {\r\n                System.out.println(\"client add: error name\");\r\n                return;\r\n            }\r\n            if (!UserValidator.validEmail(email)) {\r\n                System.out.println(\"client add: error email\");\r\n                return;\r\n            }\r\n            if (!UserValidator.validCashId(cashId)) {\r\n                System.out.println(\"client add: error CashId\");\r\n                return;\r\n            }\r\n            Client c = null;\r\n            if (UserValidator.validNIF(dni)){\r\n            c = new Client(name, dni, email, cashId,ClientType.Business);\r\n            }\r\n            if (UserValidator.validDNI(dni) ||UserValidator.validNIE(dni)){\r\n            c = new Client(name,dni,email,cashId,ClientType.Client);\r\n            }\r\n            if (c != null){\r\n                if (userList.addClient(c)) {\r\n                    System.out.println(\"client add: ok\");\r\n                }\r\n                else {\r\n                    System.out.println(\"client add: error\");\r\n                }\r\n            }else{\r\n                System.out.println(\"ClientID error,Incorrect clientID only accepts: DNI,NIE,NIF\");\r\n            }\r\n        } catch (Exception e) {\r\n            System.out.println(\"client add: error\");\r\n        }\r\n    }\r\n\r\n    private void clientRemove(String[] message) {\r\n        if (message.length < 3) {\r\n            System.out.println(\"client remove: error\");\r\n            return;\r\n        }\r\n        String dni = message[2];\r\n        boolean removed = userList.removeUser(dni);\r\n        if (removed) {\r\n            System.out.println(\"client remove: ok\");\r\n        } else {\r\n            System.out.println(\"client remove: error\");\r\n        }\r\n    }\r\n\r\n    private void clientList() {\r\n        userList.printClients();\r\n        System.out.println(\"client list: ok\");\r\n    }\r\n\r\n    private void optionsCash(String[] message) {\r\n        if (message.length < 2) {\r\n            System.out.println(\"Usage: cash add/remove/list/tickets\");\r\n            return;\r\n        }\r\n        String command = message[1].toLowerCase();\r\n        switch (command) {\r\n            case \"add\":\r\n                cashAdd(message);\r\n                break;\r\n            case \"remove\":\r\n                cashRemove(message);\r\n                break;\r\n            case \"list\":\r\n                cashList();\r\n                break;\r\n            case \"tickets\":\r\n                cashTickets(message);\r\n                break;\r\n            default:\r\n                unknownCommand();\r\n        }\r\n    }\r\n\r\n    private void cashAdd(String[] message) {\r\n        try {\r\n            String fullLine = String.join(\" \", message);\r\n            String name = Utils.getNameScanner(fullLine);\r\n            //Never used: String[] rightParts = secondPartArray(fullLine);\r\n            String email;\r\n            String id = null;\r\n\r\n            if (message.length >= 4 && message[2].startsWith(\"UW\")) {\r\n                id = message[2];\r\n                email = message[message.length - 1];\r\n            } else {\r\n                email = message[message.length - 1];\r\n            }\r\n\r\n            if (!UserValidator.validName(name) || !UserValidator.validEmail(email) || (id != null && !UserValidator.validCashId(id))) {\r\n                System.out.println(\"cash add: error\");\r\n                return;\r\n            }\r\n\r\n            Cash cash = new Cash(name, email, id);\r\n\r\n            boolean added = userList.addCash(cash);\r\n            if (added) {\r\n                System.out.println(\"cash add: ok\");\r\n            } else {\r\n                System.out.println(\"cash add: error\");\r\n            }\r\n        } catch (Exception e) {\r\n            System.out.println(\"cash add: error\");\r\n        }\r\n    }\r\n\r\n    private void cashRemove(String[] message) {\r\n        boolean removed = false;\r\n        if (message.length < 3) {\r\n            System.out.println(\"cash remove: error\");\r\n            return;\r\n        }\r\n        String id = message[2];\r\n        Cash cash  = (Cash) userList.getUserByID(id);\r\n        if (cash != null){\r\n        ticketList.removeTicket(cash.getId());\r\n        removed = userList.removeUser(id);\r\n        }\r\n        if (removed) System.out.println(\"cash remove: ok\");\r\n        else System.out.println(\"cash remove: error\");\r\n    }\r\n\r\n    private void cashList() {\r\n        userList.printCashiers();\r\n        System.out.println(\"cash list: ok\");\r\n    }\r\n\r\n    private void cashTickets(String[] message) {\r\n        if (message.length < 3) {\r\n            System.out.println(\"cash tickets: error\");\r\n            return;\r\n        }\r\n        String cashier = message[2];\r\n        if (UserValidator.validCashId(cashier) && userList.containsId(cashier)) {\r\n            TicketList ticketsOfCash = ticketList.getTicketsOfCash(cashier);\r\n            System.out.println(\"Tickets:\");\r\n            System.out.println(ticketsOfCash.toString());\r\n            System.out.println(\"cash tickets: ok\");\r\n        }else{\r\n            System.out.println(\"cash tickets:error\");\r\n        }\r\n    }\r\n    \r\n    \r\n    private String[] secondPartArray(String input){\r\n        int firstQuote = input.indexOf('\"');\r\n        int secondQuote = input.indexOf('\"', firstQuote + 1);\r\n\r\n        String right = input.substring(secondQuote + 1).trim();\r\n        return right.split(\" \");\r\n    }\r\n\r\n    private boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {\r\n        //YYYY-MM-DD-HH:MM\r\n        String[] currentTimeString = Utils.getTime().trim().split(\"[:-]\");\r\n        String[] time = expirationDate.trim().split(\"[:-]\");\r\n        LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),\r\n                Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));\r\n        LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),\r\n                0,0);\r\n        long HourD = ChronoUnit.HOURS.between(now,Date);\r\n        boolean isValid = true;\r\n        if (typeProduct == ProductType.Food) {\r\n            if (HourD < 72) {\r\n                System.out.println(\"Error adding product\");\r\n                isValid = false;\r\n            }\r\n        }else{\r\n            if (HourD< 12){\r\n                System.out.println(\"Error adding meeting\");\r\n                isValid=false;\r\n            }\r\n        }\r\n        return isValid;\r\n    }\r\n\r\n    private boolean validField(String field) {\r\n        String[] allowedFields = {\"name\", \"category\", \"price\"};\r\n        boolean validField = false;\r\n        for (String f : allowedFields) {\r\n            if (f.equals(field)) {\r\n                validField = true;\r\n                break;\r\n            }\r\n        }\r\n\r\n        if (!validField) {\r\n            System.out.println(\"Error: invalid field. The allowed fields are: name, category, price\");\r\n        }\r\n        return validField;\r\n    }\r\n\r\n    private void init() {\r\n        System.out.println(\"Welcome to the ticket module App.\");\r\n        System.out.println(\"Ticket module. Type 'help' to see commands:\");\r\n    }\r\n\r\n    private void helpCommand() {\r\n        String[] commands = {\r\n                \"◦ Client/Cash:\",\r\n                \"   client add \\\"<name>\\\" <DNI> <email> <cashId>\",\r\n                \"   client remove <DNI>\",\r\n                \"   client list\",\r\n                \"   cash add [<id>] \\\"<name>\\\" <email>\",\r\n                \"   cash remove <id>\",\r\n                \"   cash list\",\r\n                \"   cash tickets <id>\",\r\n\r\n                \"◦ Ticket:\",\r\n                \"   ticket new [<id>] <cashId> <userId> -[c|p|s] (default -p option)\",\r\n                \"   ticket add <ticketId> <cashId> <prodId> <amount> [--p<txt> --p<txt>]\",\r\n                \"   ticket remove <ticketId> <cashId> <prodId>\",\r\n                \"   ticket print <ticketId> <cashId>\",\r\n                \"   ticket list\",\r\n\r\n                \"◦ Product:\",\r\n                \"   prod add [<id>] \\\"<name>\\\" <category> <price> [<maxPers>] || (\\\"<name>\\\" <category> )\",\r\n                \"   prod update <id> NAME|CATEGORY|PRICE <value>\",\r\n                \"   prod addFood [<id>] \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\",\r\n                \"   prod addMeeting [<id>] \\\"<name>\\\" <price> <expiration: yyyy-MM-dd> <max_people>\",\r\n                \"   prod list\",\r\n                \"   prod remove <id>\",\r\n                \"◦ General:\",\r\n                \"   echo \\\"<texto>\\\"\",\r\n                \"   help\",\r\n                \"   exit\"\r\n        };\r\n        System.out.println(\"Commands:\");\r\n        for (String cmd : commands) {\r\n            System.out.println(\" \" + cmd);\r\n        }\r\n\r\n        System.out.println(\"\\n\" + \"Categories: \" +\r\n                \"MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS\" +\r\n                \"\\nDiscounts if there are ≥2 units in the category: \" +\r\n                \"MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%\"\r\n        );\r\n    }\r\n\r\n    private void exitProgram() {\r\n        System.out.println(\"Closing application.\");\r\n        System.out.println(\"Goodbye!\");\r\n    }\r\n\r\n    private void unknownCommand() {\r\n        System.out.println(\"Command unknown. Type \\\"help\\\" to see commands:\");\r\n    }*/\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/App.java b/src/main/java/es/upm/etsisi/poo/App.java
+--- a/src/main/java/es/upm/etsisi/poo/App.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/App.java	(date 1768531140621)
+@@ -12,6 +12,7 @@
+     static Scanner sc = new Scanner(System.in);
+ 
+     public static void main(String[] args) {
++        System.setProperty("jdk.module.enable.native.access", "ALL-UNNAMED");
+         boolean readingFromFile = false;
+         try {
+             if (args.length >= 1) {
+Index: src/main/java/es/upm/etsisi/poo/controller/TicketController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.controller;\r\n\r\nimport es.upm.etsisi.poo.MapDB.MapDBManager;\r\nimport es.upm.etsisi.poo.Utils;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\nimport es.upm.etsisi.poo.enums.TicketType;\r\nimport es.upm.etsisi.poo.enums.stateTicket;\r\nimport es.upm.etsisi.poo.products.*;\r\nimport es.upm.etsisi.poo.products.ProductList;\r\nimport es.upm.etsisi.poo.ticket.Ticket;\r\nimport es.upm.etsisi.poo.ticket.TicketList;\r\nimport es.upm.etsisi.poo.user.UserList;\r\nimport es.upm.etsisi.poo.validation.EventProductValidator;\r\n\r\npublic class TicketController extends Controller{\r\n\r\n    private final TicketList ticketList;\r\n\r\n    public final ProductList productList;\r\n\r\n    private final UserList userList;\r\n\r\n    private Ticket currentTicket;\r\n\r\n    public TicketController(MapDBManager mapDBManager) {\r\n        super(mapDBManager);\r\n        this.ticketList = mapDBManager.getTicketList();\r\n        this.productList = mapDBManager.getProductoList();\r\n        this.userList = mapDBManager.getUserList();\r\n    }\r\n\r\n    public boolean addTicket(String args){\r\n        String[] message = args.split(\" \");\r\n\r\n        try {\r\n            String custom = \"\";\r\n            int quantity;\r\n\r\n            currentTicket = ticketList.getTicket(message[0]);\r\n            String cashId = message[1];\r\n            String id = message[2];\r\n\r\n            Product p = productList.getProduct(id);\r\n\r\n            if (!userList.containsId(cashId)) {\r\n                System.out.println(\"ticket or cashID not found\");\r\n                return false;\r\n            }\r\n\r\n            if (p.getProductType() != ProductType.Service) {\r\n                quantity = Integer.parseInt(message[3]);\r\n\r\n                if (p.getProductType() == ProductType.ProductPersonalized\r\n                        || p.getProductType() == ProductType.Product) {\r\n\r\n                    for (int i = 4; i < message.length; i++) {\r\n                        custom += message[i];\r\n                    }\r\n\r\n                } else if (p.getProductType() == ProductType.Meeting\r\n                        || p.getProductType() == ProductType.Food) {\r\n\r\n                    EventProduct product = (EventProduct) p;\r\n                    product.setPeople(quantity);\r\n\r\n                    if (quantity > product.getMAX_PEOPLE()) {\r\n                        System.out.println(\"have exceeded the maximum number of people allowed\");\r\n                        return false;\r\n                    }\r\n                    quantity = 1;\r\n                }\r\n            } else {\r\n                quantity = 1;\r\n            }\r\n\r\n            if (currentTicket.getState() == stateTicket.closed) {\r\n                System.out.println(\"ticket closed\");\r\n                return false;\r\n            }\r\n            currentTicket.addProductToTicket(productList, id, quantity, custom);\r\n            System.out.println(currentTicket);\r\n            System.out.println(\"ticket add: ok\");\r\n            return true;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"inappropriate format\");\r\n            System.out.println(\"ticket add <ticketID> <CashId> <id> <quantity>\");\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public boolean printTicket(String args){\r\n        String[] message = args.split(\" \");\r\n\r\n        try {\r\n            currentTicket = ticketList.getTicket(message[0]);\r\n            String cashId = message[1];\r\n\r\n            if (!userList.containsId(cashId) || currentTicket == null) {\r\n                System.out.println(\"ticket or cashID not found\");\r\n                return false;\r\n            }\r\n\r\n            for (int i = 0; i < currentTicket.getNumProductInTicket(); i++) {\r\n                Product p = currentTicket.getProduct(i);\r\n\r\n                if (p.getProductType() == ProductType.Food\r\n                        || p.getProductType() == ProductType.Meeting) {\r\n\r\n                    EventProduct product = (EventProduct) p;\r\n                    String date = product.getExpirationDate();\r\n\r\n                    if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {\r\n                        currentTicket.removeProduct(p.getID());\r\n                    }\r\n                }\r\n            }\r\n\r\n            ticketList.CloseTicket(currentTicket, Utils.getTime());\r\n            System.out.println(currentTicket);\r\n            mapDBManager.addTicket(currentTicket);\r\n            System.out.println(\"ticket print: ok\");\r\n            return true;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"ticket print: fail\");\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public boolean removeTicket(String args){\r\n        String[] message = args.split(\" \");\r\n\r\n        if (message.length != 3) {\r\n            System.out.println(\"ticket remove <ticketId> <cashId> <prodId>\");\r\n            return false;\r\n        }\r\n\r\n        try {\r\n            currentTicket = ticketList.getTicket(message[0]);\r\n            String cashId = message[1];\r\n            String id = message[2];\r\n\r\n            if (!userList.containsId(cashId) || currentTicket == null) {\r\n                System.out.println(\"ticket or cashID not found\");\r\n                return false;\r\n            }\r\n\r\n            if (currentTicket.getState() == stateTicket.closed) {\r\n                System.out.println(\"ticket closed\");\r\n                return false;\r\n            }\r\n\r\n            currentTicket.removeProduct(id);\r\n            System.out.println(currentTicket);\r\n            System.out.println(\"ticket remove: ok\");\r\n            return true;\r\n\r\n        } catch (Exception e) {\r\n            System.out.println(\"inappropriate format\");\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public boolean listTicket(){ //TODO RETURN TRUE?\r\n        System.out.println(\"Ticket list:\");\r\n        System.out.print(ticketList.toString());\r\n        System.out.println(\"ticket list: ok\");\r\n        return true;\r\n    }\r\n\r\n    public boolean newTicket(String args){ //MAL COPIADO CREO\r\n        String[] input = args.split(\"-\");\r\n        String[] firstPart = input[0].trim().split(\" \");\r\n\r\n        String typeTicket = input.length > 1 ? input[1] : \"\";\r\n\r\n        if (!userList.containsId(firstPart[firstPart.length - 1])\r\n                || !userList.containsId(firstPart[firstPart.length - 2])) {\r\n\r\n            System.out.println(\"Incorrect format or IDs\");\r\n            return false;\r\n        }\r\n\r\n        TicketType type = Utils.TypeTicket(firstPart[firstPart.length - 1], typeTicket);\r\n\r\n        if (firstPart[0].matches(\"[0-9]+\") && firstPart[0].length() >= 5) {\r\n            currentTicket = ticketList.createTicket(firstPart[0], firstPart[1], firstPart[2], type);\r\n        } else {\r\n            currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type);\r\n        }\r\n        if (currentTicket != null){\r\n        currentTicket.setState(stateTicket.empty);\r\n        System.out.println(currentTicket);\r\n        System.out.println(\"ticket new: ok\");}\r\n        else System.out.println(\"ticket new: error\");\r\n        return true;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/controller/TicketController.java b/src/main/java/es/upm/etsisi/poo/controller/TicketController.java
+--- a/src/main/java/es/upm/etsisi/poo/controller/TicketController.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/controller/TicketController.java	(date 1768531140623)
+@@ -110,9 +110,11 @@
+                     EventProduct product = (EventProduct) p;
+                     String date = product.getExpirationDate();
+ 
+-                    if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
+-                        currentTicket.removeProduct(p.getID());
+-                    }
++                    /** TODO
++                     * if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
++                     *                         currentTicket.removeProduct(p.getID());
++                     *                     }
++                     */
+                 }
+             }
+ 
+@@ -190,9 +192,9 @@
+             currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type);
+         }
+         if (currentTicket != null){
+-        currentTicket.setState(stateTicket.empty);
+-        System.out.println(currentTicket);
+-        System.out.println("ticket new: ok");}
++            currentTicket.setState(stateTicket.empty);
++            System.out.println(currentTicket);
++            System.out.println("ticket new: ok");}
+         else System.out.println("ticket new: error");
+         return true;
+     }
+Index: src/main/java/es/upm/etsisi/poo/products/ProductList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo.products;\r\nimport es.upm.etsisi.poo.enums.ProductType;\r\nimport es.upm.etsisi.poo.enums.CategoryType;\r\nimport es.upm.etsisi.poo.enums.Category;\r\nimport java.util.ArrayList;\r\nimport java.util.Comparator;\r\n\r\npublic class ProductList {\r\n\r\n    protected ArrayList<Product> products;\r\n\r\n    private int maxNumProduct;\r\n\r\n    private int numProduct;\r\n    private int Numservice;\r\n\r\n    public ProductList(int MaxNumProduct) {\r\n        numProduct = 0;\r\n        this.maxNumProduct = MaxNumProduct;\r\n        products = new ArrayList<>();\r\n        Numservice = 0;\r\n    }\r\n\r\n    public boolean addProduct(Product product) {\r\n        boolean added = false, exists = false;\r\n        if (numProduct < maxNumProduct) {\r\n            for (int i = 0; i < numProduct; i++) {\r\n                if (product.getID() == products.get(i).getID()) {\r\n                    exists = true;\r\n                }\r\n            }\r\n            if (!exists) {\r\n                products.add(product);\r\n                if (product.getProductType()==ProductType.Service){\r\n                    Numservice++;\r\n                }\r\n                numProduct++;\r\n                added = true;\r\n                products.sort(Comparator.nullsLast(\r\n                        Comparator.comparing(Product::getID)\r\n                        ));\r\n            } else\r\n                System.out.println(\"The product already exists\");\r\n        } else\r\n            System.out.println(\"No further products can be added\");\r\n        return added;\r\n    }\r\n\r\n    public boolean listProducts() {\r\n        if (numProduct == 0) {\r\n            System.out.println(\"Empty list\");\r\n            return false;\r\n        }\r\n        System.out.println(\"Catalog:\");\r\n        for (int i = 0; i < numProduct; i++) {\r\n            System.out.println(\"  \" + products.get(i).toString());\r\n        }\r\n        return true;\r\n    }\r\n\r\n    public boolean updateProduct(String idToUpdate, String field, String value) {\r\n        boolean updated = false;\r\n        if (numProduct == 0)\r\n            System.out.println(\"Empty List\");\r\n        else {\r\n            try {\r\n                Product productToUpdate = getProduct(idToUpdate);\r\n                if (productToUpdate != null && productToUpdate.getProductType() != ProductType.Service) {\r\n                    if (field.equalsIgnoreCase(\"NAME\")) {\r\n                        ((Item)productToUpdate).setName(value);\r\n                        updated = true;\r\n                    } else if (field.equalsIgnoreCase(\"CATEGORY\")) {\r\n                        CategoryType type = CategoryType.valueOf(value.toUpperCase());\r\n                        CustomProduct customProduct = (CustomProduct) productToUpdate;\r\n                        customProduct.setCategory(new Category(type));\r\n                        updated = true;\r\n                    } else if (field.equalsIgnoreCase(\"PRICE\")) {\r\n                        double newPrice = Double.parseDouble(value);\r\n                        ((Item)productToUpdate).setPrice(newPrice);\r\n                        updated = true;\r\n                    }\r\n\r\n                } else {\r\n                    System.out.println(\"The product doesn't exist or is service\");\r\n                }\r\n            } catch (IllegalArgumentException e) {\r\n                System.out.println(\"Error: \" + e.getMessage());\r\n            }\r\n        }\r\n        return updated;\r\n    }\r\n\r\n    public boolean removeProduct(Product selected) {\r\n        boolean removed = false;\r\n        for (int i = 0; i < numProduct; i++) {\r\n            if (products.get(i).getID() == selected.getID()) {\r\n                products.remove(selected);\r\n                numProduct--;\r\n                removed = true;\r\n            }\r\n        }\r\n        return removed;\r\n    }\r\n\r\n    public Product getProduct(String Id) {\r\n        Product find = null;\r\n        for (int i = 0; i < numProduct; i++) {\r\n            if (products.get(i).getID().equals(Id)) {\r\n                find = products.get(i);\r\n            }\r\n        }\r\n        return find;\r\n    }\r\n\r\n    public int getNumProduct(){\r\n        return numProduct;\r\n    }\r\n\r\n    public int getNumservice(){return Numservice;}\r\n\r\n    @Override\r\n    public String toString() {\r\n        String text = \"Catalog:\\n\";\r\n        for (int i = 0; i < numProduct; i++) {\r\n            Product p = products.get(i);\r\n            text += p.toString() + \"\\n\";\r\n        }\r\n        text += \"prod list: ok\";\r\n        return text;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/products/ProductList.java b/src/main/java/es/upm/etsisi/poo/products/ProductList.java
+--- a/src/main/java/es/upm/etsisi/poo/products/ProductList.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/products/ProductList.java	(date 1768531140623)
+@@ -1,4 +1,5 @@
+ package es.upm.etsisi.poo.products;
++import es.upm.etsisi.poo.MapDB.MapDBManager;
+ import es.upm.etsisi.poo.enums.ProductType;
+ import es.upm.etsisi.poo.enums.CategoryType;
+ import es.upm.etsisi.poo.enums.Category;
+@@ -20,7 +21,38 @@
+         products = new ArrayList<>();
+         Numservice = 0;
+     }
+-
++    public int getNextEmptyIndex(){
++        int servicesCount = 0;
++        int c=0;
++        //separar los Servicios de los restos de productos
++        for (int i = 0; i < products.size(); i++) {
++            if (products.get(i).getProductType() == ProductType.Service) {
++                Product temp = products.get(i);
++                products.set(i, products.get(servicesCount));
++                products.set(servicesCount, temp);
++                servicesCount++;
++            }
++        }//ordenar de menor a mayor los restos
++        products.subList(servicesCount,products.size()-1).sort(Comparator.comparing(
++                p -> {
++                    String id = p.getID();
++                    try {
++                        return Integer.parseInt(id);
++                    } catch (NumberFormatException e) {
++                        return Integer.MAX_VALUE;
++                    }
++                }
++        ));
++        for (int i =servicesCount;i<products.size();i++){
++            Product product = products.get(i);
++            if (Integer.parseInt(product.getID())== c){
++                c++;
++            }else{
++                return c;
++            }
++        }
++        return c;
++    }
+     public boolean addProduct(Product product) {
+         boolean added = false, exists = false;
+         if (numProduct < maxNumProduct) {
+Index: src/main/java/es/upm/etsisi/poo/Utils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package es.upm.etsisi.poo;\r\n\r\nimport java.time.LocalDate;\r\nimport java.time.LocalDateTime;\r\nimport java.time.ZoneId;\r\nimport java.time.ZonedDateTime;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.time.format.DateTimeParseException;\r\nimport java.util.Locale;\r\n\r\nimport es.upm.etsisi.poo.enums.*;\r\nimport es.upm.etsisi.poo.user.UserValidator;\r\n\r\npublic class Utils {\r\n\r\n    public static String convertDate(String inputDate) {\r\n        LocalDate date = LocalDate.parse(inputDate);\r\n        ZoneId defaultZone = ZoneId.systemDefault();\r\n        ZonedDateTime zonedDateTime = date.atStartOfDay(defaultZone);\r\n        DateTimeFormatter formatter = DateTimeFormatter\r\n                .ofPattern(\"EEE MMM dd HH:mm:ss z yyyy\", Locale.ENGLISH);\r\n        return zonedDateTime.format(formatter);\r\n    }\r\n\r\n    public static String getShortId(String Id){\r\n        String shortId = \"\";\r\n            String[] message =Id.trim().split(\"[-:]\");\r\n            for (int i = 0 ; i < message.length; i++){\r\n                if(message[i].length() >= 5){\r\n                    shortId = message[i];\r\n                }\r\n            }\r\n        return shortId;\r\n    }\r\n\r\n    public static TicketType TypeTicket( String ID,String command){\r\n        TicketType type;\r\n        if (UserValidator.validNIF(ID)){\r\n            switch (command.toUpperCase()){\r\n                case \"C\"-> type = TicketType.businessC;\r\n                case \"S\"-> type = TicketType.businessS;\r\n                default -> type = TicketType.businessP;\r\n            }\r\n        }else type = TicketType.Client;\r\n        return type;\r\n    }\r\n\r\n    public static String getTime(){\r\n        LocalDateTime date = LocalDateTime.now();\r\n        return date.getYear() + \"-\"+date.getMonthValue() + \"-\"+date.getDayOfMonth() + \"-\"+date.getHour() + \":\" + date.getMinute();\r\n    }\r\n\r\n    public static int getRandomNumber(int n){\r\n        StringBuilder resul = new StringBuilder();\r\n        for(int i = 0;i<n;i++){\r\n            resul.append((int) (Math.random() * 10));\r\n        }\r\n        return Integer.parseInt(resul.toString());\r\n    }\r\n\r\n    public static String getNameScanner(String message){\r\n        int index0 = 0,indexN = 0;\r\n        boolean found = false;\r\n        String c = \"\";\r\n        int i = message.length();\r\n        int j = 0;\r\n        while(j < i && !found){\r\n            c = String.valueOf(message.charAt(j));\r\n            if(c.equals(\"\\\"\")){\r\n                index0 = j+1;\r\n                found  = true;\r\n            }\r\n            j++;\r\n        }\r\n        i = message.length()-1;\r\n        found =false;\r\n        while(i>0 && !found){\r\n            c = String.valueOf(message.charAt(i));\r\n            if(c.equals(\"\\\"\")){\r\n                indexN = i;\r\n                found = true;\r\n            }\r\n            i--;\r\n        }\r\n        return message.substring(index0,indexN);\r\n\r\n    }public static String generateCashId(){\r\n        String id;\r\n        id = (\"UW\" + (getRandomNumber(7)));\r\n        return id;\r\n    }\r\n\r\n    public static boolean ValidDate(String Date) {\r\n        try {\r\n            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"yyyy-MM-dd\");\r\n            LocalDate fecha = LocalDate.parse(Date, formatter);\r\n            return true;\r\n        } catch (DateTimeParseException e) {\r\n            System.out.println(\"Check that the date is correct, exists, and is in the correct format.\" +\r\n                    \"YYYY/MM/DD\");\r\n            return false;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/es/upm/etsisi/poo/Utils.java b/src/main/java/es/upm/etsisi/poo/Utils.java
+--- a/src/main/java/es/upm/etsisi/poo/Utils.java	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/src/main/java/es/upm/etsisi/poo/Utils.java	(date 1768531140622)
+@@ -24,12 +24,12 @@
+ 
+     public static String getShortId(String Id){
+         String shortId = "";
+-            String[] message =Id.trim().split("[-:]");
+-            for (int i = 0 ; i < message.length; i++){
+-                if(message[i].length() >= 5){
+-                    shortId = message[i];
+-                }
+-            }
++        String[] message =Id.trim().split("[-:]");
++        for (int i = 0 ; i < message.length; i++){
++            if(message[i].length() >= 5){
++                shortId = message[i];
++            }
++        }
+         return shortId;
+     }
+ 
+@@ -90,7 +90,7 @@
+         return id;
+     }
+ 
+-    public static boolean ValidDate(String Date) {
++    public static boolean validDate(String Date) {
+         try {
+             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+             LocalDate fecha = LocalDate.parse(Date, formatter);
+@@ -101,4 +101,20 @@
+             return false;
+         }
+     }
++
++    public static String[] secondPartArray(String input){
++        int firstQuote = input.indexOf('"');
++        int secondQuote = input.indexOf('"', firstQuote + 1);
++
++        if (firstQuote == -1 || secondQuote == -1) {
++            return new String[0];
++        }
++
++        String rightPart = input.substring(secondQuote + 1).trim();
++
++        if (rightPart.isEmpty()) {
++            return new String[0];
++        }
++        return rightPart.split(" ");
++    }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"29b59f3d-c100-4c04-9079-99926c046972\" name=\"更改\" comment=\"setup de .jar terminado\">\r\n      <change beforePath=\"$PROJECT_DIR$/UPM_SHOP.db\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/UPM_SHOP.db\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;JunqinYe&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/DavvPar/UPM_Shop.git\",\r\n    \"accountId\": \"9116ad7e-286e-4ab6-b70e-cbc796ecf7e1\"\r\n  }\r\n}]]></component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 0\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"3805auaI5Pi08UgaHM1Qo74nILB\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.App.executor\": \"Run\",\r\n    \"Maven.UPM_SHOP [clean].executor\": \"Run\",\r\n    \"Maven.UPM_SHOP [package].executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"project.structure.last.edited\": \"Project\",\r\n    \"project.structure.proportion\": \"0.15\",\r\n    \"project.structure.side.proportion\": \"0.0\",\r\n    \"settings.editor.selected.configurable\": \"preferences.language.and.region\",\r\n    \"应用程序.App.executor\": \"Run\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunAnythingCache\">\r\n    <option name=\"myCommands\">\r\n      <command value=\"mvn clean\" />\r\n      <command value=\"mvn package\" />\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"App\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"ms-21\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"es.upm.etsisi.poo.App\" />\r\n      <module name=\"UPM_SHOP\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"input.txt\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"es.upm.etsisi.poo.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.App\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"默认任务\">\r\n      <changelist id=\"29b59f3d-c100-4c04-9079-99926c046972\" name=\"更改\" comment=\"\" />\r\n      <created>1767923714468</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1767923714468</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"borrar variable no usada\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1767923797186</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1767923797186</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"borrar variable no usada\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768062337299</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768062337299</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"creacion de Manager comand y validaciones\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768090224298</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768090224298</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"creacion de Manager comand y validaciones\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768091633927</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768091633927</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"creacion  comand y validaciones\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768092905235</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768092905235</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"estructura basica de command terminado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768094915497</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768094915497</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"estructura basica de command terminado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768094948956</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768094948956</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"terminado help y exit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768150983869</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768150983869</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"correciones de metodos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768152304299</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768152304299</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"correciones de metodos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768152406177</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768152406177</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"correciones de metodos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768414659998</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768414659998</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"correciones de metodos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768414682083</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768414682083</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"todo arreglado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768414867947</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768414867947</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"MapdB integrado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768415763993</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768415763993</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"MapdB integrado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768432217076</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768432217076</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"MapdB integrado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768432245157</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768432245157</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"MapdB integrado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768436636348</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768436636348</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"MapdB integrado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768438089309</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768438089309</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00019\" summary=\"setup de .jar terminado\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1768506545804</created>\r\n      <option name=\"number\" value=\"00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1768506545804</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"20\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"borrar variable no usada\" />\r\n    <MESSAGE value=\"creacion de Manager comand y validaciones\" />\r\n    <MESSAGE value=\"creacion  comand y validaciones\" />\r\n    <MESSAGE value=\"estructura basica de command terminado\" />\r\n    <MESSAGE value=\"terminado help y exit\" />\r\n    <MESSAGE value=\"correciones de metodos\" />\r\n    <MESSAGE value=\"todo arreglado\" />\r\n    <MESSAGE value=\"MapdB integrado\" />\r\n    <MESSAGE value=\"setup de .jar terminado\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"setup de .jar terminado\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java</url>\r\n          <line>102</line>\r\n          <option name=\"timeStamp\" value=\"20\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java</url>\r\n          <line>120</line>\r\n          <option name=\"timeStamp\" value=\"23\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 94f75c1948ee1de15bf143a028aecc11dff8cf83)
++++ b/.idea/workspace.xml	(date 1768531140616)
+@@ -4,12 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="setup de .jar terminado">
++    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="addmeting y food cambiado">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/UPM_SHOP.db" beforeDir="false" afterPath="$PROJECT_DIR$/UPM_SHOP.db" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketList.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationTicket.java" afterDir="false" />
+     </list>
+@@ -36,12 +34,12 @@
+     &quot;assignee&quot;: &quot;JunqinYe&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/DavvPar/UPM_Shop.git",
+-    "accountId": "9116ad7e-286e-4ab6-b70e-cbc796ecf7e1"
+-  }
+-}]]></component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/DavvPar/UPM_Shop.git&quot;,
++    &quot;accountId&quot;: &quot;9116ad7e-286e-4ab6-b70e-cbc796ecf7e1&quot;
++  }
++}</component>
+   <component name="ProblemsViewState">
+     <option name="selectedTabId" value="CurrentFile" />
+   </component>
+@@ -53,23 +51,23 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.App.executor": "Run",
+-    "Maven.UPM_SHOP [clean].executor": "Run",
+-    "Maven.UPM_SHOP [package].executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "main",
+-    "ignore.virus.scanning.warn.message": "true",
+-    "kotlin-language-version-configured": "true",
+-    "project.structure.last.edited": "Project",
+-    "project.structure.proportion": "0.15",
+-    "project.structure.side.proportion": "0.0",
+-    "settings.editor.selected.configurable": "preferences.language.and.region",
+-    "应用程序.App.executor": "Run"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.App.executor&quot;: &quot;Run&quot;,
++    &quot;Maven.UPM_SHOP [clean].executor&quot;: &quot;Run&quot;,
++    &quot;Maven.UPM_SHOP [package].executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.language.and.region&quot;,
++    &quot;应用程序.App.executor&quot;: &quot;Run&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RunAnythingCache">
+     <option name="myCommands">
+       <command value="mvn clean" />
+@@ -259,7 +257,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1768506545804</updated>
+     </task>
+-    <option name="localTasksCounter" value="20" />
++    <task id="LOCAL-00020" summary="addmeting y food cambiado">
++      <option name="closed" value="true" />
++      <created>1768507593083</created>
++      <option name="number" value="00020" />
++      <option name="presentableId" value="LOCAL-00020" />
++      <option name="project" value="LOCAL" />
++      <updated>1768507593083</updated>
++    </task>
++    <option name="localTasksCounter" value="21" />
+     <servers />
+   </component>
+   <component name="VcsManagerConfiguration">
+@@ -272,7 +278,8 @@
+     <MESSAGE value="todo arreglado" />
+     <MESSAGE value="MapdB integrado" />
+     <MESSAGE value="setup de .jar terminado" />
+-    <option name="LAST_COMMIT_MESSAGE" value="setup de .jar terminado" />
++    <MESSAGE value="addmeting y food cambiado" />
++    <option name="LAST_COMMIT_MESSAGE" value="addmeting y food cambiado" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
