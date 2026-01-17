@@ -9,7 +9,7 @@ public class EventProduct extends Item{
 
     private int people;
 
-    private int MAX_PEOPLE;
+    private  int MAX_PEOPLE;
     public EventProduct() {
         super();
         this.expirationDate = "";
@@ -55,7 +55,6 @@ public class EventProduct extends Item{
         c.setPeople(people);
         return c;
     }
-
     @Override
     public String toString(){
         return "{class:" + getProductType() +

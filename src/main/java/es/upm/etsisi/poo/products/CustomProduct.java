@@ -60,7 +60,6 @@ public class CustomProduct extends Item {
             addPersonalized(toProcess);
         }
         else if (personalizationValue instanceof ArrayList) {
-            @SuppressWarnings("unchecked")
             ArrayList<String> list = (ArrayList<String>) personalizationValue;
             for (String item : list) {
                 if (item != null && !item.trim().isEmpty()) {
@@ -76,8 +75,6 @@ public class CustomProduct extends Item {
 
     public boolean addPersonalized(String personalized) {
         boolean add = false;
-        // eliminar el primer --p
-        // porque si no al hacer split deja r[0]="" haciendo que haya 4 elementos en r
         String message = personalized.substring(3);
         String[] r = message.trim().split("--p");
         if (allowedText(r)) {
@@ -99,7 +96,6 @@ public class CustomProduct extends Item {
         return personalization;
     }
 
-    // Método auxiliar para validar
     public boolean allowedText(String[] text) {
         if (text.length > maxPers) {
             System.out.println("Too many customizations, the customization limit is " + maxPers);
@@ -107,13 +103,11 @@ public class CustomProduct extends Item {
         }
         return true;
     }
-
+    // no borres son setter/getter necesario para queJson funcione
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
-
     public int getMaxPers() { return maxPers; }
     public void setMaxPers(int maxPers) { this.maxPers = maxPers; }
-
     public int getN_Pers() { return N_Pers; }
     public void setN_Pers(int n_Pers) { N_Pers = n_Pers; }
 
