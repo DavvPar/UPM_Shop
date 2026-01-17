@@ -24,7 +24,7 @@ public class MapDBManager {
     private void initDB() {
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("UPM_SHOP.db")
+                    .fileDB("UPM_SHOP3.db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();
@@ -100,10 +100,8 @@ public class MapDBManager {
 
     public void addProduct(Product product) {
         productMap.put(product.getID(),product);
-        productcache.addProduct(product);
         db.commit();
     }
-
 
     public void removeUser(String id) {
         userMap.remove(id);

@@ -14,6 +14,8 @@ import es.upm.etsisi.poo.validation.ServiceValidator;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static org.eclipse.collections.impl.block.factory.StringPredicates.matches;
+
 public class ProductController extends Controller{
 
     private final ProductList productList;
@@ -34,7 +36,6 @@ public class ProductController extends Controller{
             String[] message = args.trim().split(" ");
             Product product = null;
 
-            //Servicio
             if (message.length == 2) {
                 if (!serviceValidator.validate(message)) {
                     System.out.println("prod add: error");
@@ -45,7 +46,6 @@ public class ProductController extends Controller{
                 String expireDate = message[0];
                 product = new Service(numService, serviceType, expireDate, ProductType.Service);
             }
-            // Producto (con o sin maxPers)
             else {
                 String name = Utils.getNameScanner(args);
                 String[] rightParts = Utils.secondPartArray(args);
@@ -54,18 +54,23 @@ public class ProductController extends Controller{
                     System.out.println("prod add: error");
                     return false;
                 }
+                String id;
+                String categoryStr;
+                String priceStr;
+                if(!(message[0].matches("\\d+"))){
+                    id = productList.GetNextIndex()+"";
+                }else {
+                    id = message[0];
 
-                String id = message[0];
-                String categoryStr = rightParts[0];
-                String priceStr = rightParts[1];
-
+                }
+                categoryStr = rightParts[0];
+                priceStr = rightParts[1];
                 String[] params;
                 if (rightParts.length == 3){
                     params = new String[]{id, categoryStr, priceStr, rightParts[2]};
                 } else {
                     params = new String[]{id, categoryStr, priceStr};
                 }
-
                 if (!customValidator.validate(params)) {
                     System.out.println("prod add: error");
                     return false;
@@ -73,7 +78,6 @@ public class ProductController extends Controller{
 
                 double price = Double.parseDouble(priceStr);
                 Category category = new Category(CategoryType.valueOf(categoryStr.toUpperCase()));
-
                 if (rightParts.length == 3) {
                     int maxPers = Integer.parseInt(rightParts[2]);
                     product = new CustomProduct(id, name, category, price, maxPers, ProductType.ProductPersonalized);

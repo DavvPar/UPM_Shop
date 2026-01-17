@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket<Product>>  {
+public class TicketList <T extends Ticket<Product>>  implements Serializable{
 
     private HashMap<String,HashMap<String,Object>> ticketList;
 
@@ -44,7 +45,7 @@ public class TicketList <T extends Ticket<Product>>  {
                 t= new TicketBusiness(TicketId,stateTicket.empty,type);
             }
             ticket.put("ticket",t);
-            ticket.put("Cashid",CashId);
+            ticket.put("cashId",CashId);
             ticket.put("clientId",clientId);
             ticketList.put(TicketId,ticket);
             addTicket(ticket);
@@ -86,7 +87,6 @@ public class TicketList <T extends Ticket<Product>>  {
         }
         return removed;
     }
-
     public Ticket getTicket(String id) {
         return (Ticket) ticketList.get(id).get("ticket");
     }
