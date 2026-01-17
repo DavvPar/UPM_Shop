@@ -120,6 +120,10 @@ public class TicketController extends Controller{
                      */
                 }
             }
+            String[] info =ticketList.getInfo(currentTicket.getTicketId());
+            if (currentTicket.getState() == stateTicket.closed){
+                System.out.println("Ticket : "+ info[2]+"-"+currentTicket.getTicketId() +"  "+info[0]+"    "+info[1]+"\n");
+            }else System.out.println("Ticket : "+ info[2]+"-"+currentTicket.getTicketId() +"  "+info[0]+"    "+info[1]+"\n");
             ticketList.CloseTicket(currentTicket, Utils.getTime());
             mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);

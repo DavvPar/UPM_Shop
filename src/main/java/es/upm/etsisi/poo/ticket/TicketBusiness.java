@@ -101,7 +101,7 @@ public class TicketBusiness<P extends Product> extends Ticket<P> {
         if (!exitP) Mproduct ="";
         else {
 
-            return "Ticket : "+ getTicketId() +"\n" +Mservice+Mproduct +
+            return  Mservice+Mproduct +
                     "Total price: "+ String.format("%.2f",getTotalPrice()) +"\n"
                     + "Total discount: "+ String.format("%.2f",getTotalDiscount()) +"\n"
                     +DiscountM

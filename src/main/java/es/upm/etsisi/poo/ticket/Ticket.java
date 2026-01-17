@@ -205,7 +205,7 @@ public abstract class Ticket <P extends Product>implements Serializable {
         if (servicesCount < (productList.size() - 1)) {
             productList.subList(servicesCount, productList.size())
                     .sort(Comparator.comparing(
-                            p ->Integer.parseInt(((Item)p).getName()),
+                            p ->Integer.parseInt(((Item)p).getID()),
                             Integer::compare
                     ));
         }

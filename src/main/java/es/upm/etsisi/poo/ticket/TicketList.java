@@ -34,8 +34,8 @@ public class TicketList <T extends Ticket<Product>>  implements Serializable{
     public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type,MapDBManager mapDBManager){
         Ticket t;
         HashMap<String,Object> ticket = new HashMap<>();
+        ticket.put("opentime",Utils.getTime());
         if (TicketId == null){
-            ticket.put("opentime",Utils.getTime());
             TicketId = createId();
         }
         if (validId(TicketId)){
@@ -75,7 +75,17 @@ public class TicketList <T extends Ticket<Product>>  implements Serializable{
         }
         return added;
     }
-
+    public String[] getInfo(String id){
+        if(ticketList.get(id)!= null){
+            return new String[]{
+                (String) ticketList.get(id).get("cashId"),
+                (String) ticketList.get(id).get("clientId"),
+                (String) ticketList.get(id).get("opentime"),
+                (String) ticketList.get(id).get("closetime")
+            };
+        }
+        else return new String[4];
+    }
     public boolean removeTicket(String cashid) {
         boolean removed = false;
         for(HashMap<String, Object> ticketData : ticketList.values()) {
@@ -117,7 +127,9 @@ public class TicketList <T extends Ticket<Product>>  implements Serializable{
         for (HashMap<String,Object> ticket :ticketList.values()){
             Ticket t = (Ticket) ticket.get("ticket");
             String state = String.valueOf(t.getState());
-            text += t.getTicketId() + " - " + state.toUpperCase() + "\n";
+            if (t.getState() == stateTicket.closed){
+            text += (String) ticket.get("opentime")+"-"+t.getTicketId() +"-"+(String) ticket.get("closetime")+ " - " + state.toUpperCase() +"   "+(String) ticket.get("cashId")+ "\n" ;
+            }else text += (String) ticket.get("opentime")+"-"+t.getTicketId()+ " - " + state.toUpperCase() + "\n";
         }
         return text;
     }
