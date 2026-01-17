@@ -12,6 +12,8 @@ import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.UserList;
 import es.upm.etsisi.poo.validation.EventProductValidator;
 
+import java.util.HashMap;
+
 public class TicketController extends Controller{
 
     private final TicketList ticketList;
@@ -19,7 +21,7 @@ public class TicketController extends Controller{
     public final ProductList productList;
 
     private final UserList userList;
-
+    private HashMap<String,Object> ticket;
     private Ticket currentTicket;
 
     public TicketController(MapDBManager mapDBManager) {
@@ -78,6 +80,7 @@ public class TicketController extends Controller{
                 return false;
             }
             currentTicket.addProductToTicket(productList, id, quantity, custom);
+            mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);
             System.out.println("ticket add: ok");
             return true;
@@ -119,8 +122,8 @@ public class TicketController extends Controller{
             }
 
             ticketList.CloseTicket(currentTicket, Utils.getTime());
+            mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);
-            mapDBManager.addTicket(ticketList.getTicketDate(currentTicket));
             System.out.println("ticket print: ok");
             return true;
 
@@ -154,6 +157,7 @@ public class TicketController extends Controller{
             }
 
             currentTicket.removeProduct(id);
+            mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);
             System.out.println("ticket remove: ok");
             return true;
@@ -171,7 +175,7 @@ public class TicketController extends Controller{
         return true;
     }
 
-    public boolean newTicket(String args){ //MAL COPIADO CREO
+    public boolean newTicket(String args){
         String[] input = args.split("-");
         String[] firstPart = input[0].trim().split(" ");
 
@@ -187,9 +191,9 @@ public class TicketController extends Controller{
         TicketType type = Utils.TypeTicket(firstPart[firstPart.length - 1], typeTicket);
 
         if (firstPart[0].matches("[0-9]+") && firstPart[0].length() >= 5) {
-            currentTicket = ticketList.createTicket(firstPart[0], firstPart[1], firstPart[2], type);
+            currentTicket = ticketList.createTicket(firstPart[0], firstPart[1], firstPart[2], type,mapDBManager );
         } else {
-            currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type);
+            currentTicket = ticketList.createTicket(null, firstPart[0], firstPart[1], type,mapDBManager);
         }
         if (currentTicket != null){
         currentTicket.setState(stateTicket.empty);

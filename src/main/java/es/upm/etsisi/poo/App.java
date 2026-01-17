@@ -52,7 +52,6 @@ public class App {
             if (currentScanner == consoleScanner) {
                 System.out.print("\ntUPM> ");
             }
-
             String line;
             if (currentScanner.hasNextLine()) {
                 line = currentScanner.nextLine();
@@ -65,7 +64,6 @@ public class App {
                     fileScanner.close();
                     readingFromFile = false;
                     fileFinished = true;
-                    System.out.println("\n=== Fin del archivo, continuando en modo interactivo ===");
                     continue;
                 } else {
                     break;
@@ -83,8 +81,6 @@ public class App {
         if (consoleScanner != null) {
             consoleScanner.close();
         }
-
-        System.out.println("Saliendo del programa...");
     }
 
     private void init() {

@@ -1,6 +1,8 @@
 package es.upm.etsisi.poo.ticket;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;

@@ -13,10 +13,9 @@ public class MapDBManager {
     private UserList usercache;
     private ProductList productcache;
     private TicketList<Ticket<Product>> ticketscache;
-    private HTreeMap<String, byte[]> productMap;
-    private HTreeMap<String, byte[]> ticketMap;
+    private HTreeMap<String, Product> productMap;
+    private HTreeMap<String, HashMap<String,Object>> ticketMap;
     private HTreeMap<String, User> userMap;
-
     public MapDBManager() {
         initDB();
         Load();
@@ -42,90 +41,54 @@ public class MapDBManager {
                 .keySerializer(Serializer.STRING)
                 .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
-
-        if (userMap.isEmpty()) {
-            usercache = new UserList();
-        } else {
-            usercache = new UserList();
-            for (User user : userMap.values()) {
-                if (user instanceof Cash) {
-                    usercache.addCash((Cash) user);
-                } else {
-                    usercache.addClient((Client) user);
-                }
+        usercache = new UserList();
+        List<Cash> cashUsers = new ArrayList<>();
+        List<Client> clientUsers = new ArrayList<>();
+        for (User user : userMap.values()) {
+            if (user instanceof Cash) {
+                cashUsers.add((Cash) user);
+            } else if (user instanceof Client) {
+                clientUsers.add((Client) user);
             }
         }
+        for (Cash cash : cashUsers) {
+            usercache.addCash(cash);
+        }
+        for (Client client : clientUsers) {
+            usercache.addClient(client);
+        }
     }
-
     private void LoadProductList() {
         productMap = db.hashMap("product")
                 .keySerializer(Serializer.STRING)
-                .valueSerializer(Serializer.BYTE_ARRAY)
+                .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
 
-        if (productMap.isEmpty()) {
             productcache = new ProductList(200);
-        } else {
-            productcache = new ProductList(200);
-            int success = 0;
-            int failed = 0;
-
-            for (Map.Entry<String, byte[]> entry : productMap.entrySet()) {
-                try {
-                    Product product = JacksonSerializer.deserialize(entry.getValue(), Product.class);
-                    if (product != null) {
-                        productcache.addProduct(product);
-                        success++;
-                        System.out.println("Cargado: " + entry.getKey());
-                    } else {
-                        failed++;
-                    }
-                } catch (Exception e) {
-                    failed++;
-                    System.err.println("Error producto " + entry.getKey() + ": " + e.getMessage());
-
-                    byte[] data = entry.getValue();
-                    if (data != null && data.length > 0) {
-                        String preview = new String(data, 0, Math.min(50, data.length));
-                        System.err.println("Datos: " + preview);
-                    }
+            if (!productMap.isEmpty()){
+                for (Product product : productMap.values()){
+                    productcache.addProduct(product);
                 }
             }
-
-            System.out.println("Productos: " + success + " ok, " + failed + " fallados");
-        }
     }
 
     private void LoadTicketList() {
         ticketMap = db.hashMap("ticket")
                 .keySerializer(Serializer.STRING)
-                .valueSerializer(Serializer.BYTE_ARRAY)
+                .valueSerializer(Serializer.JAVA)
                 .createOrOpen();
-
-        if (ticketMap.isEmpty()) {
-            ticketscache = new TicketList<>();
-        } else {
-            ticketscache = new TicketList<>();
-            int success = 0;
-            int failed = 0;
-
-            for (Map.Entry<String, byte[]> entry : ticketMap.entrySet()) {
-                try {
-                    HashMap<String, Object> ticketData = JacksonSerializer.deserialize(entry.getValue(), HashMap.class);
-                    if (ticketData != null) {
-                        ticketscache.addTicket(ticketData);
-                        success++;
-                    } else {
-                        failed++;
-                    }
-                } catch (Exception e) {
-                    failed++;
-                    System.err.println("Error ticket " + entry.getKey() + ": " + e.getMessage());
-                }
+        ticketscache = new TicketList<>();
+        if (!ticketMap.isEmpty()){
+            for (HashMap<String,Object> ticket : ticketMap.values()){
+                ticketscache.addTicket(ticket);
             }
-
-            System.out.println("Tickets: " + success + " ok, " + failed + " fallados");
         }
+    }
+
+    public void addTicket(HashMap<String, Object> ticket) {
+            String ticketId = ((Ticket)ticket.get("ticket")).getTicketId();
+            ticketMap.put(ticketId,ticket);
+            db.commit();
     }
 
     public void addUser(User user) {
@@ -136,19 +99,11 @@ public class MapDBManager {
     }
 
     public void addProduct(Product product) {
-        byte[] serialized = JacksonSerializer.serialize(product);
-        productMap.put(product.getID(), serialized);
+        productMap.put(product.getID(),product);
         productcache.addProduct(product);
         db.commit();
     }
 
-    public void addTicket(HashMap<String, Object> ticket) {
-        String id = ((Ticket)ticket.get("ticket")).getTicketId();
-        byte[] serialized = JacksonSerializer.serialize(ticket);
-        ticketMap.put(id, serialized);
-        ticketscache.addTicket(ticket);
-        db.commit();
-    }
 
     public void removeUser(String id) {
         userMap.remove(id);
