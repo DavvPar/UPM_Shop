@@ -6,12 +6,17 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
 
 import es.upm.etsisi.poo.enums.*;
+import es.upm.etsisi.poo.products.Item;
+import es.upm.etsisi.poo.products.Product;
 import es.upm.etsisi.poo.user.UserValidator;
 
 public class Utils {
+
     public static String convertDate(String inputDate) {
         LocalDate date = LocalDate.parse(inputDate);
         ZoneId defaultZone = ZoneId.systemDefault();

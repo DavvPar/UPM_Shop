@@ -1,7 +1,10 @@
 package es.upm.etsisi.poo.products;
+import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.CategoryType;
 import es.upm.etsisi.poo.enums.Category;
+
+import java.lang.module.FindException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -20,7 +23,41 @@ public class ProductList {
         products = new ArrayList<>();
         Numservice = 0;
     }
-
+    public void SortList(){
+        int servicesCount = products.size()-1;
+        for (int i = 0; i < servicesCount; i++) {
+            if (products.get(i).getProductType() == ProductType.Service) {
+                Product temp = products.get(i);
+                products.set(i,products.get(servicesCount));
+                products.set(servicesCount,temp);
+                servicesCount--;
+            }
+        }
+        if (servicesCount < products.size()) {
+            products.subList(servicesCount+1,products.size()-1)
+                    .sort(Comparator.comparing(
+                            Product::getID,
+                            String.CASE_INSENSITIVE_ORDER
+                    ));
+        }
+        products.subList(0,servicesCount+1)
+                .sort(Comparator.comparing(
+                        p ->Integer.parseInt(((Item)p).getID()),
+                        Integer::compare
+                ));
+    }
+    public int GetNextIndex(){
+        int Index = 0;
+        SortList();
+        for (Product product : products){
+            if (product.getProductType() != ProductType.Service){
+                if (Integer.parseInt(product.getID())>Index){
+                    return Index;
+                }else Index++;
+            }
+        }
+        return Index;
+    }
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {

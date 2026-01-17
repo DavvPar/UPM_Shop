@@ -33,7 +33,7 @@ public class CustomProductValidator implements Validator{
     private boolean validId(String idStr){
         try {
             int id = Integer.parseInt(idStr);
-            return id > 0;
+            return id >= 0;
         } catch (NumberFormatException e) {
             return false;
         }

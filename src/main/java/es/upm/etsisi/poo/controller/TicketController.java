@@ -120,7 +120,6 @@ public class TicketController extends Controller{
                      */
                 }
             }
-
             ticketList.CloseTicket(currentTicket, Utils.getTime());
             mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);
@@ -168,7 +167,7 @@ public class TicketController extends Controller{
         }
     }
 
-    public boolean listTicket(){ //TODO RETURN TRUE?
+    public boolean listTicket(){
         System.out.println("Ticket list:");
         System.out.print(ticketList.toString());
         System.out.println("ticket list: ok");
