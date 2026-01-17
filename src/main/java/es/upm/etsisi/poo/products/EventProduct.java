@@ -9,8 +9,14 @@ public class EventProduct extends Item{
 
     private int people;
 
-    private int MAX_PEOPLE;
-
+    private  int MAX_PEOPLE;
+    public EventProduct() {
+        super();
+        this.expirationDate = "";
+        this.priceP = 0.0;
+        this.people = 0;
+        this.MAX_PEOPLE = 0;
+    }
     public EventProduct(String ID, String name, double price, String expirationDate, int people, ProductType type) {
         super(ID, name, price, type);
         MAX_PEOPLE = people;
@@ -32,7 +38,7 @@ public class EventProduct extends Item{
     }
 
     public void setPeople(int people) {
-        if(people <= 0 || people > MAX_PEOPLE)
+        if(people < 0 || people > MAX_PEOPLE)
             throw new IllegalArgumentException("The number of participants must be between 1 and " + MAX_PEOPLE);
         this.people = people;
         super.setPrice((people*priceP*100)/100);
@@ -49,7 +55,6 @@ public class EventProduct extends Item{
         c.setPeople(people);
         return c;
     }
-
     @Override
     public String toString(){
         return "{class:" + getProductType() +

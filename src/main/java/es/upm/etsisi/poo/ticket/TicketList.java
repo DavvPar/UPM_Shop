@@ -10,7 +10,7 @@ import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket<Product>> implements Serializable {
+public class TicketList <T extends Ticket<Product>>  {
 
     private HashMap<String,HashMap<String,Object>> ticketList;
 
@@ -30,7 +30,7 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
         return true;
     }
 
-    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type){
+    public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type,MapDBManager mapDBManager){
         Ticket t;
         HashMap<String,Object> ticket = new HashMap<>();
         if (TicketId == null){
@@ -48,6 +48,7 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
             ticket.put("clientId",clientId);
             ticketList.put(TicketId,ticket);
             addTicket(ticket);
+            mapDBManager.addTicket(ticket);
             }
         else{
             System.out.println("Invalid TicketId");
@@ -89,7 +90,7 @@ public class TicketList <T extends Ticket<Product>> implements Serializable {
     public Ticket getTicket(String id) {
         return (Ticket) ticketList.get(id).get("ticket");
     }
-
+    public HashMap<String,Object> getTicketFull(String id){return ticketList.get(id);}
     public void CloseTicket(Ticket ticket,String date){
         if (ticket.getState() != stateTicket.closed){
             HashMap<String,Object> ticketDate = ticketList.get(ticket.getTicketId());

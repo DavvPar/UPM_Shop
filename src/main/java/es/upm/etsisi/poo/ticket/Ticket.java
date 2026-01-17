@@ -1,4 +1,5 @@
 package es.upm.etsisi.poo.ticket;
+import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
@@ -33,7 +34,16 @@ public abstract class Ticket <P extends Product>implements Serializable {
     private stateTicket state;
 
     private TicketType type;
-
+    public Ticket() {
+        this.MaxNumProduct = 100;
+        this.productList = new ArrayList<>();
+        this.ticketId = "";
+        this.totalPrice = 0.0;
+        this.state = stateTicket.empty;
+        this.type = null;
+        this.discount = new ArrayList<>();
+        this.categorytype = new int[6];
+    }
     public Ticket(String idTicket, stateTicket state, TicketType type) {
         this.productList = new ArrayList<>();
         this.ticketId = idTicket;
@@ -46,8 +56,7 @@ public abstract class Ticket <P extends Product>implements Serializable {
     }
 
     public TicketType getType(){return type;}
-
-    public abstract boolean addProductToTicket(ProductList lista,String Id, int quantity, String message);
+    public abstract boolean addProductToTicket(ProductList lista, String Id, int quantity, String message);
     public boolean add(Product p,int quantity,String message){
         boolean add = false;
         if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){

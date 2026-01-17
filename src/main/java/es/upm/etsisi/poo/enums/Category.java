@@ -1,6 +1,8 @@
 package es.upm.etsisi.poo.enums;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
 
     private CategoryType type;
 
@@ -9,7 +11,9 @@ public class Category {
     private double discountClothes = 0.07;
     private double discountBook = 0.10;
     private double discountElectronic = 0.03;
-
+    public Category() {
+        this.type = null;
+    }
     public Category(CategoryType type) {
         this.type = type;
     }

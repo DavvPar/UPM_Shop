@@ -1,17 +1,20 @@
 package es.upm.etsisi.poo.products;
 import es.upm.etsisi.poo.enums.ProductType;
 
-public abstract class Item extends Product{
+import java.io.Serializable;
 
-    private final String ID;
+public abstract class Item extends Product {
 
     private String name;
 
     private double price;
-
+    public Item() {
+        super();
+        this.name = "";
+        this.price = 0.0;
+    }
     public Item(String ID, String name, double price,ProductType types) {
         super(ID,types);
-        this.ID = ID;
         this.name = name;
         this.price = price;
     }

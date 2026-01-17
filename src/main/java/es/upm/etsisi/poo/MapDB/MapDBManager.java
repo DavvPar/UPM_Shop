@@ -1,130 +1,140 @@
 package es.upm.etsisi.poo.MapDB;
+
 import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.ticket.*;
 import es.upm.etsisi.poo.user.*;
 import org.mapdb.*;
+import java.io.*;
 import java.util.*;
 
 public class MapDBManager {
     private DB db;
-    private UserList usercache ;
+    private UserList usercache;
     private ProductList productcache;
     private TicketList<Ticket<Product>> ticketscache;
-    private HTreeMap productMap;
-    private HTreeMap userMap;
-    private HTreeMap<String,HashMap<String,Object>> ticketMap;
-    private static final String COL_USER = "userList";
-    private static final String COL_PRODUCT = "productList";
-    private static final String COL_TICKET = "ticketList";
-    private static final String COL_COMMAND = "commandMap";
-    public MapDBManager(){
+    private HTreeMap<String, Product> productMap;
+    private HTreeMap<String, HashMap<String,Object>> ticketMap;
+    private HTreeMap<String, User> userMap;
+    public MapDBManager() {
         initDB();
         Load();
     }
-    private void Load(){
-        userMap = db
-                .hashMap("user")
-                .keySerializer(Serializer.STRING)
-                .valueSerializer(Serializer.JAVA)
-                .createOrOpen();
-        LoadUserList(userMap);
-        productMap = db
-                .hashMap("product")
-                .keySerializer(Serializer.STRING)
-                .valueSerializer(Serializer.JAVA)
-                .createOrOpen();
-        LoadProductList(productMap);
-        ticketMap = db
-                .hashMap("ticket")
-                .keySerializer(Serializer.STRING)
-                .valueSerializer(Serializer.JAVA)
-                .createOrOpen();
-        LoadTicketList(ticketMap);
-    }
-    public void addUser(User user){
-        if (userMap.get(user.getId())== null){
-        userMap.put(user.getId(),user);
-        db.commit();
-        }
-    }
-    public void addProduct(Product product){
-        if (productMap.get(product.getID()) == null){
-        productMap.put(product.getID(),product);
-        db.commit();
-        }
-    }
-    public void addTicket(HashMap<String,Object> ticket){
-        String id = ((Ticket)ticket.get("ticket")).getTicketId();
-        if (ticketMap.get(id) == null){
-        ticketMap.put(id,ticket);
-        db.commit();
-        }
-    }
-    public void removeUser(String id){
-        userMap.remove(id);
-        db.commit();
-    }
-    public void removeProduct(Product product){
-        productMap.remove(product.getID());
-        db.commit();
-    }
-    public void removeTicket(Ticket ticket){
-        ticketMap.remove(Utils.getShortId(ticket.getTicketId()));
-        db.commit();
-    }
-    private void LoadUserList(HTreeMap<String,User> Map){
-        if (Map.isEmpty()) {
-            usercache= new UserList();
-        }
-        else{
-            for (User user : Map.values()) {
-                if (user instanceof Cash){
-                    usercache.addCash((Cash) user);
-                }else usercache.addClient((Client) user);
-            }
-        }
-    }
-    private void LoadProductList(HTreeMap<String,Product> Map){
-        if (Map.isEmpty()) {
-            productcache = new ProductList(200);
-        }
-        else{
-            for (Product product : Map.values()) {
-             productcache.addProduct(product);
-            }
-        }
-    }
-    private void LoadTicketList(HTreeMap<String,HashMap<String,Object>> Map) {
-        if (Map.isEmpty()) {
-            ticketscache = new TicketList<>();
-        }
-        else{
-            for (HashMap<String,Object> ticket : Map.values()) {
-                ticketscache.addTicket(ticket);
-            }
-        }
-    }
-    public ProductList getProductoList() {
-        return productcache;
-    }
-    public TicketList<Ticket<Product>> getTicketList() {
-        return ticketscache;
-    }
-    public UserList getUserList(){
-        return usercache;
-    }
-    private void initDB(){
+
+    private void initDB() {
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("UPM_SHOP1.db")
+                    .fileDB("UPM_SHOP.db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();
         }
-        ticketscache = new TicketList<>();
-        productcache = new ProductList(200);
-        usercache = new UserList();
+    }
+    private void Load() {
+        LoadUserList();
+        LoadProductList();
+        LoadTicketList();
+    }
 
+    private void LoadUserList() {
+        userMap = db.hashMap("user")
+                .keySerializer(Serializer.STRING)
+                .valueSerializer(Serializer.JAVA)
+                .createOrOpen();
+        usercache = new UserList();
+        List<Cash> cashUsers = new ArrayList<>();
+        List<Client> clientUsers = new ArrayList<>();
+        for (User user : userMap.values()) {
+            if (user instanceof Cash) {
+                cashUsers.add((Cash) user);
+            } else if (user instanceof Client) {
+                clientUsers.add((Client) user);
+            }
+        }
+        for (Cash cash : cashUsers) {
+            usercache.addCash(cash);
+        }
+        for (Client client : clientUsers) {
+            usercache.addClient(client);
+        }
+    }
+    private void LoadProductList() {
+        productMap = db.hashMap("product")
+                .keySerializer(Serializer.STRING)
+                .valueSerializer(Serializer.JAVA)
+                .createOrOpen();
+
+            productcache = new ProductList(200);
+            if (!productMap.isEmpty()){
+                for (Product product : productMap.values()){
+                    productcache.addProduct(product);
+                }
+            }
+    }
+
+    private void LoadTicketList() {
+        ticketMap = db.hashMap("ticket")
+                .keySerializer(Serializer.STRING)
+                .valueSerializer(Serializer.JAVA)
+                .createOrOpen();
+        ticketscache = new TicketList<>();
+        if (!ticketMap.isEmpty()){
+            for (HashMap<String,Object> ticket : ticketMap.values()){
+                ticketscache.addTicket(ticket);
+            }
+        }
+    }
+
+    public void addTicket(HashMap<String, Object> ticket) {
+            String ticketId = ((Ticket)ticket.get("ticket")).getTicketId();
+            ticketMap.put(ticketId,ticket);
+            db.commit();
+    }
+
+    public void addUser(User user) {
+        if (userMap.get(user.getId()) == null) {
+            userMap.put(user.getId(), user);
+            db.commit();
+        }
+    }
+
+    public void addProduct(Product product) {
+        productMap.put(product.getID(),product);
+        productcache.addProduct(product);
+        db.commit();
+    }
+
+
+    public void removeUser(String id) {
+        userMap.remove(id);
+        db.commit();
+    }
+
+    public void removeProduct(Product product) {
+        productMap.remove(product.getID());
+        db.commit();
+    }
+
+    public void removeTicket(Ticket ticket) {
+        ticketMap.remove(Utils.getShortId(ticket.getTicketId()));
+        db.commit();
+    }
+
+    public ProductList getProductoList() {
+        return productcache;
+    }
+
+    public TicketList<Ticket<Product>> getTicketList() {
+        return ticketscache;
+    }
+
+    public UserList getUserList() {
+        return usercache;
+    }
+
+    public void close() {
+        if (db != null && !db.isClosed()) {
+            db.close();
+        }
     }
 }
