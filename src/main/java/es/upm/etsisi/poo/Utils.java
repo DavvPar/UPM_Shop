@@ -25,7 +25,20 @@ public class Utils {
                 .ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         return zonedDateTime.format(formatter);
     }
-
+    public static boolean ValidInput(String message){
+        switch (message.toLowerCase()) {
+            case "prod":
+            case "ticket":
+            case "help":
+            case "exit":
+            case "cash":
+            case "client":
+            case "echo":
+                return true;
+            default:
+                return false;
+        }
+    }
     public static String getShortId(String Id){
         String shortId = "";
             String[] message =Id.trim().split("[-:]");
