@@ -14,7 +14,7 @@ public class UserList {
 
     public boolean addClient(Client client) {
         boolean added = false;
-        if (validateClient(client)) {
+        if (availableClient(client)) {
             addUserOrdered(client);
             added = true;
         } else {
@@ -28,7 +28,7 @@ public class UserList {
         if (cashIdNull(cash.getId())) {
             cash.setId(generateUniqueCashId());
         }
-        if (validateCash(cash)) {
+        if (availableCash(cash)) {
             addUserOrdered(cash);
             added = true;
         } else {
@@ -36,6 +36,8 @@ public class UserList {
         }
         return added;
     }
+
+
 
     public void addUserOrdered(User user) {
         users.add(user);
@@ -46,34 +48,29 @@ public class UserList {
         System.out.println(user.toString());
     }
 
-    public boolean validateClient(Client client){
-        return (validateClientId(client.getId()) && validateClientEmail(client.getEmail()) && validateClientCashId(client.getCashId()));
+    private boolean isIdAvailable(String id){
+        return !containsId(id);
     }
 
-    public boolean validateClientId(String clientId) {
-        return !(containsId(clientId));
+    private boolean isEmailAvailableFor(Class<?> clazz, String email) {
+        User user = getUserByEmail(email);
+        return user == null || clazz.isInstance(user);
     }
 
-    public boolean validateClientEmail(String email) {
-        return !(containsEmail(email) && getUserByEmail(email) instanceof Cash);
+    private boolean availableClient(Client client){
+        return (isIdAvailable(client.getId()) && isEmailAvailableFor(Client.class, client.getEmail()) && validateClientCashId(client.getCashId()));
     }
+
 
     public boolean validateClientCashId(String cashId) {
         User user = getUserByID(cashId);
         return user instanceof Cash;
     }
 
-    public boolean validateCash(Cash cash){
-        return (validateCashId(cash.getId()) && validateCashEmail(cash.getEmail()));
+    private boolean availableCash(Cash cash){
+        return (isIdAvailable(cash.getId()) && isEmailAvailableFor(Cash.class, cash.getEmail()));
     }
 
-    public boolean validateCashId(String cashId) {
-        return !(containsId(cashId));
-    }
-
-    public boolean validateCashEmail(String email) {
-        return !(containsEmail(email) && getUserByEmail(email) instanceof Client);
-    }
 
     public boolean cashIdNull(String cashId) {
         return (cashId == null);
