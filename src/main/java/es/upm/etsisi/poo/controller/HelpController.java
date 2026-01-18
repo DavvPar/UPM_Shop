@@ -7,8 +7,8 @@ public class HelpController {
     public HelpController(){
          commands = new String[]{
                  "◦ Client/Cash:",
-                 "   client add \"<name>\" <DNI> <email> <cashId>",
-                 "   client remove <DNI>",
+                 "   client add \"<name>\" (<DNI>|<NIF>) <email> <cashId>",
+                 "   client remove (<DNI>|<NIF>)",
                  "   client list",
                  "   cash add [<id>] \"<name>\" <email>",
                  "   cash remove <id>",
@@ -29,6 +29,7 @@ public class HelpController {
                  "   prod addMeeting [<id>] \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>",
                  "   prod list",
                  "   prod remove <id>",
+
                  "◦ General:",
                  "   echo \"<texto>\"",
                  "   help",

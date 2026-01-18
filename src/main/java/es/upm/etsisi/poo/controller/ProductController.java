@@ -11,10 +11,8 @@ import es.upm.etsisi.poo.validation.EventProductValidator;
 import es.upm.etsisi.poo.validation.CustomProductValidator;
 import es.upm.etsisi.poo.validation.ServiceValidator;
 
-import java.time.LocalDateTime;
 //import java.time.temporal.ChronoUnit;
 
-import static org.eclipse.collections.impl.block.factory.StringPredicates.matches;
 
 public class ProductController extends Controller{
 
@@ -58,7 +56,7 @@ public class ProductController extends Controller{
                 String categoryStr;
                 String priceStr;
                 if(!(message[0].matches("\\d+"))){
-                    id = productList.GetNextIndex()+"";
+                    id = productList.getNextIndex()+"";
                 }else {
                     id = message[0];
 
