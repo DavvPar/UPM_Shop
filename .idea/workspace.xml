@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="MapDB terminado">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___1.xml" afterDir="false" />
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="modificacion userList metodos validate">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/user/UserList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/user/UserList.java" afterDir="false" />
     </list>
@@ -285,8 +282,26 @@
       <option name="project" value="LOCAL" />
       <updated>1768694008808</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="modificacion userList metodos validate">
+      <created>1768737591486</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1768737591486</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="borrar variable no usada" />
@@ -301,7 +316,8 @@
     <MESSAGE value="prodlist update" />
     <MESSAGE value="addmeting y food cambiado" />
     <MESSAGE value="MapDB terminado" />
-    <option name="LAST_COMMIT_MESSAGE" value="MapDB terminado" />
+    <MESSAGE value="modificacion userList metodos validate" />
+    <option name="LAST_COMMIT_MESSAGE" value="modificacion userList metodos validate" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

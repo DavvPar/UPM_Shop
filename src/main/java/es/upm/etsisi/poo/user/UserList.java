@@ -58,11 +58,13 @@ public class UserList {
     }
 
     private boolean availableClient(Client client){
-        return (isIdAvailable(client.getId()) && isEmailAvailableFor(Client.class, client.getEmail()) && validateClientCashId(client.getCashId()));
+        return (isIdAvailable(client.getId()) &&
+                isEmailAvailableFor(Client.class, client.getEmail())
+                && validateClientCashId(client.getCashId()));
     }
 
 
-    public boolean validateClientCashId(String cashId) {
+    private boolean validateClientCashId(String cashId) {
         User user = getUserByID(cashId);
         return user instanceof Cash;
     }
@@ -72,7 +74,7 @@ public class UserList {
     }
 
 
-    public boolean cashIdNull(String cashId) {
+    private boolean cashIdNull(String cashId) {
         return (cashId == null);
     }
 
@@ -86,7 +88,7 @@ public class UserList {
         return removed;
     }
 
-    public int getClientsNum(){return users.size();}
+    private int getClientsNum(){return users.size();}
 
     private String generateUniqueCashId() {
         String id;
@@ -116,25 +118,6 @@ public class UserList {
         return null;
     }
 
-    public ArrayList<Client> getClients() {
-        ArrayList<Client> clients = new ArrayList<>();
-        for (User user : users) {
-            if (user instanceof Client) {
-                clients.add((Client) user);
-            }
-        }
-        return clients;
-    }
-
-    public ArrayList<Cash> getCashiers() {
-        ArrayList<Cash> cashiers = new ArrayList<>();
-        for (User user : users) {
-            if (user instanceof Cash) {
-                cashiers.add((Cash) user);
-            }
-        }
-        return cashiers;
-    }
 
     public boolean containsId(String id){
         return getUserByID(id) != null;
