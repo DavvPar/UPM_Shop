@@ -61,18 +61,16 @@ public class CashController extends  Controller{
     }
 
     public boolean removeCash(String args){
-        String[] message = args.split(" ");
+
         boolean removed = false;
-        if (message.length < 3) {
-            System.out.println("cash remove: error");
-            return false;
-        }
-        String id = message[2];
+        String id = args;
+
         Cash cash  = (Cash) userList.getUserByID(id);
         if (cash != null){
             ticketList.removeTicket(cash.getId());
             removed = userList.removeUser(id);
         }
+
         if (removed) {
             mapDBManager.removeUser(id);
             System.out.println("cash remove: ok");
@@ -87,20 +85,19 @@ public class CashController extends  Controller{
     }
 
     public boolean ticketsCash(String args){
-        String[] message = args.split(" ");
-        if (message.length < 3) {
-            System.out.println("cash tickets: error");
-            return false;
-        }
-        String cashier = message[2];
-        if (userValidation.validCashId(cashier) && userList.containsId(cashier)) {
-            TicketList ticketsOfCash = ticketList.getTicketsOfCash(cashier);
+
+        String cashId = args;
+        boolean printed = false;
+
+        if (userValidation.validCashId(cashId) && userList.containsId(cashId)) {
+            TicketList ticketsOfCash = ticketList.getTicketsOfCash(cashId);
             System.out.println("Tickets:");
             System.out.println(ticketsOfCash.toString());
             System.out.println("cash tickets: ok");
+            printed = true;
         }else{
             System.out.println("cash tickets:error");
         }
-        return true;
+        return printed;
     }
 }

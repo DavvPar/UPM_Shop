@@ -29,7 +29,7 @@ public class ValidationUser implements Validator{
 
     public boolean validCashId(String cashId) {
         try {
-            return ((cashId != null && (cashId.matches("^UW\\d{7}$"))));
+            return ((cashId == null || (cashId.matches("^UW\\d{7}$"))));
         }catch (IllegalArgumentException e) {
             return false;
         }

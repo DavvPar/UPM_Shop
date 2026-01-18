@@ -31,21 +31,6 @@ public class ClientController extends Controller{
             String email = message[message.length-2];
             String cashId = message[message.length-1];
 
-
-
-            /*if (!UserValidator.validName(name)) {
-                System.out.println("client add: error name");
-                return false;
-            }
-            if (!UserValidator.validEmail(email)) {
-                System.out.println("client add: error email");
-                return false;
-            }
-            if (!UserValidator.validCashId(cashId)) {
-                System.out.println("client add: error CashId");
-                return false;
-            }*/
-
             String[] params = new String[]{name, email, cashId};
             Client c = null;
             if (userValidator.validNIF(dni) && userValidator.validate(params)){
@@ -73,12 +58,8 @@ public class ClientController extends Controller{
 
 
     public boolean removeClient(String args){
-        String[] message = args.split(" ");
-        if (message.length < 3) {
-            System.out.println("client remove: error");
-            return false;
-        }
-        String dni = message[2];
+        String dni = args;
+
         boolean removed = userList.removeUser(dni);
         if (removed) {
             mapDBManager.removeUser(dni);
@@ -86,7 +67,7 @@ public class ClientController extends Controller{
         } else {
             System.out.println("client remove: error");
         }
-        return false;
+        return removed;
     }
 
     public boolean listClient(){
