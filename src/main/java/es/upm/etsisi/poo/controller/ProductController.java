@@ -207,7 +207,7 @@ public class ProductController extends Controller{
             String expirationStrg = rightParts[1];
             String maxPeopleStr = rightParts[2];
 
-            String[] params = new String[]{message[0], name, priceStr, expirationStrg, maxPeopleStr};
+            String[] params = new String[]{message[0], name, priceStr, expirationStrg, "meeting" , maxPeopleStr};
 
             if(!eventValidator.validate(params)){
                 System.out.println("prod add : error");
@@ -255,7 +255,7 @@ public class ProductController extends Controller{
             String expirationStrg = rightParts[1];
             String maxPeopleStr = rightParts[2];
 
-            String[] params = new String[]{message[0], name, priceStr, expirationStrg, maxPeopleStr};
+            String[] params = new String[]{message[0], name, priceStr, expirationStrg, "food", maxPeopleStr};
 
             if(!eventValidator.validate(params)){
                 System.out.println("prod add : error");

@@ -10,7 +10,6 @@ import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.Ticket;
 import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.UserList;
-import es.upm.etsisi.poo.validation.EventProductValidator;
 
 import java.util.HashMap;
 
@@ -124,7 +123,7 @@ public class TicketController extends Controller{
             if (currentTicket.getState() == stateTicket.closed){
                 System.out.println("Ticket : "+ info[2]+"-"+currentTicket.getTicketId() +"  "+info[0]+"    "+info[1]+"\n");
             }else System.out.println("Ticket : "+ info[2]+"-"+currentTicket.getTicketId() +"  "+info[0]+"    "+info[1]+"\n");
-            ticketList.CloseTicket(currentTicket, Utils.getTime());
+            ticketList.closeTicket(currentTicket, Utils.getTime());
             mapDBManager.addTicket(ticketList.getTicketFull(currentTicket.getTicketId()));
             System.out.println(currentTicket);
             System.out.println("ticket print: ok");

@@ -1,10 +1,8 @@
 package es.upm.etsisi.poo.ticket;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
@@ -101,7 +99,7 @@ public class TicketList <T extends Ticket<Product>>  implements Serializable{
         return (Ticket) ticketList.get(id).get("ticket");
     }
     public HashMap<String,Object> getTicketFull(String id){return ticketList.get(id);}
-    public void CloseTicket(Ticket ticket,String date){
+    public void closeTicket(Ticket ticket, String date){
         if (ticket.getState() != stateTicket.closed){
             HashMap<String,Object> ticketDate = ticketList.get(ticket.getTicketId());
         ticketDate.put("closetime",date);

@@ -21,9 +21,17 @@ public class Service extends Product {
         this.expirationDate = expitationDate;
     }
 
+    private String getID(String ID){
+        return ID;
+    }
+
     private String getIDNumber(String ID) {
         if (ID == null || ID.isEmpty()) return "";
         return ID.replaceAll("[^0-9]", "");
+    }
+
+    private String getFullId(String id){
+        return getIDNumber(id) + 'S';
     }
 
     public ServiceType getType() {
@@ -42,7 +50,7 @@ public class Service extends Product {
     @Override
     public String toString() {
         //{class:ProductService, id:1, category:INSURANCE, expiration:Sun Dec 21 00:00:00 CET 2025}
-        return "{class:ProductService, id:"+getIDNumber(getID())+
+        return "{class:ProductService, id:"+getID(getID())+
                 ", category:"+ type +
                 ", expiration:"+
                 Utils.convertDate(expirationDate)+"}";
