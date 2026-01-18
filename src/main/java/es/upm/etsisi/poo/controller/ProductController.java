@@ -59,10 +59,10 @@ public class ProductController extends Controller{
                     id = productList.getNextIndex()+"";
                 }else {
                     id = message[0];
-
                 }
                 categoryStr = rightParts[0];
                 priceStr = rightParts[1];
+
                 String[] params;
                 if (rightParts.length == 3){
                     params = new String[]{id, categoryStr, priceStr, rightParts[2], name};

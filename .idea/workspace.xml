@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="cambios en userList">
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="client y cash fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/MapDB/MapDBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/products/ProductList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/products/ProductList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768738676901</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="client y cash fixes">
+      <option name="closed" value="true" />
+      <created>1768751519317</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1768751519317</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -343,51 +350,10 @@
     <MESSAGE value="MapDB terminado" />
     <MESSAGE value="commit" />
     <MESSAGE value="UMLs" />
-    <option name="LAST_COMMIT_MESSAGE" value="UMLs" />
+    <MESSAGE value="client y cash fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="client y cash fixes" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java</url>
-          <line>18</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java</url>
-          <line>15</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java</url>
-          <line>211</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java</url>
-          <line>220</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java</url>
-          <line>14</line>
-          <properties class="es.upm.etsisi.poo.validation.EventProductValidator" method="validate">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java</url>
-          <line>189</line>
-          <properties class="es.upm.etsisi.poo.controller.ProductController" method="addMeeting">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />

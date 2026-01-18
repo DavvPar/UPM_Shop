@@ -13,13 +13,13 @@ public class ProductList {
     private int maxNumProduct;
 
     private int numProduct;
-    private int Numservice;
+    private int numservice;
 
     public ProductList(int MaxNumProduct) {
         numProduct = 0;
         this.maxNumProduct = MaxNumProduct;
         products = new ArrayList<>();
-        Numservice = 0;
+        numservice = 0;
     }
     public void sortList(){
         int servicesCount = products.size()-1;
@@ -44,18 +44,20 @@ public class ProductList {
                         Integer::compare
                 ));
     }
+
     public int getNextIndex(){
-        int Index = 0;
+        int index = 0;
         sortList();
         for (Product product : products){
             if (product.getProductType() != ProductType.Service){
-                if (Integer.parseInt(product.getID())>Index){
-                    return Index;
-                }else Index++;
+                if (Integer.parseInt(product.getID()) > index){
+                    return index;
+                }else index++;
             }
         }
-        return Index;
+        return index;
     }
+
     public boolean addProduct(Product product) {
         boolean added = false, exists = false;
         if (numProduct < maxNumProduct) {
@@ -67,7 +69,7 @@ public class ProductList {
             if (!exists) {
                 products.add(product);
                 if (product.getProductType()==ProductType.Service){
-                    Numservice++;
+                    numservice++;
                 }
                 numProduct++;
                 added = true;
@@ -151,7 +153,7 @@ public class ProductList {
         return numProduct;
     }
 
-    public int getNumservice(){return Numservice;}
+    public int getNumservice(){return numservice;}
 
     @Override
     public String toString() {

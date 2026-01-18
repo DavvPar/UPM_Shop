@@ -57,7 +57,7 @@ public class App {
                 line = currentScanner.nextLine();
 
                 if (currentScanner == fileScanner) {
-                    System.out.println("tUPM> " + line);
+                    System.out.println("\ntUPM> " + line);
                 }
             } else {
                 if (currentScanner == fileScanner) {
