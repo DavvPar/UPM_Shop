@@ -24,7 +24,7 @@ public class MapDBManager {
     private void initDB() {
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("UPM_SHOP.db")
+                    .fileDB("UPM_SHOP_6.db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();
