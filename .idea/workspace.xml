@@ -5,15 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="MapDB terminado">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/command/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/CashController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/CustomProductValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/ValidationUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/Utils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -27,47 +36,23 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;JunqinYe&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/DavvPar/UPM_Shop.git&quot;,
-    &quot;accountId&quot;: &quot;9116ad7e-286e-4ab6-b70e-cbc796ecf7e1&quot;
-  }
-}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
-}</component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
   <component name="ProjectId" id="3805auaI5Pi08UgaHM1Qo74nILB" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Maven.UPM_SHOP [clean].executor": "Run",
-    "Maven.UPM_SHOP [package].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.language.and.region",
-    "应用程序.App.executor": "Run"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../UPM_Shop" />
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean" />
@@ -96,6 +81,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
       <changelist id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="" />
@@ -327,7 +313,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java</url>
-          <line>127</line>
+          <line>131</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

@@ -27,7 +27,7 @@ public class ValidationUser implements Validator{
         }
     }
 
-    private boolean validCashId(String cashId) {
+    public boolean validCashId(String cashId) {
         try {
             return ((cashId != null && (cashId.matches("^UW\\d{7}$"))));
         }catch (IllegalArgumentException e) {
@@ -80,7 +80,7 @@ public class ValidationUser implements Validator{
         }
     }
 
-    public boolean validNIF(String nif) {
+    public static boolean validNIF(String nif) {
         try{
             if (nif == null || nif.length() != 9 ||
                     !nif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$")) {

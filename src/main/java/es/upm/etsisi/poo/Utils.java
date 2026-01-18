@@ -13,7 +13,7 @@ import java.util.Locale;
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.Item;
 import es.upm.etsisi.poo.products.Product;
-import es.upm.etsisi.poo.user.UserValidator;
+import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class Utils {
 
@@ -52,7 +52,7 @@ public class Utils {
 
     public static TicketType TypeTicket( String ID,String command){
         TicketType type;
-        if (UserValidator.validNIF(ID)){
+        if (ValidationUser.validNIF(ID)){
             switch (command.toUpperCase()){
                 case "C"-> type = TicketType.businessC;
                 case "S"-> type = TicketType.businessS;

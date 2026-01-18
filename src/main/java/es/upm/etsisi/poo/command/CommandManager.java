@@ -35,10 +35,10 @@ public class CommandManager implements Command{
         cashController = new CashController(MapDb);
         this.exitController = exitController;
         helpController = new HelpController();
-        LoadComand();
+        loadComand();
     }
 
-    private void LoadComand(){
+    private void loadComand(){
         commandRegistry.put("prod",new CommandProduct(productController));
         commandRegistry.put("ticket",new CommandTicket(ticketController));
         commandRegistry.put("client",new CommandClient(clientController));

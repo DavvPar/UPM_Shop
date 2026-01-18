@@ -5,16 +5,18 @@ import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.ticket.TicketList;
 import es.upm.etsisi.poo.user.Cash;
 import es.upm.etsisi.poo.user.UserList;
-import es.upm.etsisi.poo.user.UserValidator;
+import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class CashController extends  Controller{
     private final TicketList ticketList;
     private final UserList userList;
+    private final ValidationUser userValidation;
 
     public CashController(MapDBManager mapDBManager) {
         super(mapDBManager);
         this.ticketList = mapDBManager.getTicketList();
         this.userList = mapDBManager.getUserList();
+        this.userValidation = new ValidationUser();
     }
 
     public boolean addCash(String args){
@@ -31,7 +33,14 @@ public class CashController extends  Controller{
                 email = message[message.length - 1];
             }
 
-            if (!UserValidator.validName(name) || !UserValidator.validEmail(email) || (id != null && !UserValidator.validCashId(id))) {
+            String[] params = new String[]{name, email, id};
+
+            /*if (!userValidation.validName(name) || !userValidation.validEmail(email)
+                    || (id != null && !userValidation.validCashId(id))) {
+                System.out.println("cash add: error");
+                return false;
+            }*/
+            if(!userValidation.validate(params)){
                 System.out.println("cash add: error");
                 return false;
             }
@@ -84,7 +93,7 @@ public class CashController extends  Controller{
             return false;
         }
         String cashier = message[2];
-        if (UserValidator.validCashId(cashier) && userList.containsId(cashier)) {
+        if (userValidation.validCashId(cashier) && userList.containsId(cashier)) {
             TicketList ticketsOfCash = ticketList.getTicketsOfCash(cashier);
             System.out.println("Tickets:");
             System.out.println(ticketsOfCash.toString());

@@ -1,7 +1,7 @@
 package es.upm.etsisi.poo.validation;
 
 import es.upm.etsisi.poo.enums.CategoryType;
-import es.upm.etsisi.poo.products.ProductList;
+
 
 public class CustomProductValidator implements Validator{
     @Override
@@ -57,7 +57,7 @@ public class CustomProductValidator implements Validator{
         }
     }
 
-    private boolean validName(String name){ //TODO REVISARLO
+    private boolean validName(String name){
         try{
             return name.length() < 100;
         }catch(IllegalArgumentException e){
