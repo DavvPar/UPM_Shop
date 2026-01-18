@@ -5,15 +5,17 @@ import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ClientType;
 import es.upm.etsisi.poo.user.Client;
 import es.upm.etsisi.poo.user.UserList;
-import es.upm.etsisi.poo.user.UserValidator;
+import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class ClientController extends Controller{
 
     private final UserList userList;
+    private final ValidationUser userValidator;
 
     public ClientController(MapDBManager mapDBManager) {
         super(mapDBManager);
         this.userList = mapDBManager.getUserList();
+        this.userValidator = new ValidationUser();
     }
 
     public boolean addClient(String args){
@@ -29,7 +31,9 @@ public class ClientController extends Controller{
             String email = message[message.length-2];
             String cashId = message[message.length-1];
 
-            if (!UserValidator.validName(name)) {
+
+
+            /*if (!UserValidator.validName(name)) {
                 System.out.println("client add: error name");
                 return false;
             }
@@ -40,12 +44,14 @@ public class ClientController extends Controller{
             if (!UserValidator.validCashId(cashId)) {
                 System.out.println("client add: error CashId");
                 return false;
-            }
+            }*/
+
+            String[] params = new String[]{name, email, cashId};
             Client c = null;
-            if (UserValidator.validNIF(dni)){
+            if (userValidator.validNIF(dni) && userValidator.validate(params)){
                 c = new Client(name, dni, email, cashId, ClientType.Business);
             }
-            if (UserValidator.validDNI(dni) ||UserValidator.validNIE(dni)){
+            if (userValidator.validDNI(dni) ||userValidator.validNIE(dni) && userValidator.validate(params)){
                 c = new Client(name,dni,email,cashId,ClientType.Client);
             }
             if (c != null){

@@ -1,7 +1,7 @@
 package es.upm.etsisi.poo.validation;
 
 import es.upm.etsisi.poo.enums.CategoryType;
-import es.upm.etsisi.poo.products.ProductList;
+
 
 public class CustomProductValidator implements Validator{
     @Override
@@ -9,12 +9,14 @@ public class CustomProductValidator implements Validator{
         if (params.length == 0){
             return false;
         }
-        if (params.length == 3){
-            return validId(params[0]) && validCategoryType(params[1]) && validPrice(params[2]);
-        }
         if (params.length == 4){
+            return validId(params[0]) && validCategoryType(params[1]) &&
+                    validPrice(params[2]) && validName(params[3]);
+        }
+        if (params.length == 5){
             return validId(params[0]) && validCategoryType(params[1])
-                    && validPrice(params[2]) && validMaxPers(params[3]);
+                    && validPrice(params[2]) && validMaxPers(params[3])
+                    && validName(params[4]);
         }
         return false;
     }
@@ -31,7 +33,7 @@ public class CustomProductValidator implements Validator{
     private boolean validId(String idStr){
         try {
             int id = Integer.parseInt(idStr);
-            return id > 0;
+            return id >= 0;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -51,6 +53,14 @@ public class CustomProductValidator implements Validator{
             int maxPers = Integer.parseInt(maxPersStr);
             return maxPers >= 0;
         } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean validName(String name){
+        try{
+            return name.length() < 100;
+        }catch(IllegalArgumentException e){
             return false;
         }
     }

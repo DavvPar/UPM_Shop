@@ -100,10 +100,8 @@ public class MapDBManager {
 
     public void addProduct(Product product) {
         productMap.put(product.getID(),product);
-        productcache.addProduct(product);
         db.commit();
     }
-
 
     public void removeUser(String id) {
         userMap.remove(id);

@@ -34,7 +34,6 @@ public class TicketClient<P extends Item> extends Ticket<P> {
         return totaldiscount;
     }
 
-
     public String toString() {
         String message = "";
         if (getNumProductInTicket()>0){
@@ -49,7 +48,7 @@ public class TicketClient<P extends Item> extends Ticket<P> {
             }
         }
         }
-        return "Ticket : "+ getTicketId() + "\n" +message +"  Total price: "+getTotalPrice() +"\n"
+        return message +"  Total price: "+getTotalPrice() +"\n"
                 + "  Total discount: "+ getTotalDiscount() +"\n"
                 + "  Final Price: " + getFinalPrice();
 

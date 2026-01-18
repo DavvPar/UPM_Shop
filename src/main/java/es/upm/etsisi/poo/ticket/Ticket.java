@@ -1,4 +1,5 @@
 package es.upm.etsisi.poo.ticket;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
@@ -32,7 +33,6 @@ public abstract class Ticket <P extends Product>implements Serializable {
     private int[] categorytype;
 
     private stateTicket state;
-
     private TicketType type;
     public Ticket() {
         this.MaxNumProduct = 100;
@@ -205,8 +205,8 @@ public abstract class Ticket <P extends Product>implements Serializable {
         if (servicesCount < (productList.size() - 1)) {
             productList.subList(servicesCount, productList.size())
                     .sort(Comparator.comparing(
-                            p ->((Item)p).getName(),
-                            String.CASE_INSENSITIVE_ORDER
+                            p ->Integer.parseInt(((Item)p).getID()),
+                            Integer::compare
                     ));
         }
     }

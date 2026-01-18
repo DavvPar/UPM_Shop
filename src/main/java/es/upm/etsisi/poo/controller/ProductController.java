@@ -12,7 +12,9 @@ import es.upm.etsisi.poo.validation.CustomProductValidator;
 import es.upm.etsisi.poo.validation.ServiceValidator;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+//import java.time.temporal.ChronoUnit;
+
+import static org.eclipse.collections.impl.block.factory.StringPredicates.matches;
 
 public class ProductController extends Controller{
 
@@ -34,7 +36,6 @@ public class ProductController extends Controller{
             String[] message = args.trim().split(" ");
             Product product = null;
 
-            //Servicio
             if (message.length == 2) {
                 if (!serviceValidator.validate(message)) {
                     System.out.println("prod add: error");
@@ -45,7 +46,6 @@ public class ProductController extends Controller{
                 String expireDate = message[0];
                 product = new Service(numService, serviceType, expireDate, ProductType.Service);
             }
-            // Producto (con o sin maxPers)
             else {
                 String name = Utils.getNameScanner(args);
                 String[] rightParts = Utils.secondPartArray(args);
@@ -54,18 +54,23 @@ public class ProductController extends Controller{
                     System.out.println("prod add: error");
                     return false;
                 }
+                String id;
+                String categoryStr;
+                String priceStr;
+                if(!(message[0].matches("\\d+"))){
+                    id = productList.GetNextIndex()+"";
+                }else {
+                    id = message[0];
 
-                String id = message[0];
-                String categoryStr = rightParts[0];
-                String priceStr = rightParts[1];
-
+                }
+                categoryStr = rightParts[0];
+                priceStr = rightParts[1];
                 String[] params;
                 if (rightParts.length == 3){
-                    params = new String[]{id, categoryStr, priceStr, rightParts[2]};
+                    params = new String[]{id, categoryStr, priceStr, rightParts[2], name};
                 } else {
-                    params = new String[]{id, categoryStr, priceStr};
+                    params = new String[]{id, categoryStr, priceStr, name};
                 }
-
                 if (!customValidator.validate(params)) {
                     System.out.println("prod add: error");
                     return false;
@@ -73,7 +78,6 @@ public class ProductController extends Controller{
 
                 double price = Double.parseDouble(priceStr);
                 Category category = new Category(CategoryType.valueOf(categoryStr.toUpperCase()));
-
                 if (rightParts.length == 3) {
                     int maxPers = Integer.parseInt(rightParts[2]);
                     product = new CustomProduct(id, name, category, price, maxPers, ProductType.ProductPersonalized);
@@ -145,6 +149,7 @@ public class ProductController extends Controller{
         }
     }
 
+    //TODO METERLO EN VALIDATEPRODUCT
     private boolean validField(String field) {
         String[] allowedFields = {"name", "category", "price"};
         boolean validField = false;
@@ -189,32 +194,35 @@ public class ProductController extends Controller{
             String[] message = args.split(" ");
             String[] rightParts = Utils.secondPartArray(args);
 
-            if (rightParts.length != 3) {
+            /*if (rightParts.length != 3) {
                 System.out.println(
                         "Usage: prod addmeeting <id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>"
                 );
                 return false;
-            }
+            }*/
 
             String line = args;
             String name = Utils.getNameScanner(line);
             String id = message[0];
 
-            double price = Double.parseDouble(rightParts[0]);
+            String priceStr = rightParts[0];
             String expirationStrg = rightParts[1];
-            int maxPeople = Integer.parseInt(rightParts[2]);
+            String maxPeopleStr = rightParts[2];
 
-            if (!Utils.validDate(expirationStrg)) return false;
+            String[] params = new String[]{message[0], name, priceStr, expirationStrg, maxPeopleStr};
 
-            if (maxPeople > 100) {
-                System.out.println("have exceeded the maximum number of people allowed(100)");
+            if(!eventValidator.validate(params)){
+                System.out.println("prod add : error");
                 return false;
             }
+
+            double price = Double.parseDouble(rightParts[0]);
+            int maxPeople = Integer.parseInt(rightParts[2]);
 
 
             EventProduct eventProduct =
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Meeting);
-            //TODO eventValidator.validate(eventProduct);
+
             boolean ok = productList.addProduct(eventProduct);
             if (ok) mapDBManager.addProduct(eventProduct);
             System.out.println(ok ? eventProduct : "prod add: error");
@@ -235,27 +243,32 @@ public class ProductController extends Controller{
             String[] message = args.split(" ");
             String[] rightParts = Utils.secondPartArray(args);
 
-            if (rightParts.length != 3) {
+            /*if (rightParts.length != 3) {
                 System.out.println(
                         "Usage: prod addfood <id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>"
                 );
                 return false;
-            }
+            }*/
             String line = args;
             String name = Utils.getNameScanner(line);
             String id = message[0];
 
-            double price = Double.parseDouble(rightParts[0]);
+            String priceStr = rightParts[0];
             String expirationStrg = rightParts[1];
-            int maxPeople = Integer.parseInt(rightParts[2]);
+            String maxPeopleStr = rightParts[2];
 
-            if (maxPeople > 100) {
-                System.out.println("have exceeded the maximum number of people allowed(100)");
+            String[] params = new String[]{message[0], name, priceStr, expirationStrg, maxPeopleStr};
+
+            if(!eventValidator.validate(params)){
+                System.out.println("prod add : error");
                 return false;
             }
+
+            double price = Double.parseDouble(rightParts[0]);
+            int maxPeople = Integer.parseInt(rightParts[2]);
+
             EventProduct eventProduct =
                     new EventProduct(id, name, price, expirationStrg, maxPeople, ProductType.Food);
-            //TODO eventValidator.validate(eventProduct);
             boolean ok = productList.addProduct(eventProduct);
             if (ok) mapDBManager.addProduct(eventProduct);
             System.out.println(ok ? eventProduct : "prod add: error");

@@ -6,12 +6,17 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
 
 import es.upm.etsisi.poo.enums.*;
-import es.upm.etsisi.poo.user.UserValidator;
+import es.upm.etsisi.poo.products.Item;
+import es.upm.etsisi.poo.products.Product;
+import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class Utils {
+
     public static String convertDate(String inputDate) {
         LocalDate date = LocalDate.parse(inputDate);
         ZoneId defaultZone = ZoneId.systemDefault();
@@ -20,7 +25,20 @@ public class Utils {
                 .ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         return zonedDateTime.format(formatter);
     }
-
+    public static boolean ValidInput(String message){
+        switch (message.toLowerCase()) {
+            case "prod":
+            case "ticket":
+            case "help":
+            case "exit":
+            case "cash":
+            case "client":
+            case "echo":
+                return true;
+            default:
+                return false;
+        }
+    }
     public static String getShortId(String Id){
         String shortId = "";
             String[] message =Id.trim().split("[-:]");
@@ -34,7 +52,7 @@ public class Utils {
 
     public static TicketType TypeTicket( String ID,String command){
         TicketType type;
-        if (UserValidator.validNIF(ID)){
+        if (ValidationUser.validNIF(ID)){
             switch (command.toUpperCase()){
                 case "C"-> type = TicketType.businessC;
                 case "S"-> type = TicketType.businessS;

@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo.command;
 
 import es.upm.etsisi.poo.MapDB.MapDBManager;
+import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.controller.*;
 import es.upm.etsisi.poo.products.ProductList;
 import es.upm.etsisi.poo.ticket.TicketList;
@@ -34,25 +35,34 @@ public class CommandManager implements Command{
         cashController = new CashController(MapDb);
         this.exitController = exitController;
         helpController = new HelpController();
-        LoadComand();
+        loadComand();
     }
 
-    private void LoadComand(){
+    private void loadComand(){
         commandRegistry.put("prod",new CommandProduct(productController));
         commandRegistry.put("ticket",new CommandTicket(ticketController));
         commandRegistry.put("client",new CommandClient(clientController));
         commandRegistry.put("cash",new CommandCash(cashController));
     }
     public boolean execute(String args) {
-            String[] parts = args.split(" ");
+            String normalizedArgs = args.trim().replaceAll("\\s+", " ");
+            String[] parts = normalizedArgs.split(" ");
             String commandName = parts[0].toLowerCase();
             Command command = commandRegistry.get(commandName);
+            if(!Utils.ValidInput(commandName)){
+                System.out.println("Command not recognized, please go to help for more assistance.");
+                return false;
+            }
         if ("exit".equalsIgnoreCase(commandName)) {
             exitController.requestExit();
             return true;
         }
         if ("help".equalsIgnoreCase(commandName)) {
             helpController.help();
+            return true;
+        }
+        if ("echo".equalsIgnoreCase(commandName)) {
+            System.out.println(args);
             return true;
         }
             if (command != null) {

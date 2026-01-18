@@ -92,14 +92,16 @@ public class TicketBusiness<P extends Product> extends Ticket<P> {
                 exitP = true;
             }
         }
+
         if (!exitS) Mservice ="";
         else{
             DiscountM +="Extra Discount from services:"+String.format("%.2f",getDiscountServece())+"**discount -"+String.format("%.2f",getDiscountServece());
         }
+
         if (!exitP) Mproduct ="";
         else {
 
-            return "Ticket : "+ getTicketId() + "\n" +Mservice+Mproduct +
+            return  Mservice+Mproduct +
                     "Total price: "+ String.format("%.2f",getTotalPrice()) +"\n"
                     + "Total discount: "+ String.format("%.2f",getTotalDiscount()) +"\n"
                     +DiscountM

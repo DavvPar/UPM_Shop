@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.upm.etsisi.poo.MapDB.MapDBManager;
 import es.upm.etsisi.poo.products.*;
 import es.upm.etsisi.poo.enums.stateTicket;
 import es.upm.etsisi.poo.enums.TicketType;
 import es.upm.etsisi.poo.Utils;
 
-public class TicketList <T extends Ticket<Product>>  {
+public class TicketList <T extends Ticket<Product>>  implements Serializable{
 
     private HashMap<String,HashMap<String,Object>> ticketList;
 
@@ -33,8 +34,8 @@ public class TicketList <T extends Ticket<Product>>  {
     public Ticket createTicket(String TicketId,String CashId,String clientId,TicketType type,MapDBManager mapDBManager){
         Ticket t;
         HashMap<String,Object> ticket = new HashMap<>();
+        ticket.put("opentime",Utils.getTime());
         if (TicketId == null){
-            ticket.put("opentime",Utils.getTime());
             TicketId = createId();
         }
         if (validId(TicketId)){
@@ -44,7 +45,7 @@ public class TicketList <T extends Ticket<Product>>  {
                 t= new TicketBusiness(TicketId,stateTicket.empty,type);
             }
             ticket.put("ticket",t);
-            ticket.put("Cashid",CashId);
+            ticket.put("cashId",CashId);
             ticket.put("clientId",clientId);
             ticketList.put(TicketId,ticket);
             addTicket(ticket);
@@ -74,7 +75,17 @@ public class TicketList <T extends Ticket<Product>>  {
         }
         return added;
     }
-
+    public String[] getInfo(String id){
+        if(ticketList.get(id)!= null){
+            return new String[]{
+                (String) ticketList.get(id).get("cashId"),
+                (String) ticketList.get(id).get("clientId"),
+                (String) ticketList.get(id).get("opentime"),
+                (String) ticketList.get(id).get("closetime")
+            };
+        }
+        else return new String[4];
+    }
     public boolean removeTicket(String cashid) {
         boolean removed = false;
         for(HashMap<String, Object> ticketData : ticketList.values()) {
@@ -86,7 +97,6 @@ public class TicketList <T extends Ticket<Product>>  {
         }
         return removed;
     }
-
     public Ticket getTicket(String id) {
         return (Ticket) ticketList.get(id).get("ticket");
     }
@@ -117,7 +127,9 @@ public class TicketList <T extends Ticket<Product>>  {
         for (HashMap<String,Object> ticket :ticketList.values()){
             Ticket t = (Ticket) ticket.get("ticket");
             String state = String.valueOf(t.getState());
-            text += t.getTicketId() + " - " + state.toUpperCase() + "\n";
+            if (t.getState() == stateTicket.closed){
+            text += (String) ticket.get("opentime")+"-"+t.getTicketId() +"-"+(String) ticket.get("closetime")+ " - " + state.toUpperCase() +"   "+(String) ticket.get("cashId")+ "\n" ;
+            }else text += (String) ticket.get("opentime")+"-"+t.getTicketId()+ " - " + state.toUpperCase() + "\n";
         }
         return text;
     }
