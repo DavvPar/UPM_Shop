@@ -1,10 +1,8 @@
 package es.upm.etsisi.poo.products;
-import es.upm.etsisi.poo.Utils;
 import es.upm.etsisi.poo.enums.ProductType;
 import es.upm.etsisi.poo.enums.CategoryType;
 import es.upm.etsisi.poo.enums.Category;
 
-import java.lang.module.FindException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -23,7 +21,7 @@ public class ProductList {
         products = new ArrayList<>();
         Numservice = 0;
     }
-    public void SortList(){
+    public void sortList(){
         int servicesCount = products.size()-1;
         for (int i = 0; i < servicesCount; i++) {
             if (products.get(i).getProductType() == ProductType.Service) {
@@ -46,9 +44,9 @@ public class ProductList {
                         Integer::compare
                 ));
     }
-    public int GetNextIndex(){
+    public int getNextIndex(){
         int Index = 0;
-        SortList();
+        sortList();
         for (Product product : products){
             if (product.getProductType() != ProductType.Service){
                 if (Integer.parseInt(product.getID())>Index){
@@ -140,13 +138,13 @@ public class ProductList {
     }
 
     public Product getProduct(String Id) {
-        Product find = null;
+        Product found = null;
         for (int i = 0; i < numProduct; i++) {
             if (products.get(i).getID().equals(Id)) {
-                find = products.get(i);
+                found = products.get(i);
             }
         }
-        return find;
+        return found;
     }
 
     public int getNumProduct(){

@@ -37,8 +37,6 @@ public class UserList {
         return added;
     }
 
-
-
     public void addUserOrdered(User user) {
         users.add(user);
         users.sort(Comparator.nullsLast(
@@ -60,7 +58,6 @@ public class UserList {
     private boolean availableClient(Client client){
         return (isIdAvailable(client.getId()) && isEmailAvailableFor(Client.class, client.getEmail()) && validateClientCashId(client.getCashId()));
     }
-
 
     public boolean validateClientCashId(String cashId) {
         User user = getUserByID(cashId);
