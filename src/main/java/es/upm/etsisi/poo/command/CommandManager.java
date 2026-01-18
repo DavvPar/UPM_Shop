@@ -9,6 +9,7 @@ import es.upm.etsisi.poo.user.UserList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class CommandManager implements Command{
 
@@ -28,7 +29,9 @@ public class CommandManager implements Command{
 
     private final MapDBManager MapDb;
     public CommandManager(ExitController exitController){
-        MapDb = new MapDBManager();
+        Scanner scanner = new Scanner(System.in);
+        String filename  = Utils.leerCadena(scanner,"Enter the name of the db file to use if you do not know it, press Enter:");
+        MapDb = new MapDBManager(filename);
         productController = new ProductController(MapDb);
         ticketController = new TicketController(MapDb);
         clientController = new ClientController(MapDb);

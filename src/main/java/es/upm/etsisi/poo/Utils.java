@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Scanner;
 
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.Item;
@@ -16,7 +17,27 @@ import es.upm.etsisi.poo.products.Product;
 import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class Utils {
-
+    public static String leerCadena(Scanner teclado, String s) {
+        String resultado = "";
+        boolean terminar = false;
+        while (terminar != true) {
+            System.out.print(s);
+            resultado = teclado.nextLine();
+            int contadorPrincipio = 0;
+            for (int i = 0; i < resultado.length() && terminar != true; i++) {
+                if (resultado.charAt(i) == ' ') {
+                    contadorPrincipio++;
+                } else {
+                    terminar = true;
+                }
+            }
+            resultado = resultado.substring(contadorPrincipio, resultado.length());
+            if (resultado == "") {
+                terminar = true;
+            }
+        }
+        return resultado;
+    }
     public static String convertDate(String inputDate) {
         LocalDate date = LocalDate.parse(inputDate);
         ZoneId defaultZone = ZoneId.systemDefault();

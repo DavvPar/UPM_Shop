@@ -16,15 +16,16 @@ public class MapDBManager {
     private HTreeMap<String, Product> productMap;
     private HTreeMap<String, HashMap<String,Object>> ticketMap;
     private HTreeMap<String, User> userMap;
-    public MapDBManager() {
-        initDB();
+    public MapDBManager(String filename) {
+        initDB(filename);
         Load();
     }
 
-    private void initDB() {
+    private void initDB(String filename) {
+        if (filename.isEmpty())filename = "UPM_SHOP";
         if (db == null || db.isClosed()) {
             db = DBMaker
-                    .fileDB("UPM_SHOP_6.db")
+                    .fileDB(filename+"db")
                     .closeOnJvmShutdown()
                     .transactionEnable()
                     .make();
