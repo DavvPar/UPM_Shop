@@ -343,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768779155988</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768782765948</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1768782765948</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
