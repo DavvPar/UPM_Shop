@@ -209,11 +209,10 @@ public class ProductController extends Controller{
 
             String[] params = new String[]{message[0], name, priceStr, expirationStrg, "meeting" , maxPeopleStr};
 
-            if(!eventValidator.validate(params)){
+            if(!eventValidator.validate(params) || !Utils.validatePlanningTime(ProductType.Meeting,expirationStrg)){
                 System.out.println("prod add : error");
                 return false;
             }
-
             double price = Double.parseDouble(rightParts[0]);
             int maxPeople = Integer.parseInt(rightParts[2]);
 
@@ -257,7 +256,7 @@ public class ProductController extends Controller{
 
             String[] params = new String[]{message[0], name, priceStr, expirationStrg, "food", maxPeopleStr};
 
-            if(!eventValidator.validate(params)){
+            if(!eventValidator.validate(params) || !Utils.validatePlanningTime(ProductType.Food,expirationStrg)){
                 System.out.println("prod add : error");
                 return false;
             }
