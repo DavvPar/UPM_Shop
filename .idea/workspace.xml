@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Metodos para cambiar de DB" />
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="no se">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML_E3.jpeg" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -383,7 +386,8 @@
     <MESSAGE value="client y cash fixes" />
     <MESSAGE value="space in file" />
     <MESSAGE value="Metodos para cambiar de DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Metodos para cambiar de DB" />
+    <MESSAGE value="no se" />
+    <option name="LAST_COMMIT_MESSAGE" value="no se" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
