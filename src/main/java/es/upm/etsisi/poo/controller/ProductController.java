@@ -192,12 +192,6 @@ public class ProductController extends Controller{
             String[] message = args.split(" ");
             String[] rightParts = Utils.secondPartArray(args);
 
-            /*if (rightParts.length != 3) {
-                System.out.println(
-                        "Usage: prod addmeeting <id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>"
-                );
-                return false;
-            }*/
 
             String line = args;
             String name = Utils.getNameScanner(line);
@@ -240,12 +234,6 @@ public class ProductController extends Controller{
             String[] message = args.split(" ");
             String[] rightParts = Utils.secondPartArray(args);
 
-            /*if (rightParts.length != 3) {
-                System.out.println(
-                        "Usage: prod addfood <id> \"<name>\" <price> <expiration: yyyy-MM-dd> <max_people>"
-                );
-                return false;
-            }*/
             String line = args;
             String name = Utils.getNameScanner(line);
             String id = message[0];
