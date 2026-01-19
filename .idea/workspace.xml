@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="no se">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UML_E3.jpeg" beforeDir="false" />
-    </list>
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Proyecto final" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +20,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -354,7 +354,31 @@
       <option name="project" value="LOCAL" />
       <updated>1768782765948</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768783102833</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783102833</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783555195</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783555195</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783657765</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783657765</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -386,8 +410,8 @@
     <MESSAGE value="client y cash fixes" />
     <MESSAGE value="space in file" />
     <MESSAGE value="Metodos para cambiar de DB" />
-    <MESSAGE value="no se" />
-    <option name="LAST_COMMIT_MESSAGE" value="no se" />
+    <MESSAGE value="Proyecto final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proyecto final" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
