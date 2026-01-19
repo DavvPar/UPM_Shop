@@ -33,7 +33,7 @@ public class ProductList {
             }else i++;
         }
         if (servicesCount < products.size()) {
-            products.subList(servicesCount+1,products.size()-1)
+            products.subList(servicesCount,products.size()-1)
                     .sort(Comparator.comparing(
                             Product::getID,
                             String.CASE_INSENSITIVE_ORDER

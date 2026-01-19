@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Metodos para cambiar de DB">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/products/ProductList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/products/ProductList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/validation/EventProductValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/es/upm/etsisi/poo/Utils.class" afterDir="false" />
-    </list>
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Metodos para cambiar de DB" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,6 +77,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="es.upm.etsisi.poo.App" />
       <module name="UPM_SHOP" />
+      <option name="PROGRAM_PARAMETERS" value="input.txt" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="es.upm.etsisi.poo.*" />
@@ -349,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768779155988</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768782765948</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1768782765948</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
