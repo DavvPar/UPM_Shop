@@ -23,13 +23,14 @@ public class ProductList {
     }
     public void sortList(){
         int servicesCount = products.size()-1;
-        for (int i = 0; i < servicesCount; i++) {
+        int i =0;
+        while(i < servicesCount) {
             if (products.get(i).getProductType() == ProductType.Service) {
                 Product temp = products.get(i);
                 products.set(i,products.get(servicesCount));
                 products.set(servicesCount,temp);
                 servicesCount--;
-            }
+            }else i++;
         }
         if (servicesCount < products.size()) {
             products.subList(servicesCount+1,products.size()-1)
@@ -38,7 +39,7 @@ public class ProductList {
                             String.CASE_INSENSITIVE_ORDER
                     ));
         }
-        products.subList(0,servicesCount+1)
+        products.subList(0,servicesCount)
                 .sort(Comparator.comparing(
                         p ->Integer.parseInt(((Item)p).getID()),
                         Integer::compare
@@ -84,6 +85,7 @@ public class ProductList {
     }
 
     public boolean listProducts() {
+        sortList();
         if (numProduct == 0) {
             System.out.println("Empty list");
             return false;
