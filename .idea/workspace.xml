@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Metodos para cambiar de DB">
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/controller/TicketController.java" afterDir="false" />
-    </list>
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Proyecto final" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -364,7 +362,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768783102833</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783555195</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783555195</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783657765</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783657765</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -396,7 +410,8 @@
     <MESSAGE value="client y cash fixes" />
     <MESSAGE value="space in file" />
     <MESSAGE value="Metodos para cambiar de DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Metodos para cambiar de DB" />
+    <MESSAGE value="Proyecto final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proyecto final" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
