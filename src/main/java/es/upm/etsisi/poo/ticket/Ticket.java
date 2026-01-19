@@ -187,14 +187,14 @@ public abstract class Ticket <P extends Product>implements Serializable {
 
     public void Sort(){
         int servicesCount = 0;
-        int i = 0;
-        while(i < productList.size()) {
+
+        for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getProductType() == ProductType.Service) {
                 Product temp = productList.get(i);
                 productList.set(i, productList.get(servicesCount));
                 productList.set(servicesCount, (P)temp);
                 servicesCount++;
-            }else i++;
+            }
         }
         if (servicesCount > 1) {
             productList.subList(0, servicesCount)
@@ -211,6 +211,7 @@ public abstract class Ticket <P extends Product>implements Serializable {
                     ));
         }
     }
+
     @Override
     public abstract String toString() ;
 }
