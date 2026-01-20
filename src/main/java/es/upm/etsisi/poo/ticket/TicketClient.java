@@ -20,7 +20,7 @@ public class TicketClient<P extends Item> extends Ticket<P> {
         boolean add = false;
         if (p.getProductType() != ProductType.Service){
             p = p.CloneProduct();
-            add =add(p,quantity,message);
+            add =add((P)p,quantity,message);
         }
         return add;
     }

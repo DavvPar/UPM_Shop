@@ -28,7 +28,7 @@ public class TicketBusiness<P extends Product> extends Ticket<P> {
         boolean add = false;
         if (allowedB(p.getProductType())){
             p = p.CloneProduct();
-            add =add(p,quantity,message);
+            add =add((P)p,quantity,message);
         }
         return add;
     }

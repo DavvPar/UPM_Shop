@@ -57,14 +57,14 @@ public abstract class Ticket <P extends Product>implements Serializable {
 
     public TicketType getType(){return type;}
     public abstract boolean addProductToTicket(ProductList lista, String Id, int quantity, String message);
-    public boolean add(Product p,int quantity,String message){
+    public boolean add(P p,int quantity,String message){
         boolean add = false;
         if (p.getProductType() == ProductType.ProductPersonalized && !message.isEmpty()){
             ((CustomProduct)p).addPersonalized(message);
         }
         for (int i =0;i<quantity;i++){
             if (getNumProductInTicket() < 100){
-                    productList.add((P)p);
+                    productList.add(p);
                     add = true;
                 if (getState() == stateTicket.empty){
                     setState(stateTicket.open);
