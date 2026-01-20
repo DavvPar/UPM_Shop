@@ -1,6 +1,7 @@
 package es.upm.etsisi.poo.validation;
 
 import es.upm.etsisi.poo.Utils;
+import es.upm.etsisi.poo.enums.ProductType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,9 +22,9 @@ public class EventProductValidator implements Validator {
                     validateExpirationDate(params[3], params[4]) &&
                     validatePeople(params[5], 100);
         }
+
         return false;
     }
-
     private boolean validId(String idStr) {
         try {
             int id = Integer.parseInt(idStr);

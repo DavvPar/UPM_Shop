@@ -6,9 +6,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Scanner;
 
 import es.upm.etsisi.poo.enums.*;
 import es.upm.etsisi.poo.products.Item;
@@ -16,7 +18,50 @@ import es.upm.etsisi.poo.products.Product;
 import es.upm.etsisi.poo.validation.ValidationUser;
 
 public class Utils {
-
+    public static boolean validatePlanningTime(ProductType typeProduct, String expirationDate) {
+        //YYYY-MM-DD-HH:MM
+        String[] currentTimeString = Utils.getTime().trim().split("[:-]");
+        String[] time = expirationDate.trim().split("[:-]");
+        LocalDateTime now =  LocalDateTime.of(Integer.parseInt(currentTimeString[0]),Integer.parseInt(currentTimeString[1]),
+                Integer.parseInt(currentTimeString[2]),Integer.parseInt(currentTimeString[3]),Integer.parseInt(currentTimeString[4]));
+        LocalDateTime Date = LocalDateTime.of(Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2]),
+                0,0);
+        long HourD = ChronoUnit.HOURS.between(now,Date);
+        boolean isValid = true;
+        if (typeProduct == ProductType.Food) {
+            if (HourD < 72) {
+                System.out.println("Error adding product");
+                isValid = false;
+            }
+        }else{
+            if (HourD< 12){
+                System.out.println("Error adding meeting");
+                isValid=false;
+            }
+        }
+        return isValid;
+    }
+    public static String leerCadena(Scanner teclado, String s) {
+        String resultado = "";
+        boolean terminar = false;
+        while (terminar != true) {
+            System.out.print(s);
+            resultado = teclado.nextLine();
+            int contadorPrincipio = 0;
+            for (int i = 0; i < resultado.length() && terminar != true; i++) {
+                if (resultado.charAt(i) == ' ') {
+                    contadorPrincipio++;
+                } else {
+                    terminar = true;
+                }
+            }
+            resultado = resultado.substring(contadorPrincipio, resultado.length());
+            if (resultado == "") {
+                terminar = true;
+            }
+        }
+        return resultado;
+    }
     public static String convertDate(String inputDate) {
         LocalDate date = LocalDate.parse(inputDate);
         ZoneId defaultZone = ZoneId.systemDefault();

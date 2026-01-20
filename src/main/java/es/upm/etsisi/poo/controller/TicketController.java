@@ -112,11 +112,11 @@ public class TicketController extends Controller{
                     EventProduct product = (EventProduct) p;
                     String date = product.getExpirationDate();
 
-                    /** TODO
-                     * if (!EventProductValidator.validatePlanningTime(p.getProductType(), date)) {
-                     *                         currentTicket.removeProduct(p.getID());
-                     *                     }
-                     */
+
+                      if (!Utils.validatePlanningTime(p.getProductType(), date)) {
+                                              currentTicket.removeProduct(p.getID());
+                                              mapDBManager.removeTicket(currentTicket);
+                                         }
                 }
             }
             String[] info =ticketList.getInfo(currentTicket.getTicketId());

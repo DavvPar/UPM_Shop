@@ -187,6 +187,7 @@ public abstract class Ticket <P extends Product>implements Serializable {
 
     public void Sort(){
         int servicesCount = 0;
+
         for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getProductType() == ProductType.Service) {
                 Product temp = productList.get(i);

@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="client y cash fixes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketBusiness.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketBusiness.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/upm/etsisi/poo/ticket/TicketClient.java" afterDir="false" />
+    <list default="true" id="29b59f3d-c100-4c04-9079-99926c046972" name="更改" comment="Proyecto final">
+      <change beforePath="$PROJECT_DIR$/UPM_SHOP.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +22,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,6 +61,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UPM_SHOP [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
@@ -71,6 +73,7 @@
     <option name="myCommands">
       <command value="mvn clean" />
       <command value="mvn package" />
+      <command value="mvn clean package" />
     </option>
   </component>
   <component name="RunManager">
@@ -321,7 +324,79 @@
       <option name="project" value="LOCAL" />
       <updated>1768751519317</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="space in file">
+      <option name="closed" value="true" />
+      <created>1768755045400</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1768755045400</updated>
+    </task>
+    <task id="LOCAL-00029" summary="space in file">
+      <option name="closed" value="true" />
+      <created>1768761153437</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1768761153437</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768779155988</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1768779155988</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768782765948</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1768782765948</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Metodos para cambiar de DB">
+      <option name="closed" value="true" />
+      <created>1768783102833</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783102833</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783555195</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783555195</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783657765</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783657765</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783710488</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783710488</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Proyecto final">
+      <option name="closed" value="true" />
+      <created>1768783788760</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1768783788760</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -351,7 +426,10 @@
     <MESSAGE value="commit" />
     <MESSAGE value="UMLs" />
     <MESSAGE value="client y cash fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="client y cash fixes" />
+    <MESSAGE value="space in file" />
+    <MESSAGE value="Metodos para cambiar de DB" />
+    <MESSAGE value="Proyecto final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proyecto final" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
